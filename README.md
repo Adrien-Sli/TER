@@ -1,3 +1,3 @@
 # TER
 
-Le cahier des charges du projet se trouve ici : 
+Le cahier des charges initial du projet se trouve ici : 
