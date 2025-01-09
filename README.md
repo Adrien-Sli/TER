@@ -1,3 +1,5 @@
 # TER
 
-Le cahier des charges initial du projet se trouve ici : 
+Cahier des charges initial du projet : 
+Cahier de recette du projet : 
+Plan de développement du projet : 
