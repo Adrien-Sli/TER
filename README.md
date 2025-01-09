@@ -1,7 +1,8 @@
-# TER
+# Agent conversationnel - Application web locale
 
-Cahier des charges initial du projet :
+## Descriptif
 
-Cahier de recette du projet : 
+Ce projet consiste à la création d'un prototype d'agent conversationnel sous la forme d'une application web. Ce prototype est déployé en local sur le système de l'utilisateur.
 
-Plan de développement du projet : 
+## Prérequis
+
