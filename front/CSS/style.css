@@ -1,0 +1,117 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.header {
+    background-color: #ffffff;
+    padding: 15px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* boutons d'aide et de paramètre */
+.aide-button {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.aide-button:hover {
+    background-color: #3367d6;
+}
+
+/* contenu de la page */
+.container {
+    margin-right: 20vw; /* Laisse de l'espace à droite pour l'historique */
+    padding: 25px;
+    min-height: 100vh;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+/* div avatar + hist + bulle */
+.contenu_page {
+    display: flex;
+    flex: 1;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+.history-section {
+    position: fixed;
+    top: 80px; /* Ajuste selon la hauteur du header */
+    right: 0;
+    width: 20vw; /* 1/5 de la largeur de l'écran */
+    max-width: 300px;
+    height: calc(100vh - 80px); /* Hauteur dispo sous le header */
+    overflow-y: auto;
+    background-color: #ffffff;
+    padding: 15px;
+    border-left: 2px solid #ddd;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+}
+
+.history-title {
+    color: #5f6368;
+    font-size: 18px;
+}
+
+.history-item {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    margin-bottom: 15px;
+
+}
+
+h1 {
+    color: #202124;
+    font-size: 24px;
+    margin-top: 0;
+}
+
+.question-box {
+    margin: 25px 0;
+    flex: 2;
+}
+
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    min-height: 120px;
+    font-size: 16px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.submit-button {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.submit-button:hover {
+    background-color: #3367d6;
+}
