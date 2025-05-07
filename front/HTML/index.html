@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application</title>
-    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="C:/Users/adrie/OneDrive/Bureau/M1/S8/TER/front/CSS/style.css">
+    <script src="../Scripts/script.js" defer></script>
 </head>
 <body>
     <div class="header">
-        <button class="settings">Paramètres</button>
+        <button class="settings-button">
+            <img src="../Image/roue_dentee.png" alt="Paramètres" class="settings-icon">
+        </button>
         <button class="aide-button">Aide</button>
     </div>
     
     <div class="container">
-        <h1>Zone main page</h1>
         
         <div class="contenu_page">
             <div class="history-section">
@@ -26,19 +28,95 @@
                     <p><strong>Question précédente:</strong> kplakd^lai^d </p>
                     <p><strong>Réponse:</strong> japldjpajdp </p>
                 </div>
+                                <div class="history-item">
+                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
+                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
+                </div>
+                <div class="history-item">
+                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
+                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
+                </div>
+                <div class="history-item">
+                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
+                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
+                </div>
+                <div class="history-item">
+                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
+                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
+                </div>
+                <div class="history-item">
+                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
+                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
+                </div>
+                <div class="history-item">
+                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
+                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
+                </div>
+                <div class="history-item">
+                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
+                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
+                </div>
+                <div class="history-item">
+                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
+                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
+                </div>
                 <button class="see_more">Voir plus</button>
             </div>
             <div class="avatar">
-                <h2>Avatar placeholder</h2>
                 <img src='https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Black&eyeType=Default&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale'/>
             </div>
-            <div>
-                <h2>bulle placeholder</h2>
+            <div class="bulle-container">
+                <svg width="1100" height="300" viewBox="0 0 1100 300" style="margin-left: -140px; margin-top: 100; ">
+                    <!-- Effets -->
+                    <defs>
+                        <filter id="bubbleShadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+                            <feOffset dx="3" dy="3" result="offsetblur"/>
+                            <feComponentTransfer>
+                                <feFuncA type="linear" slope="0.25"/>
+                            </feComponentTransfer>
+                            <feMerge>
+                                <feMergeNode/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                        <linearGradient id="bubbleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fefefe"/>
+                            <stop offset="100%" stop-color="#f0f0f0"/>
+                        </linearGradient>
+                    </defs>
+            
+                    <!-- Grande bulle ovale partant de l'avatar -->
+                    <path d="M180,220 
+                            C80,220 30,180 30,130 
+                            C30,60 100,30 200,30 
+                            C780,30 800,60 820,130 
+                            C820,180 780,220 700,220 
+                            C330,230 280,230 250,220 
+                            L-0,300
+                            L180,220"
+                          fill="url(#bubbleGrad)"
+                          stroke="#bbb"
+                          stroke-width="1.5"
+                          filter="url(#bubbleShadow)"
+                          style="stroke-linejoin: round;"/>
+                    
+                    <!-- Texte centré avec ombre légère -->
+                    <text x="250" y="130" 
+                          font-family="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" 
+                          font-size="28" 
+                          fill="#333" 
+                          text-anchor="middle"
+                          font-weight="600"
+                          style="text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
+                        Bonjour !
+                    </text>
+                </svg>
             </div>
+            
         </div>
 
         <div class="question-box">
-            <p>Écrivez votre question</p>
             <textarea placeholder="Décrivez votre problème ou posez votre question ici..."></textarea>
             <button class="submit-button">Envoyer</button>
         </div>
