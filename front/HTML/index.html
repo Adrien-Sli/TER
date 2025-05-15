@@ -4,129 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application</title>
-    <link rel="stylesheet" href="C:/Users/adrie/OneDrive/Bureau/M1/S8/TER/front/CSS/style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
 </head>
-<body>
-    <div class="header">
-        <button class="settings-button">
-            <img src="../Image/roue_dentee.png" alt="Paramètres" class="settings-icon">
-        </button>
-        <button class="aide-button">Aide</button>
-    </div>
-    
-    <div class="container">
-        
-        <div class="contenu_page">
-            <div class="history-section">
-                <h2 class="history-title">Historique</h2>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> ladklakda </p>
-                    <p><strong>Réponse:</strong> klpakdâd^</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> kplakd^lai^d </p>
-                    <p><strong>Réponse:</strong> japldjpajdp </p>
-                </div>
-                                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <button class="see_more">Voir plus</button>
-            </div>
-            <div class="avatar">
-                <img src='https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Black&eyeType=Default&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale'/>
-            </div>
-            <div class="bulle-container">
-                <svg width="1100" height="300" viewBox="0 0 1100 300" style="margin-left: -140px; margin-top: 100; ">
-                    <!-- Effets -->
-                    <defs>
-                        <filter id="bubbleShadow" x="-20%" y="-20%" width="140%" height="140%">
-                            <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
-                            <feOffset dx="3" dy="3" result="offsetblur"/>
-                            <feComponentTransfer>
-                                <feFuncA type="linear" slope="0.25"/>
-                            </feComponentTransfer>
-                            <feMerge>
-                                <feMergeNode/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                        <linearGradient id="bubbleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#fefefe"/>
-                            <stop offset="100%" stop-color="#f0f0f0"/>
-                        </linearGradient>
-                    </defs>
-            
-                    <!-- Grande bulle ovale partant de l'avatar -->
-                    <path d="M180,220 
-                            C80,220 30,180 30,130 
-                            C30,60 100,30 200,30 
-                            C780,30 800,60 820,130 
-                            C820,180 780,220 700,220 
-                            C330,230 280,230 250,220 
-                            L-0,300
-                            L180,220"
-                          fill="url(#bubbleGrad)"
-                          stroke="#bbb"
-                          stroke-width="1.5"
-                          filter="url(#bubbleShadow)"
-                          style="stroke-linejoin: round;"/>
-                    
-                    <!-- Texte centré avec ombre légère -->
-                    <text x="250" y="130" 
-                          font-family="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" 
-                          font-size="28" 
-                          fill="#333" 
-                          text-anchor="middle"
-                          font-weight="600"
-                          style="text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
-                        Bonjour !
-                    </text>
-                </svg>
-            </div>
-            
-        </div>
-
-        <div class="question-box">
-            <textarea placeholder="Décrivez votre problème ou posez votre question ici..."></textarea>
-            <button class="submit-button">Envoyer</button>
-        </div>
-    </div>
-
-    <script>
-        // Simple JavaScript to show this is the help section opened by the button
-        document.querySelector('.aide-button').addEventListener('click', function() {
-            // In a real app, this would show the help section
-            alert('Vous êtes déjà dans la section Aide');
-        });
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fond = localStorage.getItem('selectedBackground');
+        if (fond) {
+            document.body.style.backgroundImage = `url('${fond}')`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundAttachment = 'fixed';
+        }
+    });
     </script>
+<body>
+    <body>
+        <header class="navbar">
+            <button class="settings-button">
+                <img src="../Image/roue_dentee.png" alt="Paramètres" class="settings-icon">
+            </button>
+            <button class="aide-button">Aide</button>
+        </header>
+    
+        <div class="main-content">
+            <div class="left-area">
+                <!-- Left and Center Panels Wrapper -->
+                <div class="left-center-wrapper">
+                    <div class="middle-panels">
+                        <div class="left-panel">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Black&eyeType=Default&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale"
+                                alt="Avatar">
+                        </div>
+                        <div class="center-panel">
+                            <svg width="100%" height="100%" viewBox="0 0 1100 300">
+                                <defs>
+                                    <linearGradient id="bubbleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#fefefe" />
+                                        <stop offset="100%" stop-color="#f0f0f0" />
+                                    </linearGradient>
+                                </defs>
+                                <path
+                                    d="M180,220 C80,220 30,180 30,130 C30,60 100,30 200,30 C780,30 800,60 820,130 C820,180 780,220 700,220 C330,230 280,230 250,220 L-0,300 L180,220"
+                                    fill="url(#bubbleGrad)" stroke="#bbb" stroke-width="1.5"
+                                    style="stroke-linejoin: round;" />
+                                <text x="550" y="150" font-size="28" fill="#333" text-anchor="middle" font-weight="600">
+                                    Bonjour !
+                                </text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Under Panel (Textarea and Send Button) -->
+                <div class="under-panel">
+                    <textarea placeholder="Posez votre question ici :)"></textarea>
+                    <button class="send">Envoyer</button>
+                </div>
+            </div>
+    
+            <!-- Right Panel -->
+            <div class="right-panel">
+                <h2>Historique</h2>
+                <div class="history-item">Question / Réponse 1</div>
+                <div class="history-item">Question / Réponse 2</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <div class="history-item">Question / Réponse 3</div>
+                <button>Voir plus</button>
+            </div>
+        </div>
+    </body>
+    <script src="../Scripts/common.js"></script>
+    <script src="../Scripts/script.js"></script>
 </body>
 </html>

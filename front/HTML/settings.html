@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres - Personnalisation</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            transition: background-image 0.5s ease;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            margin-top: 50px;
+            color: #fff;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #4CAF50;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #4CAF50;
+        }
+
+        .option-group {
+            margin-bottom: 25px;
+        }
+
+        .option-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            display: block;
+            color: #4CAF50;
+        }
+
+        /* Styles pour les fonds d'écran */
+        .background-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .background-option {
+            width: 150px;
+            height: 100px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-option:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.6);
+        }
+
+        .background-option.selected {
+            border: 3px solid #4CAF50;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
+        }
+
+        .background-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        /* Styles pour les bulles */
+        .bubble-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .bubble-option {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 250px;
+        }
+        
+        .bubble-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .bubble-option h3 {
+            color: #4CAF50;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .bubble-svg {
+            width: 200px;
+            height: 150px;
+            margin: 0 auto;
+        }
+        
+        .bubble-option.selected {
+            border: 3px solid #4CAF50;
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .selected::after {
+            content: "✓";
+            color: white;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            font-size: 20px;
+        }
+        
+        .bubble-preview {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        #selected-bubble-container {
+            margin-top: 20px;
+            max-width: 100%;
+            overflow: visible;
+        }
+
+        /* Styles communs */
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .text-line {
+            dominant-baseline: middle;
+            text-anchor: middle;
+        }
+    </style>
+</head>
+<body id="page-body">
+    <div class="container">
+        <h1>Paramètres de personnalisation</h1>
+        
+        <!-- Section Fond d'écran -->
+        <div class="section">
+            <h2>Fond d'écran</h2>
+            
+            <div class="option-group">
+                <span class="option-title">Choisissez votre fond d'écran :</span>
+                <div class="background-options">
+                    <div class="background-option" 
+                         data-bg="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                         onclick="changeBackground(this, 'montagne')">
+                        <div class="background-label">Montagne</div>
+                    </div>
+                    
+                    <div class="background-option" 
+                         data-bg="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                         onclick="changeBackground(this, 'plage')">
+                        <div class="background-label">Plage</div>
+                    </div>
+                    
+                    <div class="background-option" 
+                         data-bg="https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                         onclick="changeBackground(this, 'forêt')">
+                        <div class="background-label">Forêt</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Bulles -->
+        <div class="section">
+            <h2>Style de bulle</h2>
+            
+            <div class="option-group">
+                <span class="option-title">Choisissez votre style de bulle :</span>
+                <div class="bubble-options">
+                    <!-- Bulle de dialogue -->
+                    <div class="bubble-option" onclick="selectBubble('dialogue')">
+                        <div class="bubble-svg">
+                            <svg viewBox="0 0 200 150">
+                                <path id="dialogue-bubble"
+                                      d="M20,30 Q30,10 50,20 L150,20 Q170,10 180,30 L180,100 Q170,120 150,110 L90,110 L80,130 L70,110 L50,110 Q30,120 20,100 Z"
+                                      fill="white" stroke="#4CAF50" stroke-width="2"/>
+                                <text x="100" y="70" text-anchor="middle" font-family="Comic Sans MS" font-size="16" fill="#333">Bonjour !</text>
+                            </svg>
+                        </div>
+                        <h3>Bulle de dialogue</h3>
+                    </div>
+                
+                    <!-- Bulle de pensée -->
+                    <div class="bubble-option" onclick="selectBubble('pensee')">
+                        <div class="bubble-svg">
+                            <svg viewBox="0 0 200 150">
+                                <path id="pensee-bubble"
+                                      d="M30,30 Q20,10 40,20 L160,20 Q180,10 170,30 L170,90 Q180,110 160,100 L40,100 Q20,110 30,90 Z"
+                                      fill="white" stroke="#4CAF50" stroke-width="2" stroke-dasharray="5,3"/>
+                                <circle cx="70" cy="115" r="5" fill="white" stroke="#4CAF50" stroke-width="2"/>
+                                <circle cx="60" cy="125" r="3" fill="white" stroke="#4CAF50" stroke-width="2"/>
+                                <circle cx="52" cy="132" r="2" fill="white" stroke="#4CAF50" stroke-width="2"/>
+                                <text x="100" y="70" text-anchor="middle" font-family="Comic Sans MS" font-size="16" fill="#333">Hum...</text>
+                            </svg>
+                        </div>
+                        <h3>Bulle de pensée</h3>
+                    </div>
+                
+                    <!-- Bulle de cri -->
+                    <div class="bubble-option" onclick="selectBubble('cri')">
+                        <div class="bubble-svg">
+                            <svg viewBox="0 0 200 150">
+                                <path id="cri-bubble"
+                                      d="M30,20 L170,20 Q190,30 180,50 L160,100 Q150,120 130,110 L100,110 L90,130 L80,110 L40,110 Q20,120 30,100 L20,50 Q10,30 30,20 Z"
+                                      fill="white" stroke="#4CAF50" stroke-width="2"/>
+                                <text x="100" y="70" text-anchor="middle" font-family="Comic Sans MS" font-size="16" font-weight="bold" fill="#333">Aaaah !</text>
+                                <path d="M10,10 L20,5 M190,15 L200,5 M15,140 L5,150 M185,135 L195,145"
+                                      stroke="#4CAF50" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3>Bulle de cri</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn" onclick="applySettings()">Appliquer les paramètres</button>
+                <button class="btn" onclick="resetSettings()">Réinitialiser</button>
+                <button class="btn" onclick="window.location.href='index.html'">Retour</button>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <script>
+        // Vérifie si le localStorage est disponible
+        function isLocalStorageAvailable() {
+            try {
+                const test = 'test';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                return true;
+            } catch(e) {
+                console.error("LocalStorage n'est pas disponible", e);
+                return false;
+            }
+        }
+
+        // ========== Gestion du fond d'écran ==========
+        // Applique le style de fond aux options
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!isLocalStorageAvailable()) {
+                alert("Votre navigateur ne supporte pas le stockage local. Les paramètres ne seront pas sauvegardés.");
+                return;
+            }
+
+            // Charger le fond sauvegardé s'il existe
+            const savedBg = localStorage.getItem('selectedBackground');
+            console.log('Fond sauvegardé:', savedBg);
+            
+            if (savedBg) {
+                document.body.style.backgroundImage = `url('${savedBg}')`;
+                
+                // Marquer l'option sélectionnée
+                const options = document.querySelectorAll('.background-option');
+                options.forEach(option => {
+                    if (option.getAttribute('data-bg') === savedBg) {
+                        option.classList.add('selected');
+                    }
+                });
+            }
+
+            // Charger le style de bulle sauvegardé s'il existe
+            const savedBubble = localStorage.getItem('selectedBubble');
+            if (savedBubble) {
+                selectBubble(savedBubble, false);
+            } else {
+                // Sélectionner la bulle de dialogue par défaut
+                selectBubble('dialogue', false);
+            }
+        });
+
+        function changeBackground(element, bgName) {
+            document.querySelectorAll('.background-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+            const bgUrl = element.getAttribute('data-bg');
+            document.body.style.backgroundImage = `url('${bgUrl}')`;
+        }
+
+        // ========== Gestion des bulles ==========
+        let selectedBubbleType = null;
+        
+        function selectBubble(type, updateStorage = true) {
+            selectedBubbleType = type;
+            
+            // Retirer la classe 'selected' de toutes les options
+            document.querySelectorAll('.bubble-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Ajouter la classe 'selected' à l'option cliquée
+            event.currentTarget.classList.add('selected');
+            
+            // Mettre à jour la bulle
+            updateBubble();
+            
+            // Sauvegarder dans le localStorage si demandé
+            if (updateStorage && isLocalStorageAvailable()) {
+                localStorage.setItem('selectedBubble', type);
+            }
+        }
+        
+        function wrapText(text, maxWidth) {
+            const words = text.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            
+            for (let i = 1; i < words.length; i++) {
+                const word = words[i];
+                const tempSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                const tempText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                tempText.setAttribute("font-family", "Comic Sans MS");
+                tempText.setAttribute("font-size", "16");
+                tempText.textContent = currentLine + ' ' + word;
+                tempSvg.appendChild(tempText);
+                document.body.appendChild(tempSvg);
+                const width = tempText.getComputedTextLength();
+                document.body.removeChild(tempSvg);
+                
+                if (width < maxWidth) {
+                    currentLine += ' ' + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+        
+        function updateBubble() {
+            if (!selectedBubbleType) return;
+
+            const container = document.getElementById('selected-bubble-container');
+            const text = "Exemple de texte"; // Texte fixe pour la prévisualisation
+            const isCri = selectedBubbleType === 'cri';
+            const displayText = isCri ? text.toUpperCase() : text;
+
+            const maxWidth = 200;
+            const lineHeight = 20;
+            const padding = 20;
+            const tailHeight = 30;
+
+            const lines = wrapText(displayText, maxWidth);
+            const textHeight = lines.length * lineHeight;
+            const bubbleHeight = textHeight + 2 * padding;
+            const totalHeight = bubbleHeight + tailHeight;
+
+            let bubbleWidth = 0;
+            const tempSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            const tempText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            tempText.setAttribute("font-family", "Comic Sans MS");
+            tempText.setAttribute("font-size", "16");
+
+            lines.forEach(line => {
+                tempText.textContent = line;
+                tempSvg.appendChild(tempText);
+                document.body.appendChild(tempSvg);
+                const width = tempText.getComputedTextLength();
+                document.body.removeChild(tempSvg);
+                if (width > bubbleWidth) bubbleWidth = width;
+            });
+
+            bubbleWidth = Math.max(150, bubbleWidth + 2 * padding);
+            const svgWidth = bubbleWidth + 60;
+            const svgHeight = totalHeight + 60;
+
+            let svgContent = '';
+
+            switch (selectedBubbleType) {
+                case 'dialogue':
+                    svgContent = `
+                        <svg width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
+                            <path d="
+                                M40,40 
+                                Q30,20 60,20 
+                                H${bubbleWidth}
+                                Q${bubbleWidth + 30},20 ${bubbleWidth + 30},40 
+                                V${bubbleHeight}
+                                Q${bubbleWidth + 30},${bubbleHeight + 20} ${bubbleWidth},${bubbleHeight + 20} 
+                                H80
+                                Q65,${bubbleHeight + 20} 60,${bubbleHeight + 40}
+                                Q55,${bubbleHeight + 20} 40,${bubbleHeight + 20}
+                                Q20,${bubbleHeight + 20} 20,${bubbleHeight}
+                                V60
+                                Q20,40 40,40 Z" 
+                                fill="white" stroke="#4CAF50" stroke-width="2"/>
+                            ${lines.map((line, i) => `
+                                <text x="${svgWidth / 2}" y="${padding + (i * lineHeight) + (lineHeight / 2)}"
+                                    text-anchor="middle" font-family="Comic Sans MS" font-size="16" fill="#333"
+                                    dominant-baseline="middle">${line}</text>
+                            `).join('')}
+                        </svg>`;
+                    break;
+
+                case 'pensee':
+                    svgContent = `
+                        <svg width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
+                            <path d="
+                                M40,40 
+                                Q30,20 60,20 
+                                H${bubbleWidth}
+                                Q${bubbleWidth + 30},20 ${bubbleWidth + 30},40 
+                                V${bubbleHeight}
+                                Q${bubbleWidth + 30},${bubbleHeight + 20} ${bubbleWidth},${bubbleHeight + 20} 
+                                H80
+                                Q65,${bubbleHeight + 20} 60,${bubbleHeight + 40}
+                                Q55,${bubbleHeight + 20} 40,${bubbleHeight + 20}
+                                Q20,${bubbleHeight + 20} 20,${bubbleHeight}
+                                V60
+                                Q20,40 40,40 Z" 
+                                fill="white" stroke="#4CAF50" stroke-width="2" stroke-dasharray="5,3"/>
+                            ${lines.map((line, i) => `
+                                <text x="${svgWidth / 2}" y="${padding + (i * lineHeight) + (lineHeight / 2)}"
+                                    text-anchor="middle" font-family="Comic Sans MS" font-size="16" fill="#333"
+                                    dominant-baseline="middle">${line}</text>
+                            `).join('')}
+                        </svg>`;
+                    break;
+
+                case 'cri':
+                    svgContent = `
+                        <svg width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
+                            <path d="
+                                M40,30 
+                                Q30,10 60,10 
+                                H${bubbleWidth}
+                                Q${bubbleWidth + 30},10 ${bubbleWidth + 20},40 
+                                L${bubbleWidth},${bubbleHeight}
+                                Q${bubbleWidth - 20},${bubbleHeight + 20} ${bubbleWidth - 40},${bubbleHeight}
+                                H80
+                                Q65,${bubbleHeight} 60,${bubbleHeight + 30}
+                                Q55,${bubbleHeight} 40,${bubbleHeight}
+                                Q20,${bubbleHeight} 30,${bubbleHeight - 20}
+                                L20,60
+                                Q10,40 40,30 Z" 
+                                fill="white" stroke="#4CAF50" stroke-width="2"/>
+                            ${lines.map((line, i) => `
+                                <text x="${svgWidth / 2}" y="${padding + (i * lineHeight) + (lineHeight / 2)}"
+                                    text-anchor="middle" font-family="Comic Sans MS" font-size="16" fill="#333"
+                                    font-weight="bold" dominant-baseline="middle">${line}</text>
+                            `).join('')}
+                            <path d="M10,10 L20,5 M${svgWidth - 10},15 L${svgWidth},5 
+                                    M15,${svgHeight - 10} L5,${svgHeight} 
+                                    M${svgWidth - 15},${svgHeight - 15} L${svgWidth - 5},${svgHeight - 5}" 
+                                stroke="#4CAF50" stroke-width="2" stroke-linecap="round"/>
+                        </svg>`;
+                    break;
+            }
+
+            container.innerHTML = svgContent;
+        }
+
+        // ========== Gestion des paramètres ==========
+        function applySettings() {
+            if (!isLocalStorageAvailable()) return;
+            
+            try {
+                // Sauvegarder le fond d'écran
+                const selectedBgOption = document.querySelector('.background-option.selected');
+                if (selectedBgOption) {
+                    const bgUrl = selectedBgOption.getAttribute('data-bg');
+                    localStorage.setItem('selectedBackground', bgUrl);
+                    console.log('Fond enregistré:', bgUrl);
+                }
+                
+                // Sauvegarder le style de bulle
+                if (selectedBubbleType) {
+                    localStorage.setItem('selectedBubble', selectedBubbleType);
+                    console.log('Bulle enregistrée:', selectedBubbleType);
+                }
+                
+                // Afficher un message et rediriger
+                alert('Paramètres enregistrés avec succès !');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 500);
+            } catch(e) {
+                console.error("Erreur lors de la sauvegarde:", e);
+                alert("Erreur lors de la sauvegarde des paramètres");
+            }
+        }
+
+        function resetSettings() {
+            if (!isLocalStorageAvailable()) return;
+            
+            try {
+                // Réinitialiser le fond d'écran
+                localStorage.removeItem('selectedBackground');
+                document.body.style.backgroundImage = '';
+                document.querySelectorAll('.background-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Réinitialiser le style de bulle
+                localStorage.removeItem('selectedBubble');
+                selectBubble('dialogue', false);
+                
+                alert('Paramètres réinitialisés');
+                console.log('LocalStorage effacé');
+            } catch(e) {
+                console.error("Erreur lors de la réinitialisation:", e);
+            }
+        }
+    </script>
+</body>
+</html>
