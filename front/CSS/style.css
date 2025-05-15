@@ -1,5 +1,5 @@
 html, body {
-    height: 100%;
+    max-height: 100%;
     margin: 0;
     padding: 0;
 }
@@ -9,28 +9,53 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f5f5f5;
+    overflow: hidden;
 }
 
 .header {
     background-color: #ffffff;
-    padding: 15px 20px;
+    padding: 15px 20px 15px 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* boutons d'aide et de paramètre */
+.settings-button {
+    background: none; /* Supprime le fond */
+    border: none; /* Supprime la bordure */
+    padding: 5px; /* Ajustez l'espace autour de l'icône */
+}
+
+.settings-icon {
+    width: 65px; /* Ajustez la taille selon vos besoins */
+    height: 50px;
+    cursor: pointer; /* Change le curseur en main au survol */
+    transition: transform 0.2s; /* Effet de zoom au survol (optionnel) */
+}
+
+.settings-icon:hover {
+    transform: scale(1.1); /* Légère animation au survol */
+    opacity: 0.8; /* Effet de transparence (optionnel) */
+}
+
 .aide-button {
     background-color: #4285f4;
     color: white;
-    border: none;
-    padding: 8px 16px;
+    border: none;/* Réduisez le padding-bottom si nécessaire */
+    margin: 0px 20px 0px 20px; /* margin: top right bottom left */
+    padding-bottom: 18px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
+    display: inline-block; /* Assure un bon comportement du padding */
+    min-width: 80px;
+    min-height: 50px; /* Largeur minimale pour éviter un bouton trop petit */
+    text-align: center; /* Centre le texte horizontalement */
+    line-height: 1.5; /* Améliore l'alignement vertical du texte */
 }
 
+/* Effet au survol */
 .aide-button:hover {
     background-color: #3367d6;
 }
@@ -39,7 +64,7 @@ body {
 .container {
     margin-right: 20vw; /* Laisse de l'espace à droite pour l'historique */
     padding: 25px;
-    min-height: 100vh;
+    max-height: fit-content;
     background-color: white;
     box-sizing: border-box;
 }
@@ -52,18 +77,38 @@ body {
     gap: 30px;
 }
 
+.avatar {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    z-index: 1;
+}
+
+.avatar img {
+    width: 35%;
+    max-width: 35%;
+    height: 35%;
+}
+
+.bulle-container {
+    position: absolute;
+    margin-top: -100px;
+    margin-left: 500px;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
 .history-section {
     position: fixed;
-    top: 80px; /* Ajuste selon la hauteur du header */
+    top: 50px;
     right: 0;
-    width: 20vw; /* 1/5 de la largeur de l'écran */
-    max-width: 300px;
-    height: calc(100vh - 80px); /* Hauteur dispo sous le header */
-    overflow-y: auto;
-    background-color: #ffffff;
-    padding: 15px;
-    border-left: 2px solid #ddd;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.05);
+    width: 20vw;
+    height: calc(100vh - 20px);
+    max-height: 90vh;
+    overflow-y: auto; 
+    padding: 5px;
+    background: white;
     box-sizing: border-box;
 }
 
@@ -75,7 +120,7 @@ body {
 .history-item {
     word-wrap: break-word;
     overflow-wrap: break-word;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 
 }
 
@@ -87,12 +132,15 @@ h1 {
 
 .question-box {
     margin: 25px 0;
-    flex: 2;
+    gap: 10px;
+    align-items: flex-end;
+    width: 60%;
+    display: flex;
 }
 
 textarea {
-    width: 100%;
-    padding: 12px;
+    flex: 1;
+    padding: 5px;
     border: 1px solid #dadce0;
     border-radius: 8px;
     min-height: 120px;
@@ -102,14 +150,13 @@ textarea {
 }
 
 .submit-button {
+    margin-bottom: 46px; /* Align vertically in the middle */
     background-color: #4285f4;
     color: white;
-    border: none;
     padding: 10px 24px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 15px;
 }
 
 .submit-button:hover {
