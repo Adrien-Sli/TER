@@ -1,207 +1,210 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-html, body {
-    max-height: 100%;
-    margin: 0;
-    padding: 0;
+html,
+body {
+  height: 100%;
+  font-family: Arial, sans-serif;
 }
 
 body {
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    transition: background-image 0.5s ease;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  transition: background-image 0.5s ease;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  html, body {
-    height: 100%;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Navbar */
-  .navbar {
-    background-color: rgba(255, 255, 255, 0.85);
-    height: 70px;
-    width: 100%;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10;
-  }
-  
-  .settings-button {
-    width: 50px;
-    height: 50px;
-    padding: 0;
-    border: none;
-    background: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-  
-  .settings-icon {
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
-  }
-  
-  .aide-button {
-    background-color: #4285f4;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .aide-button:hover {
-    background-color: #3367d6;
-  }
+/* Navbar */
+.navbar {
+  background-color: rgba(255, 255, 255, 0.85);
+  height: 70px;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
 
-  .profil-button {
-    width: 50px;
-    height: 50px;
-    padding: 0;
-    border: none;
-    background: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+.settings-button {
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.settings-icon {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.aide-button {
+  background-color: #4285f4;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.aide-button:hover {
+  background-color: #3367d6;
+}
+
+.profil-button {
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .profil-icon {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .profil-button:hover .profil-icon {
-    filter: brightness(1.2);
+  filter: brightness(1.2);
 }
 
-  
-  /* Main content wrapper */
-  .main-content {
-    display: flex;
-    padding-top: 70px; /* space for navbar */
-    height: calc(100vh - 70px);
-    margin: 0; /* Ensures no margin */
-    flex-direction: row;
-    width: 100%;
-  }
-  
-  .left-area {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    height: 100%;
-  }
-  
-  /* Left and Center Panels Wrapper */
-  .left-center-wrapper {
-      flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Middle Panels (left and center side by side) */
-  .middle-panels {
-    display: flex;
-    flex: 1;
-    width: 100%;
-  }
-  
-  .left-panel {
-    width: 40%;  /* Adjust the width of the left panel */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0; /* Remove margin */
-  }
-  
-  .left-panel img {
-    width: 100%;
-    height: auto;
-  }
-  
-  .center-panel {
-    width: 60%;  /* Adjust the width of the center panel */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0;  /* Remove padding */
-    margin: 0; /* Remove margin */
-  }
-  
-  /* Right Panel */
-  .right-panel {
-    width: 20%;
-    background-color: rgba(255, 255, 255, 0.85);
-    border-left: 1px solid #ccc;
-    padding: 15px;
-    overflow-y: auto;
-    height: calc(100vh - 70px);
-    position: sticky;
-    top: 70px;
-  }
-  
-  .right-panel h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  
-  .history-item {
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-  }
-  
-  /* Under Panel (textarea and send button) */
-  .under-panel {
-    width: 100%;
-    display: flex;
-    gap: 10px;
-    padding: 10px;
-    background-color: #fff;
-    box-sizing: border-box;
-    height: 80px; /* <-- Set a fixed height */
-  }
-  
-  .under-panel textarea {
-      flex: 1;
-      background-color: rgba(255, 255, 255, 0.9);
-      min-height: 60px;
-      resize: vertical;
-      font-size: 14px;
-  }
-  .under-panel .send {
-    padding: 10px 16px;
-    background-color: #4285f4;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .under-panel .send:hover {
-    background-color: #3367d6;
-  }
+
+/* Main content wrapper */
+.main-content {
+  display: flex;
+  padding-top: 70px;
+  /* navbar height */
+  height: calc(100vh - 70px);
+  margin: 0;
+  flex-direction: row;
+  width: 100%;
+}
+
+.left-area {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: 100%;
+}
+
+/* Left et Center Panels Wrapper */
+.left-center-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Middle Panels (left et center) */
+.middle-panels {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+.left-panel {
+  width: 40%;
+  /* Ajustements */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.left-panel img {
+  width: 100%;
+  height: auto;
+}
+
+.center-panel {
+  width: 60%;
+  /* Ajustements */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+/* Right Panel */
+.right-panel {
+  width: 20%;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-left: 1px solid #ccc;
+  padding: 15px;
+  overflow-y: auto;
+  height: calc(100vh - 70px);
+  position: sticky;
+  top: 70px;
+}
+
+.right-panel h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.history-item {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+/* Under Panel (textarea et send button) */
+.under-panel {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+  height: 80px;
+}
+
+.under-panel textarea {
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.3);
+  min-height: 60px;
+  resize: vertical;
+  font-size: 14px;
+}
+
+/* modification de la couleur du placeholder du textarea */
+.under-panel textarea::placeholder {
+  color: lightgray;
+}
+
+.under-panel .send {
+  padding: 10px 16px;
+  background-color: rgba(66, 133, 244, 0.5);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.under-panel .send:hover {
+  background-color: #3367d6;
+}
