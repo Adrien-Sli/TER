@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paramètres - Personnalisation</title>
-    <link rel="stylesheet" href="../CSS/style.css">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -70,6 +69,7 @@
             background-position: center;
             position: relative;
             overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
         .background-option:hover {
@@ -207,18 +207,21 @@
                 <span class="option-title">Choisissez votre fond d'écran :</span>
                 <div class="background-options">
                     <div class="background-option" 
+                         style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"
                          data-bg="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
                          onclick="changeBackground(this, 'montagne')">
                         <div class="background-label">Montagne</div>
                     </div>
                     
                     <div class="background-option" 
+                         style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"
                          data-bg="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
                          onclick="changeBackground(this, 'plage')">
                         <div class="background-label">Plage</div>
                     </div>
                     
                     <div class="background-option" 
+                         style="background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"
                          data-bg="https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
                          onclick="changeBackground(this, 'forêt')">
                         <div class="background-label">Forêt</div>
@@ -280,14 +283,16 @@
                 </div>
             </div>
 
+            <div class="bubble-preview">
+                <div id="selected-bubble-container"></div>
+            </div>
+
             <div class="btn-container">
                 <button class="btn" onclick="applySettings()">Appliquer les paramètres</button>
                 <button class="btn" onclick="resetSettings()">Réinitialiser</button>
                 <button class="btn" onclick="window.location.href='index.html'">Retour</button>
             </div>
         </div>
-
-        
     </div>
 
     <script>
