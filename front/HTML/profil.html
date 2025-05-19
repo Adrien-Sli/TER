@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil Senior</title>
+    <link rel="stylesheet" href="../CSS/profil.css">
+</head>
+<body>
+    <div class="container">
+        <header class="profile-header">
+            <div class="avatar">👤</div>
+            <h1><span id="prenom">Prénom</span> <span id="nom">Nom</span></h1>
+            <div class="age-genre">
+                <span id="age">XX</span> ans - <span id="genre">Genre</span>
+            </div>
+            <div class="location" id="lieu">Ville, Code postal</div>
+        </header>
+
+        <main class="profile-sections">
+            <!-- Section Santé -->
+            <section class="card health-card">
+                <h2><span class="icon">❤️</span> Ma Santé</h2>
+                <div class="section-content">
+                    <h3>Antécédents médicaux :</h3>
+                    <ul id="antecedents">
+                        <!-- Rempli par JS -->
+                    </ul>
+                    
+                    <h3>Médicaments quotidiens :</h3>
+                    <ul id="medicaments">
+                        <!-- Rempli par JS -->
+                    </ul>
+                    
+                    <h3>Difficultés motrices :</h3>
+                    <p id="motricite">Aucune</p>
+                </div>
+            </section>
+
+            <!-- Section Logement -->
+            <section class="card housing-card">
+                <h2><span class="icon">🏠</span> Mon Logement</h2>
+                <div class="section-content">
+                    <p><strong>Type :</strong> <span id="logement-type">Non spécifié</span></p>
+                    
+                    <h3>Équipements :</h3>
+                    <div class="equipments" id="equipements">
+                        <!-- Rempli par JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Activités -->
+            <section class="card activities-card">
+                <h2><span class="icon">🎨</span> Mes Activités</h2>
+                <div class="section-content">
+                    <ul id="activites">
+                        <!-- Rempli par JS -->
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section Animaux -->
+            <section class="card pets-card">
+                <h2><span class="icon">🐾</span> Mes Animaux</h2>
+                <div class="section-content">
+                    <p id="animaux">Aucun animal domestique</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="profile-footer">
+            <p>Mis à jour le : <span id="date-maj">01/01/2023</span></p>
+            <button id="edit-btn" class="edit-btn">Modifier mon profil</button>
+        </footer>
+    </div>
+
+    <script src="../Scripts/profil.js"></script>
+    <script>
+        const fond = localStorage.getItem('selectedBackground');
+                if (fond) {
+                    document.body.style.backgroundImage = `url('${fond}')`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center';
+                    document.body.style.backgroundAttachment = 'fixed';
+                }
+    </script>
+</body>
+</html>
