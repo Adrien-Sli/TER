@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aide - Navigation</title>
+    <link rel="stylesheet" href="../CSS/help.css">
+</head>
+<body>
+    <header class="navbar">
+        <a href="profil.html" class="profil-button">
+            <img src="../Image/profil.png" alt="Profil" class="profil-icon">
+            <span>Profil</span>
+        </a>
+        <a href="parametres.html" class="settings-button">
+            <img src="../Image/roue_dentee.png" alt="Paramètres" class="settings-icon">
+            <span>Paramètres</span>
+        </a>
+        <a href="index.html" class="aide-button">
+            <span>Accueil</span>
+        </a>
+    </header>
+
+    <div class="container">
+        <h1>Aide - Navigation</h1>
+        
+        <div class="icon-help">
+            <div class="icon-visual">
+                <img src="../Image/profil.png" alt="Icône Profil">
+            </div>
+            <div class="icon-desc">
+                <h2>Icône Profil</h2>
+                <p>Cette icône vous mène à votre page personnelle où vous pouvez :</p>
+                <ul>
+                    <li>Consulter vos informations personnelles</li>
+                    <li>Voir vos antécédents médicaux</li>
+                    <li>Vérifier vos médicaments</li>
+                    <li>Modifier vos informations personnelles grace a un formulaire</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="icon-help">
+            <div class="icon-visual">
+                <img src="../Image/roue_dentee.png" alt="Icône Paramètres">
+            </div>
+            <div class="icon-desc">
+                <h2>Icône Paramètres</h2>
+                <p>Cette icône ouvre les paramètres de l'application pour :</p>
+                <ul>
+                    <li>Changer le fond d'écran</li>
+                    <li>Ajuster la taille et la police du texte</li>
+                    <li>Modifier le type de bulle de l'avatar</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="icon-help">
+            <div class="icon-visual" style="background-color: #e6f7ff;">
+                <span style="font-size: 24px;">🏠</span>
+            </div>
+            <div class="icon-desc">
+                <h2>Bouton Accueil</h2>
+                <p>Ce bouton vous ramène à la page principale avec :</p>
+                <ul>
+                    <li>Votre chatbot assistant</li>
+                    <li>Votre historique de conversation</li>
+                    <li>Le bouton menant au conseil_sécurité du jour</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+    const fond = localStorage.getItem('selectedBackground');
+        if (fond) {
+            document.body.style.backgroundImage = `url('${fond}')`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+            document.body.style.backgroundAttachment = 'fixed';
+        }
+    </script>
+</body>
+</html>
