@@ -3,33 +3,653 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulaire intégré</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 800px;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        
-        iframe {
-            width: 100%;
-            height: 2942px;
-            border: none;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
-    </style>
-</head> 
+    <title>Formulaire d'Évaluation des Risques Domestiques pour Personnes Âgées</title>
+    <link rel="stylesheet" href="../CSS/formulaire.css">
+</head>
 <body>
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeFI3nR-o5S1a0UUOOlIzJzuH9gw7FoIZUF6zcSWiCmrjG7fg/viewform?usp=header" width="640" height="2942" frameborder="0" marginheight="0" marginwidth="0">Chargement…</iframe>
-</body>
+    <div class="form-container">
+        <h1>Formulaire d'Évaluation des Risques Domestiques pour Personnes Âgées</h1>
+        
+        <form action="#" method="post">
+            <h2>Informations Socio-démographiques</h2>
+            
+            <div class="form-group">
+                <label class="required">Genre</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="homme" name="genre" value="homme" required>
+                        <label for="homme">Homme</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="femme" name="genre" value="femme">
+                        <label for="femme">Femme</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="autre" name="genre" value="autre">
+                        <label for="autre">Autre / Je ne souhaite pas répondre</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Âge</label>
+                <select name="age" required>
+                    <option value="">Sélectionnez...</option>
+                    <option value="60-70">60-70 ans</option>
+                    <option value="71-80">71-80 ans</option>
+                    <option value="81-90">81-90 ans</option>
+                    <option value="90+">90+ ans</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Où habitez-vous ?</label>
+                <input type="text" name="habitation" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Vivez-vous seul(e) ?</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="seul_oui" name="seul" value="oui" required>
+                        <label for="seul_oui">Oui</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="seul_non" name="seul" value="non">
+                        <label for="seul_non">Non</label>
+                    </div>
+                </div>
+            </div>
+            
+            <h2>Information Médicale</h2>
+            
+            <div class="form-group">
+                <label class="required">Antécédents médicaux</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="aucun" name="antecedent[]" value="aucun">
+                        <label for="aucun">Aucun</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="hypertension" name="antecedent[]" value="hypertension">
+                        <label for="hypertension">Hypertension</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="diabete" name="antecedent[]" value="diabete">
+                        <label for="diabete">Diabète</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="arthrose" name="antecedent[]" value="arthrose">
+                        <label for="arthrose">Arthrose / Problèmes articulaires</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="visuels" name="antecedent[]" value="visuels">
+                        <label for="visuels">Troubles visuels (cataracte, DMLA, etc.)</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="auditifs" name="antecedent[]" value="auditifs">
+                        <label for="auditifs">Troubles auditifs</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="autre_medical" name="antecedent[]" value="autre">
+                        <label for="autre_medical">Autre :</label>
+                        <input type="text" name="autre_antecedent" style="width: 60%; margin-left: 10px;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Prenez-vous des médicaments régulièrement ?</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="medicament_oui" name="medicament" value="oui" required>
+                        <label for="medicament_oui">Oui</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="medicament_non" name="medicament" value="non">
+                        <label for="medicament_non">Non</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group" id="medicaments_details" style="display: none;">
+                <label>Si oui à la question précédente précisez lesquels :</label>
+                <textarea name="medicaments_liste"></textarea>
+            </div>
+            
+            <h2>Informations Motrices</h2>
+            
+            <div class="form-group">
+                <label class="required">Avez-vous des difficultés pour :</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="escaliers" name="difficulte[]" value="escaliers">
+                        <label for="escaliers">Monter les escaliers</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="lever" name="difficulte[]" value="lever">
+                        <label for="lever">Vous lever d'une chaise/un fauteuil</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="porter" name="difficulte[]" value="porter">
+                        <label for="porter">Porter des charges légères (courses, lessive)</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="toilettes" name="difficulte[]" value="toilettes">
+                        <label for="toilettes">Utiliser les toilettes ou la baignoire</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="aucune_difficulte" name="difficulte[]" value="aucune">
+                        <label for="aucune_difficulte">Aucune difficulté</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Utilisez-vous des aides techniques ?</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="deambulateur" name="aide_technique[]" value="deambulateur">
+                        <label for="deambulateur">Déambulateur</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="canne" name="aide_technique[]" value="canne">
+                        <label for="canne">Canne</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="fauteuil" name="aide_technique[]" value="fauteuil">
+                        <label for="fauteuil">Fauteuil roulant</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="prothese" name="aide_technique[]" value="prothese">
+                        <label for="prothese">Prothèse (hanche, genou, etc.)</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="aucune_aide" name="aide_technique[]" value="aucune">
+                        <label for="aucune_aide">Aucune</label>
+                    </div>
+                </div>
+            </div>
+            
+            <h2>Maison</h2>
+            
+            <div class="form-group">
+                <label class="required">Quels équipements de sécurité sont installés dans la maison ?</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="detecteur_fumee" name="equipement_maison[]" value="fumee">
+                        <label for="detecteur_fumee">Détecteur de fumée</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="detecteur_co" name="equipement_maison[]" value="co">
+                        <label for="detecteur_co">Détecteur de monoxyde de carbone</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="tapis" name="equipement_maison[]" value="tapis">
+                        <label for="tapis">Tapis antidérapants</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="rampe" name="equipement_maison[]" value="rampe">
+                        <label for="rampe">Rampe(s) d'escalier</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="barres" name="equipement_maison[]" value="barres">
+                        <label for="barres">Barres d'appui dans les sanitaires</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="telesurveillance" name="equipement_maison[]" value="telesurveillance">
+                        <label for="telesurveillance">Télésurveillance ou téléassistance</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="aucun_equipement_maison" name="equipement_maison[]" value="aucun">
+                        <label for="aucun_equipement_maison">Aucune</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Y a-t-il des escaliers dans la maison ?</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="escalier_non" name="escaliers_maison" value="non" required>
+                        <label for="escalier_non">Non</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="escalier_rampe_deux" name="escaliers_maison" value="deux">
+                        <label for="escalier_rampe_deux">Oui, avec rampe des deux côtés</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="escalier_rampe_un" name="escaliers_maison" value="un">
+                        <label for="escalier_rampe_un">Oui, avec rampe d'un seul côté</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="escalier_sans_rampe" name="escaliers_maison" value="sans">
+                        <label for="escalier_sans_rampe">Oui, sans rampe</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Comment est l'éclairage dans les pièces principales ?</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="eclairage_lumineux" name="eclairage" value="lumineux" required>
+                        <label for="eclairage_lumineux">Lumineux avec interrupteurs accessibles</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="eclairage_suffisant" name="eclairage" value="suffisant">
+                        <label for="eclairage_suffisant">Suffisant mais peu accessible</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="eclairage_faible" name="eclairage" value="faible">
+                        <label for="eclairage_faible">Faible ou mal positionné</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="eclairage_detecteur" name="eclairage" value="detecteur">
+                        <label for="eclairage_detecteur">Présence de détecteurs de mouvement</label>
+                    </div>
+                </div>
+            </div>
+            
+            <h2>Appartement</h2>
+            
+            <div class="form-group">
+                <label class="required">Le logement est-il situé à un étage accessible ?</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="rdc" name="etage" value="rdc" required>
+                        <label for="rdc">Rez-de-chaussée</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="etage_ascenseur" name="etage" value="ascenseur">
+                        <label for="etage_ascenseur">Étage avec ascenseur</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="etage_sans_ascenseur" name="etage" value="sans_ascenseur">
+                        <label for="etage_sans_ascenseur">Étage sans ascenseur</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Quels équipements de sécurité sont présents dans l'appartement ?</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="detecteur_fumee_appt" name="equipement_appt[]" value="fumee">
+                        <label for="detecteur_fumee_appt">Détecteur de fumée</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="videophone" name="equipement_appt[]" value="videophone">
+                        <label for="videophone">Vidéophone/interphone</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="portes" name="equipement_appt[]" value="portes">
+                        <label for="portes">Portes sécurisées</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="barres_appt" name="equipement_appt[]" value="barres">
+                        <label for="barres_appt">Barres d'appui</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="tapis_appt" name="equipement_appt[]" value="tapis">
+                        <label for="tapis_appt">Tapis antidérapants</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="appel_urgence" name="equipement_appt[]" value="urgence">
+                        <label for="appel_urgence">Système d'appel d'urgence</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="aucun_equipement_appt" name="equipement_appt[]" value="aucun">
+                        <label for="aucun_equipement_appt">Aucun</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Quel est l'état des parties communes de l'immeuble ?</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="communes_bien" name="parties_communes" value="bien" required>
+                        <label for="communes_bien">Bien entretenues, éclairées et sécurisées</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="communes_moyen" name="parties_communes" value="moyen">
+                        <label for="communes_moyen">Moyennement entretenues</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="communes_obstacles" name="parties_communes" value="obstacles">
+                        <label for="communes_obstacles">Présence d'obstacles (tapis, marches non signalées, etc.)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="communes_faible" name="parties_communes" value="faible">
+                        <label for="communes_faible">Faible éclairage ou zones à risque</label>
+                    </div>
+                </div>
+            </div>
+            
+            <h2>EHPAD/Résidence Senior</h2>
+            
+            <div class="form-group">
+                <label class="required">Quelles options sont disponibles dans la chambre ou l'appartement ?</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="lit_medicalise" name="options_ehpad[]" value="lit">
+                        <label for="lit_medicalise">Lit médicalisé</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="sdb_adaptee" name="options_ehpad[]" value="sdb">
+                        <label for="sdb_adaptee">Salle de bain privative adaptée</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="appel_urgence_ehpad" name="options_ehpad[]" value="urgence">
+                        <label for="appel_urgence_ehpad">Système d'appel d'urgence</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="volets" name="options_ehpad[]" value="volets">
+                        <label for="volets">Volets roulants ou occultants automatiques</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="tv" name="options_ehpad[]" value="tv">
+                        <label for="tv">Télévision / téléphone</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="mobilier" name="options_ehpad[]" value="mobilier">
+                        <label for="mobilier">Mobilier adapté</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="tapis_encombrants" name="options_ehpad[]" value="encombrants">
+                        <label for="tapis_encombrants">Tapis ou objets encombrants au sol</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Quelle est la fréquence des passages du personnel ?</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="frequence_24h" name="frequence_personnel" value="24h" required>
+                        <label for="frequence_24h">Présence continue 24h/24</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="frequence_heure" name="frequence_personnel" value="heure">
+                        <label for="frequence_heure">Passages réguliers (toutes les heures)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="frequence_jour" name="frequence_personnel" value="jour">
+                        <label for="frequence_jour">Présence en journée uniquement</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="frequence_demande" name="frequence_personnel" value="demande">
+                        <label for="frequence_demande">Visites ponctuelles ou sur demande</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Le personnel est-il formé aux situations d'urgence ?</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="formation_oui" name="formation_personnel" value="oui" required>
+                        <label for="formation_oui">Oui</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="formation_non" name="formation_personnel" value="non">
+                        <label for="formation_non">Non</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="formation_nsp" name="formation_personnel" value="nsp">
+                        <label for="formation_nsp">Ne sait pas</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Quels types d'espaces communs sont disponibles ?</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="salle_manger" name="espaces_communs[]" value="manger">
+                        <label for="salle_manger">Salle à manger</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="salon" name="espaces_communs[]" value="salon">
+                        <label for="salon">Salon ou espace détente</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="activites" name="espaces_communs[]" value="activites">
+                        <label for="activites">Salle d'activités</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="jardin" name="espaces_communs[]" value="jardin">
+                        <label for="jardin">Jardin sécurisé</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="chemins" name="espaces_communs[]" value="chemins">
+                        <label for="chemins">Chemins avec éclairage adapté</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="sol_glissant" name="espaces_communs[]" value="glissant">
+                        <label for="sol_glissant">Sol glissant ou mal entretenu</label>
+                    </div>
+                </div>
+            </div>
+            
+            <h2>Équipements</h2>
+            
+            <div class="form-group">
+                <label class="required">Quels équipements sont présents dans la cuisine ?</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="gaziniere" name="equipement_cuisine[]" value="gaz">
+                        <label for="gaziniere">Gazinière</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="plaques" name="equipement_cuisine[]" value="plaques">
+                        <label for="plaques">Plaques électriques</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="microonde" name="equipement_cuisine[]" value="microonde">
+                        <label for="microonde">Micro-ondes</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="four" name="equipement_cuisine[]" value="four">
+                        <label for="four">Four à hauteur accessible</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="extincteur" name="equipement_cuisine[]" value="extincteur">
+                        <label for="extincteur">Extincteur ou couverture anti-feu</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="produits" name="equipement_cuisine[]" value="produits">
+                        <label for="produits">Produits ménagers rangés hors de portée</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="aucun_securite_cuisine" name="equipement_cuisine[]" value="aucun">
+                        <label for="aucun_securite_cuisine">Aucun système de sécurité</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Quels aménagements de sécurité sont présents dans la salle de bain ?</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="barres_sdb" name="amenagement_sdb[]" value="barres">
+                        <label for="barres_sdb">Barres d'appui</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="tapis_sdb" name="amenagement_sdb[]" value="tapis">
+                        <label for="tapis_sdb">Tapis antidérapants</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="siege_douche" name="amenagement_sdb[]" value="siege">
+                        <label for="siege_douche">Siège de douche</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="douche_italienne" name="amenagement_sdb[]" value="italienne">
+                        <label for="douche_italienne">Douche à l'italienne</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="baignoire_non_secure" name="amenagement_sdb[]" value="baignoire">
+                        <label for="baignoire_non_secure">Baignoire sans accès sécurisé</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="sol_glissant_sdb" name="amenagement_sdb[]" value="glissant">
+                        <label for="sol_glissant_sdb">Sol glissant ou humide</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="aucun_amenagement_sdb" name="amenagement_sdb[]" value="aucun">
+                        <label for="aucun_amenagement_sdb">Aucune mesure de sécurité</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Comment est équipée la chambre ?</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="lit_medicalise_chambre" name="equipement_chambre[]" value="lit">
+                        <label for="lit_medicalise_chambre">Lit médicalisé</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="table_nuit" name="equipement_chambre[]" value="table">
+                        <label for="table_nuit">Table de nuit avec lampe accessible</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="telephone" name="equipement_chambre[]" value="telephone">
+                        <label for="telephone">Téléphone ou alarme à proximité du lit</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="moquette" name="equipement_chambre[]" value="moquette">
+                        <label for="moquette">Moquette ou tapis glissant</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="eclairage_nuit" name="equipement_chambre[]" value="eclairage">
+                        <label for="eclairage_nuit">Pas d'éclairage suffisant pour la nuit</label>
+                    </div>
+                </div>
+            </div>
+            
+            <h2>Autres Informations</h2>
+            
+            <div class="form-group">
+                <label class="required">Avez-vous subi des chutes récentes (12 derniers mois) ?</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="chute_oui" name="chute" value="oui" required>
+                        <label for="chute_oui">Oui</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="chute_non" name="chute" value="non">
+                        <label for="chute_non">Non</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Disposez-vous de :</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="telealarme" name="dispositifs[]" value="telealarme">
+                        <label for="telealarme">Téléalarme/bracelet d'urgence</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="detecteur_fumee_perso" name="dispositifs[]" value="fumee">
+                        <label for="detecteur_fumee_perso">Détecteurs de fumée</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="videosurveillance" name="dispositifs[]" value="video">
+                        <label for="videosurveillance">Système de vidéosurveillance</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="aucun_dispositif" name="dispositifs[]" value="aucun">
+                        <label for="aucun_dispositif">Aucun</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Activités pratiquées régulièrement</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="jardinage" name="activites[]" value="jardinage">
+                        <label for="jardinage">Jardinage</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="bricolage" name="activites[]" value="bricolage">
+                        <label for="bricolage">Bricolage</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="cuisine" name="activites[]" value="cuisine">
+                        <label for="cuisine">Cuisine</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="marche" name="activites[]" value="marche">
+                        <label for="marche">Marche</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="autre_activite" name="activites[]" value="autre">
+                        <label for="autre_activite">Autre :</label>
+                        <input type="text" name="autre_activite_detail" style="width: 60%; margin-left: 10px;">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="required">Faites-vous vos courses seul(e) ?</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="courses_toujours" name="courses" value="toujours" required>
+                        <label for="courses_toujours">Toujours</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="courses_parfois" name="courses" value="parfois">
+                        <label for="courses_parfois">Parfois</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="courses_jamais" name="courses" value="jamais">
+                        <label for="courses_jamais">Jamais (aide familiale/portage)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Avez-vous des animaux domestiques</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="animaux_oui" name="animaux" value="oui" required>
+                        <label for="animaux_oui">Oui</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="animaux_non" name="animaux" value="non">
+                        <label for="animaux_non">Non</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Aimeriez-vous recevoir des conseils personnalisés pour :</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="conseil_amenagement" name="conseils[]" value="amenagement">
+                        <label for="conseil_amenagement">Aménager votre logement</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="conseil_aides" name="conseils[]" value="aides">
+                        <label for="conseil_aides">Choisir des aides techniques</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="conseil_alimentation" name="conseils[]" value="alimentation">
+                        <label for="conseil_alimentation">Adapter votre alimentation</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="aucun_besoin" name="conseils[]" value="aucun">
+                        <label for="aucun_besoin">Aucun besoin</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit">Envoyer</button>
+            </div>
+        </form>    
+        <script src="script.js"></script>
+    </body>
 </html>
