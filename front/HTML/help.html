@@ -10,15 +10,13 @@
     <header class="navbar">
         <a href="profil.html" class="profil-button">
             <img src="../Image/profil.png" alt="Profil" class="profil-icon">
-            <span>Profil</span>
         </a>
-        <a href="parametres.html" class="settings-button">
+        <button class="settings-button">
             <img src="../Image/roue_dentee.png" alt="Paramètres" class="settings-icon">
-            <span>Paramètres</span>
-        </a>
-        <a href="index.html" class="aide-button">
-            <span>Accueil</span>
-        </a>
+        </button>
+        <button class="home-button">
+            <img src="../Image/home.png" alt="Page d'accueil" class="home-icon">
+        </button>
     </header>
 
     <div class="container">
@@ -70,6 +68,8 @@
             </div>
         </div>
     </div>
+    
+    <script src="../Scripts/common.js"></script>
     <script>
     const fond = localStorage.getItem('selectedBackground');
         if (fond) {
