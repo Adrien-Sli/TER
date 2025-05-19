@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="../CSS/profil.css">
 </head>
 <body>
+    <header class="navbar">
+        <button class="settings-button">
+            <img src="../Image/roue_dentee.png" alt="Paramètres" class="settings-icon">
+        </button>
+        <button class="home-button">
+            <img src="../Image/home.png" alt="Page d'accueil" class="home-icon">
+        </button>
+        <button class="aide-button">Aide</button>
+    </header>
     <div class="container">
         <header class="profile-header">
             <div class="avatar">👤</div>
@@ -76,6 +85,7 @@
     </div>
 
     <script src="../Scripts/profil.js"></script>
+    <script src="../Scripts/common.js"></script>
     <script>
         const fond = localStorage.getItem('selectedBackground');
                 if (fond) {
