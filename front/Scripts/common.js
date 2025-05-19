@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (settingsBtn) {
         settingsBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            window.location.href = 'parametres.html';
+            window.location.href = 'settings.html';
         });
     }
     
@@ -29,7 +29,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (helpBtn) {
         helpBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            alert('Vous êtes déjà dans la section Aide');
+            window.location.href = 'help.html'
+        });
+    }
+    
+    const homeBtn = document.querySelector('.home-button');
+    if (homeBtn) {
+        homeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = 'index.html'
         });
     }
 });

@@ -4,198 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paramètres - Personnalisation</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            transition: background-image 0.5s ease;
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            min-height: 100vh;
-            color: #fff;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 30px;
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            margin-top: 50px;
-            color: #fff;
-        }
-
-        h1, h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #4CAF50;
-        }
-
-        .section {
-            margin-bottom: 50px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid #4CAF50;
-        }
-
-        .option-group {
-            margin-bottom: 25px;
-        }
-
-        .option-title {
-            font-size: 1.2em;
-            margin-bottom: 15px;
-            display: block;
-            color: #4CAF50;
-        }
-
-        /* Styles pour les fonds d'écran */
-        .background-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .background-option {
-            width: 150px;
-            height: 100px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .background-option:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(76, 175, 80, 0.6);
-        }
-
-        .background-option.selected {
-            border: 3px solid #4CAF50;
-            box-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
-        }
-
-        .background-label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 5px;
-            text-align: center;
-            font-size: 0.9em;
-        }
-
-        /* Styles pour les bulles */
-        .bubble-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-            margin-top: 30px;
-        }
-        
-        .bubble-option {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 20px;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            width: 250px;
-        }
-        
-        .bubble-option:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-        
-        .bubble-option h3 {
-            color: #4CAF50;
-            margin-top: 10px;
-            text-align: center;
-        }
-        
-        .bubble-svg {
-            width: 200px;
-            height: 150px;
-            margin: 0 auto;
-        }
-        
-        .bubble-option.selected {
-            border: 3px solid #4CAF50;
-            position: relative;
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-        
-        .selected::after {
-            content: "✓";
-            color: white;
-            background-color: #4CAF50;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            top: -15px;
-            right: -15px;
-            font-size: 20px;
-        }
-        
-        .bubble-preview {
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        #selected-bubble-container {
-            margin-top: 20px;
-            max-width: 100%;
-            overflow: visible;
-        }
-
-        /* Styles communs */
-        .btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 10px 5px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #45a049;
-        }
-
-        .btn-container {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .text-line {
-            dominant-baseline: middle;
-            text-anchor: middle;
-        }
-    </style>
+    <link rel="stylesheet" href="../CSS/settings.css">
 </head>
 <body id="page-body">
+    <header class="navbar">
+        <a href="profil.html" class="profil-button">
+            <img src="../Image/profil.png" alt="Profil" class="profil-icon">
+        </a>
+        <button class="settings-button">
+            <img src="../Image/roue_dentee.png" alt="Paramètres" class="settings-icon">
+        </button>
+        <button class="home-button">
+            <img src="../Image/home.png" alt="Page d'accueil" class="home-icon">
+        </button>
+        <button class="aide-button">Aide</button>
+    </header>
+
     <div class="container">
         <h1>Paramètres de personnalisation</h1>
         
@@ -283,10 +107,6 @@
                 </div>
             </div>
 
-            <div class="bubble-preview">
-                <div id="selected-bubble-container"></div>
-            </div>
-
             <div class="btn-container">
                 <button class="btn" onclick="applySettings()">Appliquer les paramètres</button>
                 <button class="btn" onclick="resetSettings()">Réinitialiser</button>
@@ -295,6 +115,7 @@
         </div>
     </div>
 
+    <script src="../Scripts/common.js"></script>
     <script>
         // Vérifie si le localStorage est disponible
         function isLocalStorageAvailable() {
@@ -402,129 +223,6 @@
             }
             lines.push(currentLine);
             return lines;
-        }
-        
-        function updateBubble() {
-            if (!selectedBubbleType) return;
-
-            const container = document.getElementById('selected-bubble-container');
-            const text = "Exemple de texte"; // Texte fixe pour la prévisualisation
-            const isCri = selectedBubbleType === 'cri';
-            const displayText = isCri ? text.toUpperCase() : text;
-
-            const maxWidth = 200;
-            const lineHeight = 20;
-            const padding = 20;
-            const tailHeight = 30;
-
-            const lines = wrapText(displayText, maxWidth);
-            const textHeight = lines.length * lineHeight;
-            const bubbleHeight = textHeight + 2 * padding;
-            const totalHeight = bubbleHeight + tailHeight;
-
-            let bubbleWidth = 0;
-            const tempSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            const tempText = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            tempText.setAttribute("font-family", "Comic Sans MS");
-            tempText.setAttribute("font-size", "16");
-
-            lines.forEach(line => {
-                tempText.textContent = line;
-                tempSvg.appendChild(tempText);
-                document.body.appendChild(tempSvg);
-                const width = tempText.getComputedTextLength();
-                document.body.removeChild(tempSvg);
-                if (width > bubbleWidth) bubbleWidth = width;
-            });
-
-            bubbleWidth = Math.max(150, bubbleWidth + 2 * padding);
-            const svgWidth = bubbleWidth + 60;
-            const svgHeight = totalHeight + 60;
-
-            let svgContent = '';
-
-            switch (selectedBubbleType) {
-                case 'dialogue':
-                    svgContent = `
-                        <svg width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
-                            <path d="
-                                M40,40 
-                                Q30,20 60,20 
-                                H${bubbleWidth}
-                                Q${bubbleWidth + 30},20 ${bubbleWidth + 30},40 
-                                V${bubbleHeight}
-                                Q${bubbleWidth + 30},${bubbleHeight + 20} ${bubbleWidth},${bubbleHeight + 20} 
-                                H80
-                                Q65,${bubbleHeight + 20} 60,${bubbleHeight + 40}
-                                Q55,${bubbleHeight + 20} 40,${bubbleHeight + 20}
-                                Q20,${bubbleHeight + 20} 20,${bubbleHeight}
-                                V60
-                                Q20,40 40,40 Z" 
-                                fill="white" stroke="#4CAF50" stroke-width="2"/>
-                            ${lines.map((line, i) => `
-                                <text x="${svgWidth / 2}" y="${padding + (i * lineHeight) + (lineHeight / 2)}"
-                                    text-anchor="middle" font-family="Comic Sans MS" font-size="16" fill="#333"
-                                    dominant-baseline="middle">${line}</text>
-                            `).join('')}
-                        </svg>`;
-                    break;
-
-                case 'pensee':
-                    svgContent = `
-                        <svg width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
-                            <path d="
-                                M40,40 
-                                Q30,20 60,20 
-                                H${bubbleWidth}
-                                Q${bubbleWidth + 30},20 ${bubbleWidth + 30},40 
-                                V${bubbleHeight}
-                                Q${bubbleWidth + 30},${bubbleHeight + 20} ${bubbleWidth},${bubbleHeight + 20} 
-                                H80
-                                Q65,${bubbleHeight + 20} 60,${bubbleHeight + 40}
-                                Q55,${bubbleHeight + 20} 40,${bubbleHeight + 20}
-                                Q20,${bubbleHeight + 20} 20,${bubbleHeight}
-                                V60
-                                Q20,40 40,40 Z" 
-                                fill="white" stroke="#4CAF50" stroke-width="2" stroke-dasharray="5,3"/>
-                            ${lines.map((line, i) => `
-                                <text x="${svgWidth / 2}" y="${padding + (i * lineHeight) + (lineHeight / 2)}"
-                                    text-anchor="middle" font-family="Comic Sans MS" font-size="16" fill="#333"
-                                    dominant-baseline="middle">${line}</text>
-                            `).join('')}
-                        </svg>`;
-                    break;
-
-                case 'cri':
-                    svgContent = `
-                        <svg width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
-                            <path d="
-                                M40,30 
-                                Q30,10 60,10 
-                                H${bubbleWidth}
-                                Q${bubbleWidth + 30},10 ${bubbleWidth + 20},40 
-                                L${bubbleWidth},${bubbleHeight}
-                                Q${bubbleWidth - 20},${bubbleHeight + 20} ${bubbleWidth - 40},${bubbleHeight}
-                                H80
-                                Q65,${bubbleHeight} 60,${bubbleHeight + 30}
-                                Q55,${bubbleHeight} 40,${bubbleHeight}
-                                Q20,${bubbleHeight} 30,${bubbleHeight - 20}
-                                L20,60
-                                Q10,40 40,30 Z" 
-                                fill="white" stroke="#4CAF50" stroke-width="2"/>
-                            ${lines.map((line, i) => `
-                                <text x="${svgWidth / 2}" y="${padding + (i * lineHeight) + (lineHeight / 2)}"
-                                    text-anchor="middle" font-family="Comic Sans MS" font-size="16" fill="#333"
-                                    font-weight="bold" dominant-baseline="middle">${line}</text>
-                            `).join('')}
-                            <path d="M10,10 L20,5 M${svgWidth - 10},15 L${svgWidth},5 
-                                    M15,${svgHeight - 10} L5,${svgHeight} 
-                                    M${svgWidth - 15},${svgHeight - 15} L${svgWidth - 5},${svgHeight - 5}" 
-                                stroke="#4CAF50" stroke-width="2" stroke-linecap="round"/>
-                        </svg>`;
-                    break;
-            }
-
-            container.innerHTML = svgContent;
         }
 
         // ========== Gestion des paramètres ==========
