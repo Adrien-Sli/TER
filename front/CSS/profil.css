@@ -32,6 +32,18 @@ body {
     left: 0;
     z-index: 10;
   }
+
+.right-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* espace entre les boutons */
+}
+
+.left-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* espace entre les boutons */
+}
   
   .home-button {
     width: 50px;
