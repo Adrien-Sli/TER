@@ -274,3 +274,15 @@ ul {
         grid-column: span 1;
     }
 }
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ccc;
+    background-size: cover;
+    background-position: center;
+    font-size: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

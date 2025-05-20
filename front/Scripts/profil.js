@@ -12,6 +12,32 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('edit-btn').addEventListener('click', function() {
         window.location.href = 'formulaire.html';
     });
+    // Chargement de la photo depuis le localStorage
+    const savedAvatar = localStorage.getItem('avatarImage');
+    const avatarDisplay = document.getElementById('avatar-display');
+    if (savedAvatar) {
+        avatarDisplay.style.backgroundImage = `url(${savedAvatar})`;
+        avatarDisplay.textContent = '';
+    }
+
+    // Gestion du changement de photo
+    document.getElementById('avatar-btn').addEventListener('click', () => {
+        document.getElementById('avatar-input').click();
+    });
+
+    document.getElementById('avatar-input').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageData = e.target.result;
+                avatarDisplay.style.backgroundImage = `url(${imageData})`;
+                avatarDisplay.textContent = '';
+                localStorage.setItem('avatarImage', imageData);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 });
 
 function updateContactSection(data) {

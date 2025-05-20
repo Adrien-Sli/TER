@@ -28,8 +28,11 @@
     </header>
     <div class="navbar-spacer" style="height: 70px;"></div>
     <div class="container">
+
         <header class="profile-header">
-            <div class="avatar">👤</div>
+            <div class="avatar" id="avatar-display">👤</div>
+            <input type="file" id="avatar-input" accept="image/*" style="display: none;">
+            <button id="avatar-btn">Changer la photo</button>
             <h1><span id="prenom">Prénom</span> <span id="nom">Nom</span></h1>
             <div class="age-genre">
                 <span id="age">XX</span> ans - <span id="genre">Genre</span>
@@ -87,7 +90,7 @@
                     <p id="animaux">Aucun animal domestique</p>
                 </div>
             </section>
-            
+
             <section class="card contact-card">
                 <h2><span class="icon">📞</span> Contact de Confiance</h2>
                 <div class="section-content">
