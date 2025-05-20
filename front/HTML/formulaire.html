@@ -238,6 +238,20 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label>Y a-t-il une cheminée dans votre maison ?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="chemine_oui" name="cheminee" value="oui">
+                            <label for="chemine_oui">Oui</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="chemine_non" name="cheminee" value="non">
+                            <label for="chemine_non">Non</label>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="form-group">
                     <label>Comment est l'éclairage dans les pièces principales ?</label>
@@ -594,6 +608,10 @@
                         <label for="marche">Marche</label>
                     </div>
                     <div class="checkbox-option">
+                        <input type="checkbox" id="garde_enfant" name="activites[]" value="garde_enfant">
+                        <label for="garde_enfant">Garde d'enfant</label>
+                    </div>
+                    <div class="checkbox-option">
                         <input type="checkbox" id="autre_activite" name="activites[]" value="autre">
                         <label for="autre_activite">Autre :</label>
                         <input type="text" name="autre_activite_detail" style="width: 60%; margin-left: 10px;">
@@ -619,15 +637,19 @@
             </div>
             
             <div class="form-group">
-                <label class="required">Avez-vous des animaux domestiques</label>
+                <label class="required">Avez-vous des animaux domestiques ?</label>
                 <div class="radio-group">
                     <div class="radio-option">
-                        <input type="radio" id="animaux_oui" name="animaux" value="oui" required>
-                        <label for="animaux_oui">Oui</label>
+                        <input type="radio" id="animaux_non" name="animaux" value="non" required>
+                        <label for="animaux_non">Non</label>
                     </div>
                     <div class="radio-option">
-                        <input type="radio" id="animaux_non" name="animaux" value="non">
-                        <label for="animaux_non">Non</label>
+                        <input type="radio" id="animaux_petit" name="animaux" value="petit">
+                        <label for="animaux_petit">Oui, un petit animal (chat, petit chien...)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="animaux_gros" name="animaux" value="gros">
+                        <label for="animaux_gros">Oui, un gros animal (grand chien...)</label>
                     </div>
                 </div>
             </div>
@@ -652,6 +674,33 @@
                         <label for="aucun_besoin">Aucun besoin</label>
                     </div>
                 </div>
+            </div>
+            <h2>Contact de confiance</h2>
+
+            <div class="form-group">
+                <label class="required">Nom du contact</label>
+                <input type="text" name="contact_nom" required>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Prénom du contact</label>
+                <input type="text" name="contact_prenom" required>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Téléphone du contact</label>
+                <input type="tel" name="contact_telephone" required pattern="[0-9]{10}">
+                <small>Format : 0612345678</small>
+            </div>
+
+            <div class="form-group">
+                <label>Lien avec la personne</label>
+                <select name="contact_lien">
+                    <option value="famille">Membre de la famille</option>
+                    <option value="ami">Ami</option>
+                    <option value="voisin">Voisin</option>
+                    <option value="autre">Autre</option>
+                </select>
             </div>
             <div class="form-group">
                 <button type="submit">Envoyer</button>

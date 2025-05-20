@@ -13,7 +13,6 @@ body {
     font-family: 'Open Sans', sans-serif;
     color: var(--text);
     line-height: 1.6;
-    padding-top: 70px;
 }
 
 .navbar {
@@ -203,6 +202,10 @@ h1 {
 .pets-card {
     border-top: 4px solid var(--warning);
 }
+.contact-card {
+    border-top: 4px solid var(--dark);
+}
+
 
 .section-content {
     padding: 10px 0;
@@ -259,5 +262,15 @@ ul {
 @media (max-width: 768px) {
     .profile-sections {
         grid-template-columns: 1fr;
+    }
+}
+.contact-card {
+    border-top: 4px solid #8e44ad;
+    grid-column: span 2; /* Pour prendre toute la largeur */
+}
+
+@media (max-width: 768px) {
+    .contact-card {
+        grid-column: span 1;
     }
 }

@@ -14,6 +14,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function updateContactSection(data) {
+    const contactElem = document.getElementById('contact-info');
+    
+    if (data.contact_nom && data.contact_prenom && data.contact_telephone) {
+        const lien = data.contact_lien ? ` (${getContactLienText(data.contact_lien)})` : '';
+        contactElem.innerHTML = `
+            <strong>${data.contact_prenom} ${data.contact_nom}</strong>${lien}<br>
+            Téléphone: ${data.contact_telephone}
+        `;
+    } else {
+        contactElem.textContent = 'Aucun contact renseigné';
+    }
+}
+
 function updateProfile(data) {
     // Mise à jour des informations de base
     document.getElementById('age').textContent = data.age ? data.age.split('-')[0] : 'XX';
@@ -35,6 +49,8 @@ function updateProfile(data) {
     
     // Section Animaux
     updatePetsSection(data);
+    // Section contact
+    updateContactSection(data);
 }
 
 function getGenreText(genreValue) {
@@ -108,16 +124,23 @@ function updateHealthSection(data) {
 function updateHousingSection(data) {
     const logementTypeElem = document.getElementById('logement-type');
     const equipementsElem = document.getElementById('equipements');
-    
     // Type de logement
+    let typeText = '';
+    if (data.type_logement) {
+        typeText = data.type_logement.charAt(0).toUpperCase() + data.type_logement.slice(1); // ex: 'maison'
+    } else {
+        typeText = 'Logement non spécifié';
+    }
+
     if (data.etage) {
         switch(data.etage) {
-            case 'rdc': logementTypeElem.textContent = 'Appartement (Rez-de-chaussée)'; break;
-            case 'ascenseur': logementTypeElem.textContent = 'Appartement (avec ascenseur)'; break;
-            case 'sans_ascenseur': logementTypeElem.textContent = 'Appartement (sans ascenseur)'; break;
-            default: logementTypeElem.textContent = 'Maison';
+            case 'rdc': typeText += ' (Rez-de-chaussée)'; break;
+            case 'ascenseur': typeText += ' (avec ascenseur)'; break;
+            case 'sans_ascenseur': typeText += ' (sans ascenseur)'; break;
         }
     }
+
+    logementTypeElem.textContent = typeText;
     
     // Équipements
     equipementsElem.innerHTML = '';
@@ -158,6 +181,11 @@ function updateHousingSection(data) {
         p.textContent = 'Aucun équipement spécifique déclaré';
         equipementsElem.appendChild(p);
     }
+    if (data.cheminee) {
+        const p = document.createElement('p');
+        p.innerHTML = `<strong>Cheminée :</strong> ${data.cheminee === 'oui' ? 'Présente' : 'Absente'}`;
+        equipementsElem.appendChild(p);
+    }
 }
 
 function updateActivitiesSection(data) {
@@ -187,9 +215,29 @@ function updateActivitiesSection(data) {
     }
 }
 
+
+function getAnimalText(value) {
+    switch(value) {
+        case 'non': return 'Aucun animal domestique';
+        case 'petit': return 'Petit animal (chat, petit chien...)';
+        case 'gros': return 'Gros animal (grand chien...)';
+        default: return 'Non spécifié';
+    }
+}
+
 function updatePetsSection(data) {
     const animauxElem = document.getElementById('animaux');
-    animauxElem.textContent = data.animaux === 'oui' ? 'Oui, j\'ai des animaux domestiques' : 'Aucun animal domestique';
+    animauxElem.textContent = getAnimalText(data.animaux);
+}
+
+function getContactLienText(value) {
+    switch(value) {
+        case 'famille': return 'Membre de la famille';
+        case 'ami': return 'Ami';
+        case 'voisin': return 'Voisin';
+        case 'autre': return 'Autre';
+        default: return '';
+    }
 }
 
 // Fonctions utilitaires pour les textes
@@ -242,6 +290,7 @@ function getActivityText(value) {
         case 'bricolage': return 'Bricolage';
         case 'cuisine': return 'Cuisine';
         case 'marche': return 'Marche';
+        case 'garde_enfant': return 'Garde d\'enfant';
         default: return value;
     }
 }

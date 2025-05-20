@@ -87,6 +87,11 @@ document.addEventListener('DOMContentLoaded', function () {
             autre_activite_detail: document.querySelector('input[name="autre_activite_detail"]')?.value || '',
             courses: document.querySelector('input[name="courses"]:checked')?.value,
             animaux: document.querySelector('input[name="animaux"]:checked')?.value,
+            cheminee: document.querySelector('input[name="cheminee"]:checked')?.value,
+            contact_nom: document.querySelector('input[name="contact_nom"]').value,
+            contact_prenom: document.querySelector('input[name="contact_prenom"]').value,
+            contact_telephone: document.querySelector('input[name="contact_telephone"]').value,
+            contact_lien: document.querySelector('select[name="contact_lien"]').value,
             conseils: Array.from(document.querySelectorAll('input[name="conseils[]"]:checked')).map(el => el.value)
         };
 
