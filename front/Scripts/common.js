@@ -15,7 +15,18 @@ function applySavedBackground() {
 document.addEventListener('DOMContentLoaded', function() {
     // Applique le fond d'écran
     applySavedBackground();
-    
+    //Aplique la police
+    if (!localStorage) return;
+
+    const savedFont = localStorage.getItem('selectedFont');
+    if (savedFont) {
+        document.body.style.fontFamily = savedFont;
+    }
+
+    const savedFontSize = localStorage.getItem('selectedFontSize');
+    if (savedFontSize) {
+        document.body.style.fontSize = savedFontSize + 'px';
+    }
     // Gestion de la navigation
     const settingsBtn = document.querySelector('.settings-button');
     if (settingsBtn) {
