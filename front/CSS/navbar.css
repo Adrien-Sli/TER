@@ -1,0 +1,100 @@
+/* Fichier CSS dédié à la mise en forme de la navbar */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.85);
+    height: 70px;
+    width: 98%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.right-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* espace entre les boutons */
+}
+
+.left-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* espace entre les boutons */
+}
+
+.home-button {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.home-icon {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.settings-button {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.settings-icon {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.aide-button {
+    background-color: #4285f4;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.aide-button:hover {
+    background-color: #3367d6;
+}
+
+.profil-button {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.profil-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.profil-button:hover .profil-icon {
+    filter: brightness(1.2);
+}
