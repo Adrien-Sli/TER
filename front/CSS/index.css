@@ -221,3 +221,25 @@ body {
 .under-panel .send:hover {
   background-color: #3367d6;
 }
+
+/* Style pour l'affichage de la météo dans la navbar */
+.weather-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  color: #333;
+  margin: 0 20px;
+}
+
+.weather-info img {
+  width: 30px;
+  height: 30px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}

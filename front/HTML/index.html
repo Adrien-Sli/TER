@@ -8,7 +8,6 @@
     <script>
         // Déplacer le script en premier pour s'assurer qu'il s'exécute avant les autres
         function initPage() {
-            // Charger le fond d'écran
             const fond = localStorage.getItem('selectedBackground');
             if (fond) {
                 document.body.style.backgroundImage = `url('${fond}')`;
@@ -18,10 +17,20 @@
             }
 
             // Charger le style de bulle
-            const bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
-            updateBubble(bubbleType);
+            let bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
 
-            // Écouter les changements dans le textarea
+            // NE PAS appeler updateBubble ici — attendre que le vrai contenu (météo ou textarea) le fasse
+
+            // Réagir au changement de style de bulle (ex: depuis une autre page)
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'selectedBubble') {
+                    bubbleType = e.newValue;
+                    const textarea = document.querySelector('.under-panel textarea');
+                    updateBubble(bubbleType, textarea?.value || "");
+                }
+            });
+
+            // Mise à jour dynamique quand on tape dans le champ
             const textarea = document.querySelector('.under-panel textarea');
             if (textarea) {
                 textarea.addEventListener('input', function() {
@@ -29,6 +38,7 @@
                 });
             }
         }
+
 
         function wrapText(text, maxWidth) {
             if (!text) return [""];
@@ -214,6 +224,11 @@
             <a href="profil.html" class="profil-button">
                 <img src="../Image/profil.png" alt="Profil" class="profil-icon">
             </a>
+        </div>
+        <div class="weather-info" id="weatherInfo">
+            <span id="weatherTemp"></span>
+            <img id="weatherIcon" src="" alt="Météo">
+            <span id="weatherCity"></span>
         </div>
         <div class="right-buttons">
             <button class="settings-button">
