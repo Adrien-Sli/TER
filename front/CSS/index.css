@@ -4,12 +4,19 @@
   box-sizing: border-box;
 }
 
-html,
 body {
-  height: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  transition: background-image 0.5s ease;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   font-family: Arial, sans-serif;
+  overflow: hidden;
 }
 
+/*--------------------------------------- Ajustement navbar pour page index ------------------------------------------------------------------------------ */
 /* Fichier CSS dédié à la mise en forme de la navbar */
 .navbar {
     background-color: rgba(255, 255, 255, 0.85);
@@ -56,6 +63,10 @@ body {
     object-fit: contain;
 }
 
+.home-button:hover .home-icon {
+    background-color: aliceblue;
+}
+
 .settings-button {
     width: 50px;
     height: 50px;
@@ -66,12 +77,21 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .settings-icon {
     height: 100%;
     width: 100%;
     object-fit: contain;
+}
+
+.settings-button:hover {
+    background-color: rgba(220, 53, 69, 0.15);
+}
+
+.settings-button:hover .settings-icon {
+    transform: scale(1.15);
 }
 
 .aide-button {
@@ -111,36 +131,49 @@ body {
     filter: brightness(1.2);
 }
 
-/* */
-body {
-  min-height: 100vh;
-  margin: 0;
+.weather-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  color: #333;
+  margin: 0 20px;
+}
+
+.weather-info img {
+  width: 45px;
+  height: 45px;
+}
+
+.emergency-button {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
   padding: 0;
-  transition: background-image 0.5s ease;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
+  transition: background-color 0.2s ease;
 }
 
-/* ajustement navbar pour la page d'accueil */
-.navbar {
-    background-color: rgba(255, 255, 255, 0.85);
-    height: 70px;
-    width: 100%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 10;
+.emergency-button:hover {
+  background-color: rgba(220, 53, 69, 0.15); /* rouge clair */
 }
 
-/* Main content wrapper */
+.emergency-icon {
+  width: 45px;
+  height: 45px;
+  color: #dc3545;
+  transition: transform 0.2s ease;
+}
+
+.emergency-button:hover .emergency-icon {
+  transform: scale(1.15);
+}
+
+/*--------------------------------------- Main content wrapper ------------------------------------------------------------------------------ */
 .main-content {
   display: flex;
   padding-top: 70px;
@@ -158,14 +191,14 @@ body {
   height: 100%;
 }
 
-/* Left et Center Panels Wrapper */
+/*--------------------------------------- Left et Center Panels Wrapper------------------------------------------------------------------------------ */
 .left-center-wrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* Middle Panels (left et center) */
+/*--------------------------------------- Middle Panels (left et center)--------------------------------------- */
 .middle-panels {
   display: flex;
   flex: 1;
@@ -196,7 +229,7 @@ body {
   margin: 0;
 }
 
-/* Right Panel */
+/*--------------------------------------- Right Panel------------------------------------------------------------------------------ */
 .right-panel {
   width: 20%;
   background-color: rgba(255, 255, 255, 0.5);
@@ -219,7 +252,7 @@ body {
   font-size: 14px;
 }
 
-/* Under Panel (textarea et send button) */
+/*--------------------------------------- Under Panel (textarea et send button) ------------------------------------------------------------------------------*/
 .under-panel {
   width: 100%;
   display: flex;
@@ -238,7 +271,7 @@ body {
   font-size: 14px;
 }
 
-/* modification de la couleur du placeholder du textarea */
+/*--------------------------------------- modification de la couleur du placeholder du textarea ------------------------------------------------------------------------------*/
 .under-panel textarea::placeholder {
   color: lightgray;
 }
@@ -253,55 +286,4 @@ body {
 
 .under-panel .send:hover {
   background-color: #3367d6;
-}
-
-/* Style pour l'affichage de la météo dans la navbar */
-.weather-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 16px;
-  color: #333;
-  margin: 0 20px;
-}
-
-.weather-info img {
-  width: 45px;
-  height: 45px;
-}
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-}
-
-.emergency-button {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-}
-
-.emergency-button:hover {
-  background-color: rgba(220, 53, 69, 0.15); /* rouge clair */
-}
-
-.emergency-icon {
-  width: 45px;
-  height: 45px;
-  color: #dc3545; /* rouge Bootstrap pour urgence */
-  transition: transform 0.2s ease;
-}
-
-.emergency-button:hover .emergency-icon {
-  transform: scale(1.15);
 }
