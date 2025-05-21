@@ -1,5 +1,3 @@
-// common.js - Fonctions partagées entre toutes les pages
-
 // Applique le fond d'écran sauvegardé
 function applySavedBackground() {
     const savedBg = localStorage.getItem('selectedBackground');
@@ -11,13 +9,8 @@ function applySavedBackground() {
     }
 }
 
-// Initialisation commune à toutes les pages
-document.addEventListener('DOMContentLoaded', function() {
-    // Applique le fond d'écran
-    applySavedBackground();
-    //Aplique la police
-    if (!localStorage) return;
-
+// Applique la police sauvegardée
+function applySavedFont() {
     const savedFont = localStorage.getItem('selectedFont');
     if (savedFont) {
         document.body.style.fontFamily = savedFont;
@@ -27,28 +20,56 @@ document.addEventListener('DOMContentLoaded', function() {
     if (savedFontSize) {
         document.body.style.fontSize = savedFontSize + 'px';
     }
-    // Gestion de la navigation
+}
+
+// Initialisation commune à toutes les pages
+document.addEventListener('DOMContentLoaded', function () {
+    applySavedBackground();
+    applySavedFont();
+
+    // Boutons de navigation
     const settingsBtn = document.querySelector('.settings-button');
     if (settingsBtn) {
-        settingsBtn.addEventListener('click', function(e) {
+        settingsBtn.addEventListener('click', function (e) {
             e.preventDefault();
             window.location.href = 'settings.html';
         });
     }
-    
+
     const helpBtn = document.querySelector('.aide-button');
     if (helpBtn) {
-        helpBtn.addEventListener('click', function(e) {
+        helpBtn.addEventListener('click', function (e) {
             e.preventDefault();
-            window.location.href = 'help.html'
+            window.location.href = 'help.html';
         });
     }
-    
+
     const homeBtn = document.querySelector('.home-button');
     if (homeBtn) {
-        homeBtn.addEventListener('click', function(e) {
+        homeBtn.addEventListener('click', function (e) {
             e.preventDefault();
-            window.location.href = 'index.html'
+            window.location.href = 'index.html';
         });
+    }
+
+    // Si on est sur la page des paramètres
+    if (window.location.pathname.includes('settings.html')) {
+        const fontSizeSlider = document.getElementById('fontSizeSlider');
+        const fontSizeValue = document.getElementById('fontSizeValue');
+
+        const savedFontSize = localStorage.getItem('selectedFontSize');
+        if (fontSizeSlider) {
+            const initialSize = savedFontSize || fontSizeSlider.value;
+            fontSizeSlider.value = initialSize;
+            document.body.style.fontSize = initialSize + 'px';
+            if (fontSizeValue) fontSizeValue.textContent = initialSize + 'px';
+
+            fontSizeSlider.addEventListener('input', function () {
+                const newSize = fontSizeSlider.value;
+                document.body.style.fontSize = newSize + 'px';
+                localStorage.setItem('selectedFontSize', newSize);
+                if (fontSizeValue) fontSizeValue.textContent = newSize + 'px';
+            });
+        }
     }
 });
