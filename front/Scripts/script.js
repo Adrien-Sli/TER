@@ -266,67 +266,172 @@ async function displayWeather() {
 function generatePreventionMessage(temp, condition, city) {
     const conseils = [];
 
-    // Météo très chaude
+    // Météo très chaude (30°C+)
     if (temp >= 30) {
         conseils.push(
-            "Pensez à bien vous hydrater aujourd'hui à " + city + ".",
-            "Évitez les efforts intenses pendant les heures les plus chaudes.",
-            "N'oubliez pas votre casquette si vous sortez !",
-            "Fermez les volets et aérez tôt le matin.",
-            "Buvez de l’eau régulièrement, même sans soif.",
-            "Restez dans un endroit frais.",
-            "Évitez de sortir entre 12h et 16h.",
-            "Portez des vêtements légers et clairs."
+            `À ${city}, penser à boire un peu d’eau régulièrement, même sans ressentir la soif, peut vraiment aider.`,
+            "Créer un peu de courant d’air en soirée peut rendre l’atmosphère plus agréable.",
+            "Fermer les volets ou rideaux en journée permet souvent de garder la fraîcheur à l’intérieur.",
+            "Éviter d’utiliser trop d’appareils électriques aide à limiter la chaleur dans la maison.",
+            "Placer un petit bol d’eau devant un ventilateur peut légèrement rafraîchir l’air ambiant.",
+            "Préparer à l’avance un endroit frais pour conserver les médicaments peut être prudent.",
+            "Choisir des vêtements légers en coton peut améliorer le confort par temps chaud.",
+            "Il peut être utile d’humidifier doucement la nuque ou les poignets en cas de forte chaleur.",
+            "Éviter les boissons alcoolisées ou très caféinées aide à mieux rester hydraté.",
+            "Avoir quelques plantes d’intérieur peut contribuer à rendre l’air plus agréable.",
+            "Fermer les pièces inutilisées permet souvent de mieux conserver la fraîcheur là où on se repose.",
+            "Les repas froids évitent de chauffer la cuisine et restent agréables en période chaude.",
+            "Installer un petit ventilateur dans les pièces utilisées peut améliorer le confort.",
+            "Un gant humide sur le front ou les bras peut apporter un soulagement temporaire.",
+            "Installer des rideaux plus opaques dans les pièces exposées peut être bénéfique.",
+            "Rester dans les pièces les plus fraîches aux heures chaudes de la journée peut éviter un coup de chaleur.",
+            "Penser à faire une petite pause à l’ombre après chaque activité extérieure peut éviter la fatigue.",
+            "Faire vérifier son système d’aération ou de climatisation avant les fortes chaleurs est souvent utile.",
+            "Garder une serviette humide dans le frigo pour s’en servir en cas de besoin peut être une astuce rafraîchissante.",
+            "Un petit brumisateur à portée de main peut être agréable au fil de la journée."
         );
     }
 
-    // Temps ensoleillé et doux
-    else if (temp >= 20 && condition.includes("soleil")) {
+    // Temps ensoleillé et doux (20-29°C)
+    else if (temp >= 20 && condition.toLowerCase().includes("soleil")) {
         conseils.push(
-            "Une belle journée pour sortir à " + city + " ! N'oubliez pas votre crème solaire.",
-            "Profitez du beau temps, mais portez un chapeau.",
-            "Attention aux coups de soleil, protégez votre peau.",
-            "Idéal pour une promenade, mais restez vigilant aux escaliers glissants si vous avez arrosé le jardin.",
-            "N'oubliez pas votre bouteille d’eau si vous partez en balade.",
-            "Portez des lunettes de soleil."
+            `Le soleil est agréable à ${city}, mais c’est souvent un bon moment pour s’assurer que tout fonctionne bien à la maison.`,
+            "Un petit nettoyage des ventilateurs ou climatiseurs peut améliorer leur efficacité.",
+            "Un contrôle rapide des stores et parasols permet de bien profiter de la terrasse ou du balcon.",
+            "Ranger les produits sensibles à la chaleur dans un endroit ombragé peut éviter des désagréments.",
+            "S’assurer que les moustiquaires sont en bon état permet de profiter de l’air sans les insectes.",
+            "Préparer un sac avec un chapeau, une bouteille d’eau et un peu de crème solaire près de la porte peut être bien pratique.",
+            "Il est souvent utile de vérifier les câbles ou objets exposés longtemps au soleil.",
+            "Penser à limiter les efforts physiques aux heures les plus fraîches peut éviter la fatigue.",
+            "Profiter de cette météo pour organiser un peu l’espace de vie rend les journées plus agréables.",
+            "Vérifier les systèmes d’arrosage permet d’éviter les flaques et glissades involontaires.",
+            "Jeter un œil aux meubles de jardin assure plus de confort et de stabilité.",
+            "Prévoir une casquette ou un chapeau pour les sorties offre une protection supplémentaire.",
+            "Tester les poignées métalliques exposées au soleil évite les brûlures accidentelles.",
+            "Faire une promenade tôt le matin ou en fin de journée permet de profiter sans trop de chaleur.",
+            "Laisser les portes ouvertes entre pièces peut faciliter la circulation de l’air.",
+            "Ranger les outils après jardinage limite les risques de trébuchement.",
+            "Faire de petits gestes d’aération en fin d’après-midi permet de renouveler l’air en douceur.",
+            "Garder un éventail ou brumisateur à portée de main peut rendre les journées plus agréables.",
+            "Se reposer à l’ombre pendant les heures chaudes permet d’éviter la fatigue excessive.",
+            "Un petit coin tranquille à l’intérieur avec un peu de musique ou de lecture peut faire du bien."
         );
     }
 
     // Temps pluvieux ou orageux
     if (condition.toLowerCase().includes("pluie") || condition.toLowerCase().includes("orage")) {
         conseils.push(
-            "Soyez prudent : les sols peuvent être glissants à cause de la pluie.",
-            "Évitez de sortir si vous n'êtes pas bien chaussé.",
-            "Attention aux tapis mouillés à l’entrée.",
-            "Pensez à bien essuyer vos chaussures pour éviter de glisser.",
-            "Rangez les câbles électriques à l'intérieur si vous avez ouvert les fenêtres.",
-            "Fermez bien vos fenêtres pour éviter les infiltrations d'eau.",
-            "Restez à l’abri pendant les orages."
+            `Quand il pleut à ${city}, prendre le temps de vérifier les zones d’entrée peut prévenir les glissades.`,
+            "Nettoyer les gouttières ou vérifier les joints de fenêtres peut éviter bien des tracas.",
+            "Installer un petit tapis absorbant près de la porte est souvent utile par temps humide.",
+            "Il peut être bon de ranger les objets légers qui risquent d’être emportés par le vent.",
+            "Garder une lampe de secours et quelques bougies à portée de main peut être rassurant.",
+            "Un rapide coup d'œil aux arbres ou branches proches peut prévenir certains risques en cas de vent fort.",
+            "Penser à surélever les produits fragiles ou dangereux en cas de fortes pluies est une précaution utile.",
+            "Avoir des chaussons antidérapants à l’entrée rend les retours au sec plus sûrs.",
+            "Vérifier que les descentes d’eau pluviale ne sont pas obstruées aide à éviter les inondations.",
+            "Fermer doucement les fenêtres exposées peut éviter que l’eau ne s’infiltre.",
+            "Préparer une petite lampe dans chaque pièce peut être rassurant si l’orage coupe le courant.",
+            "Ranger les outils de jardin dans un endroit sec évite la rouille.",
+            "Relever les fils électriques au sol évite les accidents avec l’humidité.",
+            "Un petit contrôle des tapis mouillés permet d’éviter les chutes.",
+            "Vérifier si les tuiles ou bardeaux sont bien en place est une bonne précaution.",
+            "Il peut être utile de repérer les endroits glissants à l’intérieur et d’y mettre un tapis.",
+            "Fermer les rideaux en cas d’orage peut rendre l’atmosphère plus sereine.",
+            "Gardez une liste de numéros utiles à proximité en cas de besoin.",
+            "Prévoir un petit sac d’urgence avec lampe, batterie et eau peut toujours servir.",
+            "Prendre quelques minutes pour s’assurer que tout est bien rangé autour de la maison est rassurant."
         );
     }
 
-    // Temps froid
+    // Temps froid (<10°C)
     if (temp < 10) {
         conseils.push(
-            "Couvrez-vous bien, surtout les extrémités (mains, tête, pieds).",
-            "Attention au chauffage : aérez votre logement chaque jour.",
-            "Vérifiez que vos sols ne sont pas glissants en rentrant.",
-            "Utilisez des chaussons antidérapants à la maison.",
-            "Buvez des boissons chaudes régulièrement.",
-            "Évitez les courants d'air."
+            `Quand il fait froid à ${city}, s’assurer que le chauffage fonctionne bien est souvent rassurant.`,
+            "Prévoir une couverture supplémentaire ou un plaid à portée de main apporte un confort rapide.",
+            "Penser à isoler les courants d’air peut aider à garder la chaleur à l’intérieur.",
+            "Vérifier que les tapis tiennent bien en place évite de glisser sur un sol froid.",
+            "Garder à proximité de quoi se chauffer en cas de panne éventuelle est une bonne précaution.",
+            "Il est souvent utile de préparer un petit stock de nourriture ou de boissons chaudes.",
+            "Des rideaux plus épais ou un tapis épais peuvent rendre l’atmosphère plus chaleureuse.",
+            "Un petit contrôle du détecteur de monoxyde de carbone peut renforcer la sécurité en hiver.",
+            "Contrôler les conduites d’eau exposées évite parfois les problèmes liés au gel.",
+            "Mettre des chaussons chauds peut contribuer à un meilleur confort au quotidien.",
+            "Laisser un peu couler l’eau par grand froid peut parfois empêcher le gel dans les tuyaux.",
+            "Prévoir une source de lumière d’appoint au cas où le froid entraîne une coupure de courant.",
+            "Organiser ses déplacements en limitant les sorties trop longues est souvent plus sûr.",
+            "Éviter les tapis trop fins sur le carrelage froid peut prévenir les glissades.",
+            "Contrôler les systèmes de ventilation empêche l’air froid d’entrer inutilement.",
+            "Prévoir un petit coin douillet bien aménagé peut rendre l’hiver plus doux.",
+            "S’assurer que le chauffe-eau fonctionne bien permet d’avoir de l’eau chaude sans surprise.",
+            "Faire une vérification annuelle de la cheminée ou des poêles est rassurant.",
+            "Tenir à jour une liste de contacts en cas de besoin rapide est toujours utile.",
+            "Ne pas hésiter à demander de l’aide si le froid devient difficile à gérer, cela fait partie des bons réflexes."
         );
     }
 
-    // Si pas de conseil spécifique, un message générique
+    // Neige ou grêle
+    if (condition.toLowerCase().includes("neige") || condition.toLowerCase().includes("grêle")) {
+        conseils.push(
+            `Lorsqu’il neige à ${city}, il peut être utile de rendre les allées bien visibles et dégagées.`,
+            "Avoir un peu de sel ou sable à portée de main peut rendre les déplacements plus sûrs.",
+            "Penser à vérifier le toit ou les arbres autour de la maison est souvent judicieux.",
+            "Installer un bon éclairage près des entrées peut éviter bien des mésaventures le soir venu.",
+            "Préparer une trousse avec couvertures, lampe et collations peut être rassurant en cas de besoin.",
+            "Des repères visuels sur les marches extérieures peuvent aider à mieux se déplacer.",
+            "Contrôler de temps en temps l’état des chaussures d’extérieur peut faire une vraie différence en hiver.",
+            "Mettre à l’abri les objets métalliques ou les outils limite leur usure.",
+            "Réduire les déplacements à l’extérieur quand il neige peut rendre la journée plus agréable.",
+            "Avoir une pelle à neige dans un endroit accessible peut toujours être utile.",
+            "Mettre des tapis à l’entrée permet d’éviter d’apporter de l’eau à l’intérieur.",
+            "Un petit coup de balai sur les marches évite qu’elles deviennent trop glissantes.",
+            "Faire un repérage du terrain la veille d’une neige annoncée peut aider à anticiper.",
+            "Penser à prévenir un proche ou voisin lors de déplacements en hiver est une bonne habitude.",
+            "Stocker les produits dégivrants à portée de main rend les sorties plus simples.",
+            "Installer une petite rampe ou barre d’appui peut sécuriser certaines zones.",
+            "Mettre une lampe automatique à l’entrée peut rendre le retour plus sûr.",
+            "Garder une paire de chaussons bien antidérapants à portée de main limite les risques de chute.",
+            "Revoir son éclairage extérieur peut aider à se sentir plus à l’aise pour rentrer en fin de journée.",
+            "Anticiper les besoins alimentaires ou de médicaments avant un épisode neigeux peut soulager l’esprit."
+        );
+    }
+
+    // Messages génériques si aucune condition spécifique
     if (conseils.length === 0) {
         conseils.push(
-            "Prenez soin de vous aujourd’hui à " + city + ".",
-            "Une journée calme en perspective, pensez à vérifier vos équipements de sécurité.",
-            "Un bon moment pour faire un peu de rangement en toute sécurité."
+            `À ${city}, une journée calme peut être l’occasion de faire quelques vérifications tranquilles à la maison.`,
+            "Un petit contrôle des détecteurs de fumée et de monoxyde de carbone est toujours utile.",
+            "S’assurer que les trousses de premiers soins sont à jour peut éviter des soucis plus tard.",
+            "Réorganiser légèrement les espaces de passage peut rendre les déplacements plus sûrs.",
+            "Il peut être réconfortant d’avoir les numéros importants facilement accessibles.",
+            "Prendre quelques minutes pour revoir les consignes de sécurité avec ses proches est une bonne habitude.",
+            "Un rapide contrôle des prises électriques permet de prévenir les petits incidents.",
+            "Faire le point sur les objets lourds ou fragiles mal rangés est souvent utile.",
+            "Tester les alarmes si la maison en est équipée peut rassurer tout le monde.",
+            "Préparer un petit sac de secours avec lampe, piles, médicaments peut rendre service.",
+            "Vérifier que les issues de secours ne sont pas encombrées peut être utile.",
+            "Mettre les objets dangereux hors de portée ou bien rangés évite les accidents.",
+            "Penser à bien fixer les meubles hauts ou instables apporte plus de sécurité.",
+            "Il peut être bon d’évaluer l’éclairage des zones sombres ou peu utilisées.",
+            "Faire un petit tri dans les produits périmés ou inutiles est souvent bénéfique.",
+            "Vérifier les sols pour éliminer ce qui pourrait faire trébucher est une bonne habitude.",
+            "S’assurer que les téléphones sont facilement accessibles et chargés est rassurant.",
+            "Changer l’emplacement de certains meubles peut parfois faciliter la circulation.",
+            "Préparer une petite liste de contacts d’urgence affichée dans la cuisine ou le salon peut toujours servir.",
+            "Faire un tour du domicile à deux peut permettre de voir ce qu’on oublie parfois seul."
         );
     }
 
-    // Choisir un message au hasard
-    const message = conseils[Math.floor(Math.random() * conseils.length)];
-    return message;
+    // Sélection aléatoire de 6 messages (au lieu de 3 si tu veux équilibrer)
+    const selectedMessages = [];
+    for (let i = 0; i < 1; i++) {
+        if (conseils.length > 0) {
+            const randomIndex = Math.floor(Math.random() * conseils.length);
+            selectedMessages.push(conseils[randomIndex]);
+            conseils.splice(randomIndex, 1); // Évite les doublons
+        }
+    }
+
+    return selectedMessages.join("\n• ");
 }
+
