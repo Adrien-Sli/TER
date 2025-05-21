@@ -1,0 +1,216 @@
+:root {
+    --primary: #5d9cec;
+    --secondary: #a0d468;
+    --danger: #ed5565;
+    --warning: #ffce54;
+    --light: #f5f7fa;
+    --dark: #3b3f4a;
+    --text: #434a54;
+    --text-light: #aab2bd;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.avatar {
+    font-size: 60px;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 15px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 400;
+    color: var(--dark);
+    margin: 5px 0;
+    font-size: 28px;
+}
+
+.age-genre, .location {
+    color: var(--text-light);
+    font-size: 16px;
+}
+
+.profile-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h2 {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 300;
+    font-size: 22px;
+    margin-top: 0;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.health-card {
+    border-top: 4px solid var(--danger);
+}
+
+.housing-card {
+    border-top: 4px solid var(--primary);
+}
+
+.activities-card {
+    border-top: 4px solid var(--secondary);
+}
+
+.pets-card {
+    border-top: 4px solid var(--warning);
+}
+.contact-card {
+    border-top: 4px solid var(--dark);
+}
+
+
+.section-content {
+    padding: 10px 0;
+}
+
+h3 {
+    font-size: 18px;
+    color: var(--dark);
+    margin: 15px 0 10px;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+.equipments {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.equipment-tag {
+    background: #e6f2ff;
+    color: var(--primary);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.profile-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    color: var(--text-light);
+}
+
+.edit-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+.edit-btn:hover {
+    background: #4a89dc;
+}
+
+@media (max-width: 768px) {
+    .profile-sections {
+        grid-template-columns: 1fr;
+    }
+}
+.contact-card {
+    border-top: 4px solid #8e44ad;
+    grid-column: span 2; /* Pour prendre toute la largeur */
+}
+
+@media (max-width: 768px) {
+    .contact-card {
+        grid-column: span 1;
+    }
+}
+.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #ccc;
+    background-size: cover;
+    background-position: center;
+    font-size: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.emergency-button {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .emergency-button:hover {
+    background-color: rgba(220, 53, 69, 0.15); /* rouge clair */
+  }
+  
+  .emergency-icon {
+    width: 45px;
+    height: 45px;
+    color: #dc3545; /* rouge Bootstrap pour urgence */
+    transition: transform 0.2s ease;
+  }
+  
+  .emergency-button:hover .emergency-icon {
+    transform: scale(1.15);
+  }
+  

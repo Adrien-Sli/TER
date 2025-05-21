@@ -1,0 +1,218 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    transition: background-image 0.5s ease;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: #fff;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-top: 70px;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+h1,
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #4CAF50;
+}
+
+.section {
+    margin-bottom: 50px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #4CAF50;
+}
+
+.option-group {
+    margin-bottom: 25px;
+}
+
+.option-title {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    display: block;
+    color: #4CAF50;
+}
+
+/* Styles pour les fonds d'écran */
+.background-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.background-option {
+    width: 150px;
+    height: 100px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.background-option:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.6);
+}
+
+.background-option.selected {
+    border: 3px solid #4CAF50;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
+}
+
+.background-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+/* Styles pour les bulles */
+.bubble-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.bubble-option {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    width: 250px;
+}
+
+.bubble-option:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.bubble-option h3 {
+    color: #4CAF50;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.bubble-svg {
+    width: 200px;
+    height: 150px;
+    margin: 0 auto;
+}
+
+.bubble-option.selected {
+    border: 3px solid #4CAF50;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.selected::after {
+    content: "✓";
+    color: white;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    font-size: 20px;
+}
+
+.bubble-preview {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#selected-bubble-container {
+    margin-top: 20px;
+    max-width: 100%;
+    overflow: visible;
+}
+
+/* Styles communs */
+.btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.btn-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.text-line {
+    dominant-baseline: middle;
+    text-anchor: middle;
+}
+.emergency-button {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .emergency-button:hover {
+    background-color: rgba(220, 53, 69, 0.15); /* rouge clair */
+  }
+  
+  .emergency-icon {
+    width: 45px;
+    height: 45px;
+    color: #dc3545; /* rouge Bootstrap pour urgence */
+    transition: transform 0.2s ease;
+  }
+  
+  .emergency-button:hover .emergency-icon {
+    transform: scale(1.15);
+  }
+  

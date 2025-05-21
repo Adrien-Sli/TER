@@ -1,0 +1,163 @@
+
+:root {
+    --primary: #5d9cec;
+    --secondary: #a0d468;
+    --light: #f5f7fa;
+    --dark: #3b3f4a;
+    --text: #434a54;
+}
+
+.container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+}
+
+h1 {
+    color: var(--primary);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.icon-help {
+    display: flex;
+    margin-bottom: 30px;
+    align-items: center;
+}
+
+.icon-visual {
+    width: 60px;
+    height: 60px;
+    margin-right: 20px;
+    background: var(--light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.icon-visual img {
+    width: 30px;
+    height: 30px;
+}
+
+.icon-desc h2 {
+    color: var(--dark);
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.icon-desc p {
+    margin: 0;
+    color: var(--text);
+}
+
+@media (max-width: 600px) {
+    .icon-help {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .icon-visual {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    line-height: 1.6;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+h1 {
+    color: #2a5ca7;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #2a5ca7;
+    font-size: 24px;
+    margin-top: 30px;
+    border-bottom: 2px solid #2a5ca7;
+    padding-bottom: 5px;
+}
+
+.contact-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.emergency {
+    background-color: #ffebee;
+    border-left: 5px solid #d32f2f;
+}
+
+.important {
+    background-color: #fff8e1;
+    border-left: 5px solid #ffa000;
+}
+
+.info {
+    background-color: #e8f5e9;
+    border-left: 5px solid #388e3c;
+}
+
+.number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2a5ca7;
+    margin: 10px 0;
+}
+
+.service-name {
+    font-weight: bold;
+    font-size: 22px;
+    color: #000;
+}
+
+.note {
+    font-style: italic;
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #e3f2fd;
+    border-radius: 5px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 16px;
+    color: #666;
+}
+
+/* Boutons agrandis pour faciliter le clic */
+.call-button {
+    display: inline-block;
+    background-color: #2a5ca7;
+    color: white;
+    padding: 15px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 20px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.call-button:hover {
+    background-color: #1e3f7a;
+}

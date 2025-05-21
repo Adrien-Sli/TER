@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+h1 {
+    text-align: center;
+    color: #2c3e50;
+}
+h2 {
+    color: #3498db;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+    margin-top: 30px;
+}
+.form-group {
+  margin-bottom: 30px; 
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+textarea {
+    height: 80px;
+}
+.radio-group, .checkbox-group {
+    margin-top: 5px;
+}
+.radio-option, .checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* espace entre le bouton et le label */
+    margin-bottom: 8px;
+}
+
+.required:after {
+    content: " *";
+    color: red;
+}
+button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    margin: 30px auto 0;
+}
+button:hover {
+    background-color: #2980b9;
+}
+.radio-option input[type="radio"],
+.checkbox-option input[type="checkbox"] {
+    margin: 0;
+}

@@ -4,129 +4,285 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Application</title>
-    <link rel="stylesheet" href="C:/Users/adrie/OneDrive/Bureau/M1/S8/TER/front/CSS/style.css">
+    <link rel="stylesheet" href="../CSS/index.css">
+    <script>
+        // Déplacer le script en premier pour s'assurer qu'il s'exécute avant les autres
+        function initPage() {
+            const fond = localStorage.getItem('selectedBackground');
+            if (fond) {
+                document.body.style.backgroundImage = `url('${fond}')`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                document.body.style.backgroundAttachment = 'fixed';
+            }
+
+            // Charger le style de bulle
+            let bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
+
+            // NE PAS appeler updateBubble ici — attendre que le vrai contenu (météo ou textarea) le fasse
+
+            // Réagir au changement de style de bulle (ex: depuis une autre page)
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'selectedBubble') {
+                    bubbleType = e.newValue;
+                    const textarea = document.querySelector('.under-panel textarea');
+                    updateBubble(bubbleType, textarea?.value || "");
+                }
+            });
+
+            // Mise à jour dynamique quand on tape dans le champ
+            const textarea = document.querySelector('.under-panel textarea');
+            if (textarea) {
+                textarea.addEventListener('input', function() {
+                    updateBubble(bubbleType, this.value);
+                });
+            }
+        }
+
+
+        function wrapText(text, maxWidth) {
+            if (!text) return [""];
+            const words = text.split(' ');
+            let lines = [];
+            let currentLine = words[0] || "";
+            
+            for (let i = 1; i < words.length; i++) {
+                const word = words[i];
+                const tempSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                const tempText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                tempText.setAttribute("font-family", "Comic Sans MS");
+                tempText.setAttribute("font-size", "28");
+                tempText.textContent = currentLine + ' ' + word;
+                tempSvg.appendChild(tempText);
+                document.body.appendChild(tempSvg);
+                const width = tempText.getComputedTextLength();
+                document.body.removeChild(tempSvg);
+                
+                if (width < maxWidth) {
+                    currentLine += ' ' + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        function updateBubble(bubbleType, text = "Bonjour je m'appelle Phil Il fait super beau a Grenoble aujourd'hui tu ne trouve pas ?") {
+            const centerPanel = document.querySelector('.center-panel');
+            if (!centerPanel) {
+                console.error("Element .center-panel non trouvé");
+                return;
+            }
+            
+            console.log("Chargement de la bulle de type:", bubbleType);
+            
+            const isCri = bubbleType === 'cri';
+            const displayText = isCri ? text.toUpperCase() : text;
+            const maxWidth = 600; // Largeur maximale pour le texte
+            const lineHeight = 40; // Hauteur de ligne
+            const padding = 40; // Padding autour du texte
+            const tailHeight = 60; // Hauteur de la queue de la bulle
+
+            const lines = wrapText(displayText, maxWidth);
+            const textHeight = lines.length * lineHeight;
+            const bubbleHeight = textHeight + 2 * padding;
+            const totalHeight = bubbleHeight + tailHeight;
+
+            let bubbleWidth = 0;
+            const tempSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            const tempText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            tempText.setAttribute("font-family", "Comic Sans MS");
+            tempText.setAttribute("font-size", "28");
+
+            lines.forEach(line => {
+                tempText.textContent = line;
+                tempSvg.appendChild(tempText);
+                document.body.appendChild(tempSvg);
+                const width = tempText.getComputedTextLength();
+                document.body.removeChild(tempSvg);
+                if (width > bubbleWidth) bubbleWidth = width;
+            });
+
+            bubbleWidth = Math.max(300, bubbleWidth + 2 * padding);
+            const svgWidth = bubbleWidth + 100;
+            const svgHeight = totalHeight + 100;
+
+            let svgContent = '';
+            let pathData = '';
+
+            switch(bubbleType) {
+                    case 'dialogue':
+                    case 'pensee':
+                    case 'cri':
+                        // Utilisation de la même forme de base pour tous les types
+                        pathData = `
+                            M20,40 
+                            Q40,20 60,20 
+                            H${bubbleWidth}
+                            Q${bubbleWidth + 30},20 ${bubbleWidth + 30},40 
+                            V${bubbleHeight}
+                            Q${bubbleWidth + 30},${bubbleHeight + 20} ${bubbleWidth},${bubbleHeight + 20} 
+                            H80
+                            Q65,${bubbleHeight + 20} 60,${bubbleHeight + 40}
+                            Q55,${bubbleHeight + 20} 40,${bubbleHeight + 20}
+                            Q20,${bubbleHeight + 20} 20,${bubbleHeight}
+                            V60
+                            Q20,50 20,40 Z`;
+                        break;
+                }
+
+                svgContent = `
+                    <svg width="100%" height="100%" viewBox="0 0 ${svgWidth} ${svgHeight}">
+                        <defs>
+                            <linearGradient id="bubbleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                ${bubbleType === 'cri' ? `
+                                    <stop offset="0%" stop-color="#ffe5e5" />
+                                    <stop offset="100%" stop-color="#ffb3b3" />
+                                ` : `
+                                    <stop offset="0%" stop-color="#fefefe" />
+                                    <stop offset="100%" stop-color="#f0f0f0" />
+                                `}
+                            </linearGradient>
+
+                            <!-- Filtres spéciaux -->
+                            <filter id="penseeEffect">
+                                <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="1"/>
+                                <feDisplacementMap in="SourceGraphic" scale="2"/>
+                            </filter>
+                            
+                            <filter id="criEffect">
+                                <feTurbulence type="turbulence" baseFrequency="0.05 0.08" result="noise" numOctaves="2"/>
+                                <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+                            </filter>
+                        </defs>
+
+                        <!-- Contour principal -->
+                        <path
+                            d="${pathData}"
+                            fill="url(#bubbleGrad)" 
+                            stroke="${bubbleType === 'cri' ? '#ff4444' : '#bbb'}"
+                            stroke-width="${bubbleType === 'cri' ? '3' : '1.5'}"
+                            style="stroke-linejoin: round;
+                                ${bubbleType === 'pensee' ? 'stroke-dasharray: 8,5; filter: url(#penseeEffect);' : ''}
+                                ${bubbleType === 'cri' ? 'filter: url(#criEffect);' : ''}" />
+
+                        <!-- Texte -->
+                        ${lines.map((line, i) => `
+                            <text x="${svgWidth / 2}" 
+                                y="${padding + (i * lineHeight) + (lineHeight / 2)}"
+                                text-anchor="middle" 
+                                font-family="Comic Sans MS" 
+                                font-size="28" 
+                                fill="${bubbleType === 'cri' ? '#cc0000' : '#333'}"
+                                ${bubbleType === 'cri' ? `
+                                    font-weight="bold"
+                                    style="text-shadow: 2px 2px 4px rgba(255,0,0,0.3);"
+                                ` : ''}
+                                dominant-baseline="middle">
+                                ${bubbleType === 'cri' ? line.toUpperCase() : line}
+                            </text>
+                        `).join('')}
+
+                        <!-- Éléments spécifiques à la pensée -->
+                        ${bubbleType === 'pensee' ? `
+                            <g transform="translate(${bubbleWidth * 0.25}, ${svgHeight - 50})">
+                                <circle r="12" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="3,2"/>
+                                <circle r="8" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="2,3" 
+                                        transform="translate(15, 18)"/>
+                                <circle r="5" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="1,4" 
+                                        transform="translate(25, 25)"/>
+                                <path d="M30,30 Q40,35 50,30" stroke="#bbb" stroke-width="2" fill="none" 
+                                    stroke-dasharray="5,3"/>
+                            </g>
+                        ` : ''}
+
+                        <!-- Éléments spécifiques au cri -->
+                        ${bubbleType === 'cri' ? `
+                            <g stroke="#ff4444" stroke-width="2" stroke-linecap="round">
+                                <path d="M${svgWidth * 0.1},${svgHeight * 0.1} L${svgWidth * 0.15},${svgHeight * 0.05}"/>
+                                <path d="M${svgWidth * 0.9},${svgHeight * 0.1} L${svgWidth * 0.85},${svgHeight * 0.05}"/>
+                                <path d="M${svgWidth * 0.1},${svgHeight * 0.9} L${svgWidth * 0.05},${svgHeight * 0.85}"/>
+                                <path d="M${svgWidth * 0.9},${svgHeight * 0.9} L${svgWidth * 0.95},${svgHeight * 0.85}"/>
+                                <path d="M${svgWidth * 0.5},10 L${svgWidth * 0.5},30"/>
+                                <path d="M10,${svgHeight * 0.5} L30,${svgHeight * 0.5}"/>
+                            </g>
+                        ` : ''}
+                    </svg>`;
+
+                centerPanel.innerHTML = svgContent;
+            }
+
+        // Attendre que tout le DOM soit chargé
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
 </head>
 <body>
-    <div class="header">
-        <button class="settings-button">
-            <img src="../Image/roue_dentee.png" alt="Paramètres" class="settings-icon">
-        </button>
-        <button class="aide-button">Aide</button>
-    </div>
-    
-    <div class="container">
-        
-        <div class="contenu_page">
-            <div class="history-section">
-                <h2 class="history-title">Historique</h2>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> ladklakda </p>
-                    <p><strong>Réponse:</strong> klpakdâd^</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> kplakd^lai^d </p>
-                    <p><strong>Réponse:</strong> japldjpajdp </p>
-                </div>
-                                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <div class="history-item">
-                    <p><strong>Question précédente:</strong> Où puis-je voir mon historique de paiements ?</p>
-                    <p><strong>Réponse:</strong> L'historique des paiements est disponible dans la section Facturation.</p>
-                </div>
-                <button class="see_more">Voir plus</button>
-            </div>
-            <div class="avatar">
-                <img src='https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Black&eyeType=Default&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale'/>
-            </div>
-            <div class="bulle-container">
-                <svg width="1100" height="300" viewBox="0 0 1100 300" style="margin-left: -140px; margin-top: 100; ">
-                    <!-- Effets -->
-                    <defs>
-                        <filter id="bubbleShadow" x="-20%" y="-20%" width="140%" height="140%">
-                            <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
-                            <feOffset dx="3" dy="3" result="offsetblur"/>
-                            <feComponentTransfer>
-                                <feFuncA type="linear" slope="0.25"/>
-                            </feComponentTransfer>
-                            <feMerge>
-                                <feMergeNode/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                        <linearGradient id="bubbleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#fefefe"/>
-                            <stop offset="100%" stop-color="#f0f0f0"/>
-                        </linearGradient>
-                    </defs>
-            
-                    <!-- Grande bulle ovale partant de l'avatar -->
-                    <path d="M180,220 
-                            C80,220 30,180 30,130 
-                            C30,60 100,30 200,30 
-                            C780,30 800,60 820,130 
-                            C820,180 780,220 700,220 
-                            C330,230 280,230 250,220 
-                            L-0,300
-                            L180,220"
-                          fill="url(#bubbleGrad)"
-                          stroke="#bbb"
-                          stroke-width="1.5"
-                          filter="url(#bubbleShadow)"
-                          style="stroke-linejoin: round;"/>
-                    
-                    <!-- Texte centré avec ombre légère -->
-                    <text x="250" y="130" 
-                          font-family="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" 
-                          font-size="28" 
-                          fill="#333" 
-                          text-anchor="middle"
-                          font-weight="600"
-                          style="text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
-                        Bonjour !
-                    </text>
+    <header class="navbar">
+        <div class="left-buttons">
+            <a href="profil.html" class="profil-button">
+                <img src="../Image/profil.png" alt="Profil" class="profil-icon">
+            </a>
+        </div>
+        <div class="weather-info" id="weatherInfo">
+            <span id="weatherTemp"></span>
+            <img id="weatherIcon" src="" alt="Météo">
+            <span id="weatherCity"></span>
+        </div>
+        <div class="right-buttons">
+                <!-- Bouton Contact / Numéro d'urgence avec lien vers contact.html -->
+                <a href="contact.html" class="emergency-button" title="Contact / Urgence">
+                    <div class="emergency-wrapper">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="emergency-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21.707 16.293l-3.387-3.387a1 1 0 0 0-1.414 0l-1.64 1.64a15.075 15.075 0 0 1-6.1-6.1l1.64-1.64a1 1 0 0 0 0-1.414L7.707 2.293a1 1 0 0 0-1.414 0L4.18 4.406c-.795.794-1.122 1.956-.71 3.02a17.045 17.045 0 0 0 12.103 10.187c1.06.283 2.226.013 3.02-.71l2.113-2.113a1 1 0 0 0 .001-1.414z"/>
+                      </svg>
+                    </div>
+                </a>
+            <button class="settings-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" class="bi bi-gear"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
+                    <path
+                        d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
                 </svg>
+            </button>
+            <button class="aide-button">Aide</button>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="left-area">
+            <div class="left-center-wrapper">
+                <div class="middle-panels">
+                    <div class="left-panel">
+                        <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Black&eyeType=Default&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale"
+                            alt="Avatar">
+                    </div>
+                    <div class="center-panel">
+                        <!-- La bulle sera insérée ici dynamiquement -->
+                    </div>
+                </div>
             </div>
-            
+
+            <div class="under-panel">
+                <textarea placeholder="Posez votre question ici :)"></textarea>
+                <button class="send">Envoyer</button>
+            </div>
         </div>
 
-        <div class="question-box">
-            <textarea placeholder="Décrivez votre problème ou posez votre question ici..."></textarea>
-            <button class="submit-button">Envoyer</button>
+        <div class="right-panel">
+            <h2>Historique</h2>
+            <div class="history-item">Question / Réponse 1</div>
+            <div class="history-item">Question / Réponse 2</div>
+            <div class="history-item">Question / Réponse 3</div>
+            <!-- ... autres éléments d'historique ... -->
+            <button>Voir plus</button>
         </div>
     </div>
 
-    <script>
-        // Simple JavaScript to show this is the help section opened by the button
-        document.querySelector('.aide-button').addEventListener('click', function() {
-            // In a real app, this would show the help section
-            alert('Vous êtes déjà dans la section Aide');
-        });
-    </script>
+    <script src="../Scripts/common.js"></script>
+    <script src="../Scripts/script.js"></script>
 </body>
 </html>

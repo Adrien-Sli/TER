@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres - Personnalisation</title>
+    <link rel="stylesheet" href="../CSS/settings.css">
+    <link rel="stylesheet" href="../CSS/navbar.css">
+</head>
+<body id="page-body">
+    <header class="navbar">
+        <div class="left-buttons">
+            <a href="profil.html" class="profil-button">
+                <img src="../Image/profil.png" alt="Profil" class="profil-icon">
+            </a>
+            <button class="home-button">
+                <img src="../Image/home.png" alt="Page d'accueil" class="home-icon">
+            </button>
+        </div>
+        <div class="right-buttons">
+            <!-- Bouton Contact / Numéro d'urgence avec lien vers contact.html -->
+            <a href="contact.html" class="emergency-button" title="Contact / Urgence">
+                <div class="emergency-wrapper">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="emergency-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21.707 16.293l-3.387-3.387a1 1 0 0 0-1.414 0l-1.64 1.64a15.075 15.075 0 0 1-6.1-6.1l1.64-1.64a1 1 0 0 0 0-1.414L7.707 2.293a1 1 0 0 0-1.414 0L4.18 4.406c-.795.794-1.122 1.956-.71 3.02a17.045 17.045 0 0 0 12.103 10.187c1.06.283 2.226.013 3.02-.71l2.113-2.113a1 1 0 0 0 .001-1.414z"/>
+                  </svg>
+                </div>
+            </a>
+            <button class="aide-button">Aide</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Paramètres de personnalisation</h1>
+        
+        <!-- Section Fond d'écran -->
+        <div class="section">
+            <h2>Fond d'écran</h2>
+            
+            <div class="option-group">
+                <span class="option-title">Choisissez votre fond d'écran :</span>
+                <div class="background-options">
+                    <div class="background-option" 
+                         style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"
+                         data-bg="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                         onclick="changeBackground(this, 'montagne')">
+                        <div class="background-label">Montagne</div>
+                    </div>
+                    
+                    <div class="background-option" 
+                         style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"
+                         data-bg="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                         onclick="changeBackground(this, 'plage')">
+                        <div class="background-label">Plage</div>
+                    </div>
+                    
+                    <div class="background-option" 
+                         style="background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')"
+                         data-bg="https://images.unsplash.com/photo-1448375240586-882707db888b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                         onclick="changeBackground(this, 'forêt')">
+                        <div class="background-label">Forêt</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Police -->
+        <div class="section">
+            <h2>Police</h2>
+            
+            <div class="option-group">
+                <span class="option-title">Choisissez votre police :</span>
+                <select id="fontSelector" onchange="selectFont(this.value)">
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="Times New Roman, serif">Times New Roman</option>
+                    <option value="Courier New, monospace">Courier New</option>
+                    <option value="Comic Sans MS, cursive">Comic Sans MS</option>
+                </select>
+            </div>
+            
+            <div class="option-group">
+                <span class="option-title">Taille de police :</span>
+                <div class="font-size-options">
+                    <input type="range" id="fontSizeSlider" min="12" max="24" step="1" value="16" oninput="updateFontSize(this.value)">
+                    <span id="fontSizeValue">16px</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Bulles -->
+        <div class="section">
+            <h2>Style de bulle</h2>
+            
+            <div class="option-group">
+                <span class="option-title">Choisissez votre style de bulle :</span>
+                <div class="bubble-options">
+                    <!-- Bulle de dialogue -->
+                    <div class="bubble-option" onclick="selectBubble('dialogue')">
+                        <div class="bubble-svg">
+                            <svg viewBox="0 0 200 150">
+                                <path id="dialogue-bubble"
+                                      d="M20,30 Q30,10 50,20 L150,20 Q170,10 180,30 L180,100 Q170,120 150,110 L90,110 L80,130 L70,110 L50,110 Q30,120 20,100 Z"
+                                      fill="white" stroke="#4CAF50" stroke-width="2"/>
+                                <text x="100" y="70" text-anchor="middle" font-family="Comic Sans MS" font-size="16" fill="#333">Bonjour !</text>
+                            </svg>
+                        </div>
+                        <h3>Bulle de dialogue</h3>
+                    </div>
+                
+                    <!-- Bulle de pensée -->
+                    <div class="bubble-option" onclick="selectBubble('pensee')">
+                        <div class="bubble-svg">
+                            <svg viewBox="0 0 200 150">
+                                <path id="pensee-bubble"
+                                      d="M30,30 Q20,10 40,20 L160,20 Q180,10 170,30 L170,90 Q180,110 160,100 L40,100 Q20,110 30,90 Z"
+                                      fill="white" stroke="#4CAF50" stroke-width="2" stroke-dasharray="5,3"/>
+                                <circle cx="70" cy="115" r="5" fill="white" stroke="#4CAF50" stroke-width="2"/>
+                                <circle cx="60" cy="125" r="3" fill="white" stroke="#4CAF50" stroke-width="2"/>
+                                <circle cx="52" cy="132" r="2" fill="white" stroke="#4CAF50" stroke-width="2"/>
+                                <text x="100" y="70" text-anchor="middle" font-family="Comic Sans MS" font-size="16" fill="#333">Hum...</text>
+                            </svg>
+                        </div>
+                        <h3>Bulle de pensée</h3>
+                    </div>
+                
+                    <!-- Bulle de cri -->
+                    <div class="bubble-option" onclick="selectBubble('cri')">
+                        <div class="bubble-svg">
+                            <svg viewBox="0 0 200 150">
+                                <path id="cri-bubble"
+                                      d="M30,20 L170,20 Q190,30 180,50 L160,100 Q150,120 130,110 L100,110 L90,130 L80,110 L40,110 Q20,120 30,100 L20,50 Q10,30 30,20 Z"
+                                      fill="white" stroke="#4CAF50" stroke-width="2"/>
+                                <text x="100" y="70" text-anchor="middle" font-family="Comic Sans MS" font-size="16" font-weight="bold" fill="#333">Aaaah !</text>
+                                <path d="M10,10 L20,5 M190,15 L200,5 M15,140 L5,150 M185,135 L195,145"
+                                      stroke="#4CAF50" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <h3>Bulle de cri</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn" onclick="applySettings()">Appliquer les paramètres</button>
+                <button class="btn" onclick="resetSettings()">Réinitialiser</button>
+                <button class="btn" onclick="window.location.href='index.html'">Retour</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../Scripts/common.js"></script>
+    <script>
+        // Vérifie si le localStorage est disponible
+        function isLocalStorageAvailable() {
+            try {
+                const test = 'test';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                return true;
+            } catch(e) {
+                console.error("LocalStorage n'est pas disponible", e);
+                return false;
+            }
+        }
+
+        // ========== Gestion du fond d'écran ==========
+        // Applique le style de fond aux options
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!isLocalStorageAvailable()) {
+                alert("Votre navigateur ne supporte pas le stockage local. Les paramètres ne seront pas sauvegardés.");
+                return;
+            }
+
+            // Charger le fond sauvegardé s'il existe
+            const savedBg = localStorage.getItem('selectedBackground');
+            console.log('Fond sauvegardé:', savedBg);
+            
+            if (savedBg) {
+                document.body.style.backgroundImage = `url('${savedBg}')`;
+                
+                // Marquer l'option sélectionnée
+                const options = document.querySelectorAll('.background-option');
+                options.forEach(option => {
+                    if (option.getAttribute('data-bg') === savedBg) {
+                        option.classList.add('selected');
+                    }
+                });
+            }
+
+            // Charger le style de bulle sauvegardé s'il existe
+            const savedBubble = localStorage.getItem('selectedBubble');
+            if (savedBubble) {
+                selectBubble(savedBubble, false);
+            } else {
+                // Sélectionner la bulle de dialogue par défaut
+                selectBubble('dialogue', false);
+            }
+
+            // Charger la police sauvegardée s'il existe
+            const savedFont = localStorage.getItem('selectedFont');
+            if (savedFont) {
+                selectFont(savedFont, false);
+            }
+            const fontSelector = document.getElementById('fontSelector');
+            if (fontSelector && savedFont) {
+                fontSelector.value = savedFont;
+            }
+
+            // Charger la taille de police sauvegardée s'il existe
+            const savedFontSize = localStorage.getItem('selectedFontSize');
+            if (savedFontSize) {
+                document.getElementById('fontSizeSlider').value = savedFontSize;
+                document.getElementById('fontSizeValue').textContent = savedFontSize + 'px';
+                updateFontSize(savedFontSize, false);
+            }
+        });
+
+        function changeBackground(element, bgName) {
+            document.querySelectorAll('.background-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            element.classList.add('selected');
+            const bgUrl = element.getAttribute('data-bg');
+            document.body.style.backgroundImage = `url('${bgUrl}')`;
+        }
+
+        // ========== Gestion des polices ==========
+        function selectFont(fontFamily, updateStorage = true) {
+            document.body.style.fontFamily = fontFamily;
+
+            if (updateStorage && isLocalStorageAvailable()) {
+                localStorage.setItem('selectedFont', fontFamily);
+            }
+        }
+            
+
+        function updateFontSize(size, updateStorage = true) {
+            // Mettre à jour l'affichage de la valeur
+            document.getElementById('fontSizeValue').textContent = size + 'px';
+            
+            // Appliquer la taille de police
+            document.body.style.fontSize = size + 'px';
+            
+            // Sauvegarder dans le localStorage si demandé
+            if (updateStorage && isLocalStorageAvailable()) {
+                localStorage.setItem('selectedFontSize', size);
+            }
+        }
+
+        // ========== Gestion des bulles ==========
+        let selectedBubbleType = null;
+        
+        function selectBubble(type, updateStorage = true) {
+            selectedBubbleType = type;
+            
+            // Retirer la classe 'selected' de toutes les options
+            document.querySelectorAll('.bubble-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Ajouter la classe 'selected' à l'option cliquée
+            event.currentTarget.classList.add('selected');
+            
+            // Mettre à jour la bulle
+            updateBubble();
+            
+            // Sauvegarder dans le localStorage si demandé
+            if (updateStorage && isLocalStorageAvailable()) {
+                localStorage.setItem('selectedBubble', type);
+            }
+        }
+        
+        function wrapText(text, maxWidth) {
+            const words = text.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            
+            for (let i = 1; i < words.length; i++) {
+                const word = words[i];
+                const tempSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                const tempText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                tempText.setAttribute("font-family", "Comic Sans MS");
+                tempText.setAttribute("font-size", "16");
+                tempText.textContent = currentLine + ' ' + word;
+                tempSvg.appendChild(tempText);
+                document.body.appendChild(tempSvg);
+                const width = tempText.getComputedTextLength();
+                document.body.removeChild(tempSvg);
+                
+                if (width < maxWidth) {
+                    currentLine += ' ' + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // ========== Gestion des paramètres ==========
+        function applySettings() {
+            if (!isLocalStorageAvailable()) return;
+            
+            try {
+                // Sauvegarder le fond d'écran
+                const selectedBgOption = document.querySelector('.background-option.selected');
+                if (selectedBgOption) {
+                    const bgUrl = selectedBgOption.getAttribute('data-bg');
+                    localStorage.setItem('selectedBackground', bgUrl);
+                    console.log('Fond enregistré:', bgUrl);
+                }
+                
+                // Sauvegarder le style de bulle
+                if (selectedBubbleType) {
+                    localStorage.setItem('selectedBubble', selectedBubbleType);
+                    console.log('Bulle enregistrée:', selectedBubbleType);
+                }
+                
+                // Sauvegarder la police
+                const fontSelector = document.getElementById('fontSelector');
+                if (fontSelector) {
+                    const fontFamily = fontSelector.value;
+                    localStorage.setItem('selectedFont', fontFamily);
+                }
+                
+                // Sauvegarder la taille de police
+                const fontSize = document.getElementById('fontSizeSlider').value;
+                localStorage.setItem('selectedFontSize', fontSize);
+                
+                // Afficher un message et rediriger
+                alert('Paramètres enregistrés avec succès !');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 500);
+            } catch(e) {
+                console.error("Erreur lors de la sauvegarde:", e);
+                alert("Erreur lors de la sauvegarde des paramètres");
+            }
+        }
+
+        function resetSettings() {
+            if (!isLocalStorageAvailable()) return;
+            
+            try {
+                // Réinitialiser le fond d'écran
+                localStorage.removeItem('selectedBackground');
+                document.body.style.backgroundImage = '';
+                document.querySelectorAll('.background-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Réinitialiser le style de bulle
+                localStorage.removeItem('selectedBubble');
+                selectBubble('dialogue', false);
+                
+                // Réinitialiser la police
+                localStorage.removeItem('selectedFont');
+                document.querySelectorAll('.font-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                document.body.style.fontFamily = '';
+                
+                // Réinitialiser la taille de police
+                localStorage.removeItem('selectedFontSize');
+                document.getElementById('fontSizeSlider').value = 16;
+                document.getElementById('fontSizeValue').textContent = '16px';
+                document.body.style.fontSize = '';
+                
+                alert('Paramètres réinitialisés');
+                console.log('LocalStorage effacé');
+            } catch(e) {
+                console.error("Erreur lors de la réinitialisation:", e);
+            }
+        }
+    </script>
+</body>
+</html>
