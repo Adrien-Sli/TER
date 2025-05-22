@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 avatarDisplay.style.backgroundImage = `url(${imageData})`;
                 avatarDisplay.textContent = '';
                 localStorage.setItem('avatarImage', imageData);
+                updateNavbarAvatar(imageData);
             };
             reader.readAsDataURL(file);
         }
@@ -359,5 +360,18 @@ function getActivityText(value) {
         case 'marche': return 'Marche';
         case 'garde_enfant': return 'Garde d\'enfant';
         default: return value;
+    }
+}
+function updateNavbarAvatar(avatarUrl) {
+    const profilIcons = document.querySelectorAll('.profil-icon');
+    if (avatarUrl) {
+        profilIcons.forEach(icon => {
+            icon.src = avatarUrl;
+        });
+    } else {
+        // Revenir à l'image par défaut si aucune image n'est sauvegardée
+        profilIcons.forEach(icon => {
+            icon.src = '../Image/profil.png';
+        });
     }
 }

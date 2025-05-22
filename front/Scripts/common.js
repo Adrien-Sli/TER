@@ -1,3 +1,17 @@
+// Met à jour l'avatar dans la navbar
+function updateNavbarAvatar(avatarUrl) {
+    const profilIcons = document.querySelectorAll('.profil-icon');
+    if (avatarUrl) {
+        profilIcons.forEach(icon => {
+            icon.src = avatarUrl;
+        });
+    } else {
+        // Revenir à l'image par défaut si aucune image n'est sauvegardée
+        profilIcons.forEach(icon => {
+            icon.src = '../Image/profil.png';
+        });
+    }
+}
 // Applique le fond d'écran sauvegardé
 function applySavedBackground() {
     const savedBg = localStorage.getItem('selectedBackground');
@@ -7,7 +21,11 @@ function applySavedBackground() {
         document.body.style.backgroundPosition = 'center';
         document.body.style.backgroundAttachment = 'fixed';
     }
+    // Appliquer aussi l'avatar s'il existe
+    const savedAvatar = localStorage.getItem('avatarImage');
+    updateNavbarAvatar(savedAvatar);
 }
+
 
 // Applique la police sauvegardée
 function applySavedFont() {
