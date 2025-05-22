@@ -339,9 +339,6 @@
                 // Sauvegarder la taille de police
                 const fontSize = document.getElementById('fontSizeSlider').value;
                 localStorage.setItem('selectedFontSize', fontSize);
-                
-                // Afficher un message et rediriger
-                alert('Paramètres enregistrés avec succès !');
                 setTimeout(() => {
                     window.location.href = 'index.html';
                 }, 500);

@@ -77,6 +77,8 @@ function updateProfile(data) {
     updatePetsSection(data);
     // Section contact
     updateContactSection(data);
+
+    updateFoodSection(data);
 }
 
 function getGenreText(genreValue) {
@@ -240,7 +242,46 @@ function updateActivitiesSection(data) {
         activitesList.appendChild(li);
     }
 }
+function updateFoodSection(data){
 
+    // Gestion des allergies
+    const allergiesElement = document.getElementById('allergies');
+    if (data.allergies === 'oui' && data.allergies_liste) {
+        allergiesElement.textContent = data.allergies_liste;
+    } else {
+        allergiesElement.textContent = 'Aucune allergie connue';
+    }
+
+    // Gestion des préférences alimentaires
+    const preferencesElement = document.getElementById('preferences');
+    preferencesElement.innerHTML = '';
+
+    if (data.preferences) {
+        data.preferences.forEach(pref => {
+            if (pref === 'aucune') return;
+            
+            const li = document.createElement('li');
+            if (pref === 'autre' && data.autre_preference) {
+                li.textContent = data.autre_preference;
+            } else {
+                const labels = {
+                    'vegetarien': 'Végétarien',
+                    'vegan': 'Végan',
+                    'sans_gluten': 'Sans gluten',
+                    'sans_lactose': 'Sans lactose'
+                };
+                li.textContent = labels[pref] || pref;
+            }
+            preferencesElement.appendChild(li);
+        });
+
+        if (preferencesElement.children.length === 0) {
+            const li = document.createElement('li');
+            li.textContent = 'Aucune préférence particulière';
+            preferencesElement.appendChild(li);
+        }
+    }
+}
 
 function getAnimalText(value) {
     switch(value) {

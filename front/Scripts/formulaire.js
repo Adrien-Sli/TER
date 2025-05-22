@@ -23,7 +23,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const sectionMaison = document.getElementById('section_maison');
     const sectionAppartement = document.getElementById('section_appartement');
     const sectionEhpad = document.getElementById('section_ehpad');
+    const allergieOui = document.getElementById('allergie_oui');
+    const allergieNon = document.getElementById('allergie_non');
+    const allergiesDetails = document.getElementById('allergies_details');
 
+    allergieOui.addEventListener('change', function() {
+        allergiesDetails.style.display = this.checked ? 'block' : 'none';
+    });
+
+    allergieNon.addEventListener('change', function() {
+        allergiesDetails.style.display = 'none';
+    });
     function setSectionEnabled(section, enabled) {
         const elements = section.querySelectorAll('input, select, textarea');
         elements.forEach(el => {
@@ -51,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 📌 Initialiser l'affichage à partir de la valeur sélectionnée (utile si le champ est pré-rempli)
     afficherSectionLogement(typeLogementSelect.value);
-
+    
     // 📌 Soumission du formulaire
     form.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -92,7 +102,11 @@ document.addEventListener('DOMContentLoaded', function () {
             contact_prenom: document.querySelector('input[name="contact_prenom"]').value,
             contact_telephone: document.querySelector('input[name="contact_telephone"]').value,
             contact_lien: document.querySelector('select[name="contact_lien"]').value,
-            conseils: Array.from(document.querySelectorAll('input[name="conseils[]"]:checked')).map(el => el.value)
+            conseils: Array.from(document.querySelectorAll('input[name="conseils[]"]:checked')).map(el => el.value),
+            allergies: document.querySelector('input[name="allergies"]:checked')?.value,
+            allergies_liste: document.querySelector('textarea[name="allergies_liste"]')?.value || '',
+            preferences: Array.from(document.querySelectorAll('input[name="preferences[]"]:checked')).map(el => el.value),
+            autre_preference: document.querySelector('input[name="autre_preference"]')?.value || ''
         };
 
         localStorage.setItem('formulaireData', JSON.stringify(formData));

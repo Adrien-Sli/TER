@@ -99,7 +99,7 @@ h1 {
 }
 
 .pets-card {
-    border-top: 4px solid var(--warning);
+    border-top: 4px solid brown;
 }
 .contact-card {
     border-top: 4px solid var(--dark);
@@ -165,11 +165,22 @@ ul {
 }
 .contact-card {
     border-top: 4px solid #8e44ad;
-    grid-column: span 2; /* Pour prendre toute la largeur */
+    grid-column: span 1;
 }
 
 @media (max-width: 768px) {
     .contact-card {
+        grid-column: span 1;
+    }
+}
+.food-card {
+    border-top: 4px solid #e5f04b;
+    grid-column: span 1;
+}
+
+
+@media (max-width: 768px) {
+    .food-card {
         grid-column: span 1;
     }
 }

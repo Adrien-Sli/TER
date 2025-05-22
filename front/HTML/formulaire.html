@@ -681,6 +681,57 @@
                     </div>
                 </div>
             </div>
+            <h2>Informations Alimentaires</h2>
+
+            <div class="form-group">
+                <label>Avez-vous des allergies alimentaires ?</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="allergie_oui" name="allergies" value="oui">
+                        <label for="allergie_oui">Oui</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="allergie_non" name="allergies" value="non" checked>
+                        <label for="allergie_non">Non</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" id="allergies_details" style="display: none;">
+                <label>Si oui, précisez vos allergies :</label>
+                <textarea name="allergies_liste"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Préférences alimentaires :</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="pref_aucune" name="preferences[]" value="aucune" checked>
+                        <label for="pref_aucune">Aucune préférence particulière</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="pref_vegetarien" name="preferences[]" value="vegetarien">
+                        <label for="pref_vegetarien">Végétarien</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="pref_vegan" name="preferences[]" value="vegan">
+                        <label for="pref_vegan">Végan</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="pref_sans_gluten" name="preferences[]" value="sans_gluten">
+                        <label for="pref_sans_gluten">Sans gluten</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="pref_sans_lactose" name="preferences[]" value="sans_lactose">
+                        <label for="pref_sans_lactose">Sans lactose</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="pref_autre" name="preferences[]" value="autre">
+                        <label for="pref_autre">Autre :</label>
+                        <input type="text" name="autre_preference" style="width: 60%; margin-left: 10px;">
+                    </div>
+                </div>
+            </div>
             <h2>Contact de confiance</h2>
 
             <div class="form-group">
