@@ -78,9 +78,41 @@
 .aide-button {
     background-color: #4285f4;
     border: none;
-    padding: 10px 16px;
-    border-radius: 4px;
+    padding: 10px 18px;
+    border-radius: 24px; /* Plus arrondi que votre version originale */
     cursor: pointer;
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.aide-button:hover {
+    background-color: #3367d6;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Version avec icône SVG intégrée */
+.aide-button svg {
+    width: 18px;
+    height: 18px;
+    fill: white;
+}
+
+/* Variante pour un bouton plus discret */
+.aide-button.secondary {
+    background-color: rgba(66, 133, 244, 0.1);
+    color: #4285f4;
+}
+
+/* Animation au clic */
+.aide-button:active {
+    transform: scale(0.98);
 }
 
 .aide-button:hover {
@@ -135,7 +167,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding-top: 9px;
   transition: background-color 0.2s ease;
 }
 
