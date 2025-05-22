@@ -21,13 +21,6 @@ function initPage() {
         }
     });
 
-    // Mise à jour dynamique quand on tape dans le champ
-    const textarea = document.querySelector('.under-panel textarea');
-    if (textarea) {
-        textarea.addEventListener('input', function() {
-            updateBubble(bubbleType, this.value);
-        });
-    }
 }
 
 
@@ -208,7 +201,7 @@ function updateBubble(bubbleType, text = "Bonjour je m'appelle Phil Il fait supe
 // Attendre que tout le DOM soit chargé
 document.addEventListener('DOMContentLoaded', initPage);
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Appliquer le fond d'écran sauvegardé
     const savedBg = localStorage.getItem('selectedBackground');
     if (savedBg) {
@@ -217,8 +210,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.backgroundPosition = 'center';
         document.body.style.backgroundAttachment = 'fixed';
     }
-
-    displayWeather(); // Appeler la météo
+    const preventionMessage = await displayWeather(); // ◄◄◄ Récupère le message
+    manageHistory(preventionMessage);// Appeler la météo
 });
 
 async function displayWeather() {
@@ -256,6 +249,8 @@ async function displayWeather() {
         // Affichage dans la bulle
         const bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
         updateBubble(bubbleType, preventionMessage);
+
+        return preventionMessage;
 
     } catch (error) {
         console.error("Erreur lors de la récupération de la météo:", error);
@@ -433,5 +428,157 @@ function generatePreventionMessage(temp, condition, city) {
     }
 
     return selectedMessages.join("\n• ");
+    
+}
+// Ajoutez cette fonction pour gérer l'historique
+function manageHistory(preventionMessage) { 
+    let history = JSON.parse(localStorage.getItem('chatHistory')) || [];
+    const historyContainer = document.getElementById('historyContainer');
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+
+    if (preventionMessage) {
+        // Supprimer les anciens messages système (question vide)
+        history = history.filter(entry => entry.question.trim() !== '');
+        
+        // Ajouter le nouveau message en premier
+        history.unshift({
+            question: '', 
+            answer: preventionMessage,
+            timestamp: new Date().toISOString()
+        });
+        
+        localStorage.setItem('chatHistory', JSON.stringify(history));
+    }
+    // Fonction pour afficher l'historique
+    function displayHistory() {
+        historyContainer.innerHTML = '';
+        history.slice().reverse().forEach(item => {
+            // Conteneur pour chaque paire question-réponse
+            const conversationItem = document.createElement('div');
+            conversationItem.className = 'conversation-item';
+            
+            // Question
+            if (item.question) { 
+                const questionItem = document.createElement('div');
+                questionItem.className = 'history-item history-question';
+                questionItem.innerHTML = `<strong>Vous:</strong> ${item.question}`;
+                conversationItem.appendChild(questionItem);
+            }
+
+            // Réponse
+            const answerItem = document.createElement('div');
+            answerItem.className = 'history-item history-answer';
+            answerItem.innerHTML = `<strong>Assistant:</strong> ${item.answer}`;
+            conversationItem.appendChild(answerItem);
+
+            // Date
+            const dateItem = document.createElement('div');
+            dateItem.className = 'history-date';
+            dateItem.textContent = new Date(item.timestamp).toLocaleString();
+            conversationItem.appendChild(dateItem);
+
+            historyContainer.appendChild(conversationItem);
+        });
+        
+        // Faire défiler vers le bas pour voir les nouveaux messages
+        historyContainer.scrollTop = historyContainer.scrollHeight;
+    }
+
+    // Fonction pour ajouter une entrée à l'historique
+    function addToHistory(question, answer) {
+        const newEntry = { 
+            question, 
+            answer, 
+            timestamp: new Date().toISOString() 
+        };
+        
+        history.push(newEntry);
+        
+        // Limiter l'historique à 100 entrées (peut être ajusté)
+        if (history.length > 100) {
+            history = history.slice(history.length - 100);
+        }
+        
+        localStorage.setItem('chatHistory', JSON.stringify(history));
+        displayHistory();
+    }
+
+    // Gestion du clic sur le bouton Envoyer
+    sendButton.addEventListener('click', async function() {
+        const question = messageInput.value.trim();
+        if (question) {
+            // Ajouter la question à l'historique immédiatement avec une réponse vide
+            addToHistory(question, "En cours de traitement...");
+            
+            // Effacer le champ de saisie
+            messageInput.value = '';
+            
+            try {
+                // Ici vous devriez appeler votre API ou logique de génération de réponse
+                // Pour l'exemple, nous utilisons une réponse simulée
+                let answer;
+                
+                // Si la question concerne la météo
+                if (question.toLowerCase().includes('météo') || 
+                    question.toLowerCase().includes('temps') ||
+                    question.toLowerCase().includes('température')) {
+                    // Générer une réponse météo personnalisée
+                    const rawData = localStorage.getItem('formulaireData') || localStorage.getItem('userData');
+                    if (rawData) {
+                        const dataUser = JSON.parse(rawData);
+                        const city = dataUser.habitation || 'Grenoble';
+                        answer = displayWeather();
+                    } else {
+                        answer = "Je ne peux pas accéder aux informations météo sans connaître votre ville. Veuillez configurer votre profil.";
+                    }
+                } else {
+                    // Réponse par défaut
+                    answer = "J'ai bien reçu votre message. Voici quelques conseils généraux : " + 
+                             generatePreventionMessage().split('\n• ').slice(0, 3).join('\n• ');
+                }
+                
+                // Mettre à jour la dernière entrée dans l'historique avec la vraie réponse
+                if (history.length > 0) {
+                    history[history.length - 1].answer = answer;
+                    localStorage.setItem('chatHistory', JSON.stringify(history));
+                    displayHistory();
+                }
+                
+                // Mettre à jour la bulle avec la réponse
+                const bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
+                updateBubble(bubbleType, answer);
+                
+            } catch (error) {
+                console.error("Erreur lors de la génération de la réponse:", error);
+                
+                // Mettre à jour avec un message d'erreur
+                if (history.length > 0) {
+                    history[history.length - 1].answer = "Désolé, une erreur s'est produite lors du traitement de votre demande.";
+                    localStorage.setItem('chatHistory', JSON.stringify(history));
+                    displayHistory();
+                }
+                
+                updateBubble('dialogue', "Désolé, une erreur s'est produite.");
+            }
+        }
+    });
+
+    // Gestion de la touche Entrée
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendButton.click();
+        }
+    });
+
+    // Bouton "Voir plus" - pourrait charger plus d'historique si pagination implémentée
+    document.getElementById('loadMore').addEventListener('click', function() {
+        // Implémentation potentielle pour charger plus d'historique
+        console.log("Fonctionnalité 'Voir plus' à implémenter");
+    });
+
+    // Afficher l'historique au chargement
+    displayHistory();
 }
 

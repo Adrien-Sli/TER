@@ -19,7 +19,7 @@
             // Charger le style de bulle
             let bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
 
-            // NE PAS appeler updateBubble ici — attendre que le vrai contenu (météo ou textarea) le fasse
+            manageHistory();
 
             // Réagir au changement de style de bulle (ex: depuis une autre page)
             window.addEventListener('storage', function(e) {
@@ -29,14 +29,6 @@
                     updateBubble(bubbleType, textarea?.value || "");
                 }
             });
-
-            // Mise à jour dynamique quand on tape dans le champ
-            const textarea = document.querySelector('.under-panel textarea');
-            if (textarea) {
-                textarea.addEventListener('input', function() {
-                    updateBubble(bubbleType, this.value);
-                });
-            }
         }
 
 
@@ -267,18 +259,17 @@
             </div>
 
             <div class="under-panel">
-                <textarea placeholder="Posez votre question ici :)"></textarea>
-                <button class="send">Envoyer</button>
+                <textarea placeholder="Posez votre question ici :)" id="messageInput"></textarea>
+                <button class="send" id="sendButton">Envoyer</button>
             </div>
         </div>
 
         <div class="right-panel">
             <h2>Historique</h2>
-            <div class="history-item">Question / Réponse 1</div>
-            <div class="history-item">Question / Réponse 2</div>
-            <div class="history-item">Question / Réponse 3</div>
-            <!-- ... autres éléments d'historique ... -->
-            <button>Voir plus</button>
+            <div class="history-container" id="historyContainer">
+                <!-- Les éléments d'historique seront ajoutés ici dynamiquement -->
+            </div>
+            <button id="loadMore">Voir plus</button>
         </div>
     </div>
 
