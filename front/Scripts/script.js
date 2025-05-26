@@ -53,7 +53,7 @@ function wrapText(text, maxWidth) {
     return lines;
 }
 
-function updateBubble(bubbleType, text = "Bonjour je m'appelle Phil Il fait super beau a Grenoble aujourd'hui tu ne trouve pas ?") {
+function updateBubble(bubbleType, text = "") {
     const centerPanel = document.querySelector('.center-panel');
     if (!centerPanel) {
         console.error("Element .center-panel non trouvé");
@@ -264,15 +264,15 @@ function generatePreventionMessage(temp, condition, city) {
     // Météo très chaude (30°C+)
     if (temp >= 30) {
         conseils.push(
-            `À ${city}, penser à boire un peu d’eau régulièrement, même sans ressentir la soif, peut vraiment aider.`,
-            "Créer un peu de courant d’air en soirée peut rendre l’atmosphère plus agréable.",
-            "Fermer les volets ou rideaux en journée permet souvent de garder la fraîcheur à l’intérieur.",
+            `En temps de haute chaleur, penser à boire un peu d’eau régulièrement.`,
+            "N'hésiter pas a aérrer vos pieces en soirée cela peut rendre l’air plus agréable.",
+            "Penser a fermer vos volets et vos rideaux en journée cela vous permetera de garder la fraîcheur à l’intérieur.",
             "Éviter d’utiliser trop d’appareils électriques aide à limiter la chaleur dans la maison.",
-            "Placer un petit bol d’eau devant un ventilateur peut légèrement rafraîchir l’air ambiant.",
+            "Si vous avez trop chaud, vous pouvez placer un petit bol d’eau devant un ventilateur pour humidifier et rafraîchir l’air ambiant.",
             "Préparer à l’avance un endroit frais pour conserver les médicaments peut être prudent.",
             "Choisir des vêtements légers en coton peut améliorer le confort par temps chaud.",
             "Il peut être utile d’humidifier doucement la nuque ou les poignets en cas de forte chaleur.",
-            "Éviter les boissons alcoolisées ou très caféinées aide à mieux rester hydraté.",
+            "Pour rester hydraté en temps de haute chaleur il est conseillé d'éviter les boissons alcoolisées ou très caféinées.",
             "Avoir quelques plantes d’intérieur peut contribuer à rendre l’air plus agréable.",
             "Fermer les pièces inutilisées permet souvent de mieux conserver la fraîcheur là où on se repose.",
             "Les repas froids évitent de chauffer la cuisine et restent agréables en période chaude.",
@@ -283,7 +283,7 @@ function generatePreventionMessage(temp, condition, city) {
             "Penser à faire une petite pause à l’ombre après chaque activité extérieure peut éviter la fatigue.",
             "Faire vérifier son système d’aération ou de climatisation avant les fortes chaleurs est souvent utile.",
             "Garder une serviette humide dans le frigo pour s’en servir en cas de besoin peut être une astuce rafraîchissante.",
-            "Un petit brumisateur à portée de main peut être agréable au fil de la journée."
+            "Garder un petit brumisateur à portée de main peut rendre la température plus supportable lorsqu'il fait chaud."
         );
     }
 
