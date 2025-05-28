@@ -1,21 +1,13 @@
 // Variables globales
 let currentHistoryId = null;
-let histories = [
-    {
-        id: 1,
-        date: '2023-05-15T14:30',
-        user: 'user123',
-        message: 'Bonjour, comment ça va ?',
-        response: 'Je vais bien, merci ! Et vous ?'
-    },
-    {
-        id: 2,
-        date: '2023-05-15T15:45',
-        user: 'user456',
-        message: 'Quel est le temps aujourd\'hui ?',
-        response: 'Je ne peux pas accéder aux données météo en temps réel.'
+let histories = JSON.parse(localStorage.getItem('chatHistory')) || [];
+
+histories = histories.map((h, index) => {
+    if (!h.id) {
+        return { ...h, id: index + 1 };
     }
-];
+    return h;
+});
 
 // Éléments du DOM
 const addBtn = document.getElementById('addBtn');
@@ -23,13 +15,13 @@ const modal = document.getElementById('historyModal');
 const closeBtn = document.querySelector('.close');
 const historyForm = document.getElementById('historyForm');
 const searchInput = document.getElementById('searchInput');
-const historyTable = document.getElementById('historyTable').getElementsByTagName('tbody')[0];
+const historyTableBody = document.getElementById('historyTable').getElementsByTagName('tbody')[0];
 
 // Ouvrir le modal pour ajouter un historique
 addBtn.addEventListener('click', () => {
     currentHistoryId = null;
     document.getElementById('modalTitle').textContent = 'Ajouter un Historique';
-    document.getElementById('historyForm').reset();
+    historyForm.reset();
     modal.style.display = 'block';
 });
 
@@ -48,26 +40,33 @@ window.addEventListener('click', (event) => {
 // Gérer la soumission du formulaire (ajout/modification)
 historyForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
     const historyData = {
         date: document.getElementById('historyDate').value,
-        user: document.getElementById('historyUser').value,
+        user: document.getElementById('historyUser').value || 'user',
         message: document.getElementById('historyMessage').value,
         response: document.getElementById('historyResponse').value
     };
-    
+
     if (currentHistoryId) {
         // Modification
         const index = histories.findIndex(h => h.id === currentHistoryId);
         if (index !== -1) {
-            histories[index] = { ...historyData, id: currentHistoryId };
+            histories[index] = { ...historyData, id: currentHistoryId, timestamp: new Date(historyData.date).toISOString() };
         }
     } else {
         // Ajout
         const newId = histories.length > 0 ? Math.max(...histories.map(h => h.id)) + 1 : 1;
-        histories.push({ ...historyData, id: newId });
+        histories.push({
+            ...historyData,
+            id: newId,
+            timestamp: new Date(historyData.date).toISOString()
+        });
     }
-    
+
+    // Sauvegarder dans le localStorage
+    localStorage.setItem('chatHistory', JSON.stringify(histories));
+
     renderHistoryTable();
     modal.style.display = 'none';
 });
@@ -75,47 +74,46 @@ historyForm.addEventListener('submit', (e) => {
 // Rendre le tableau des historiques
 function renderHistoryTable(filteredHistories = null) {
     const data = filteredHistories || histories;
-    historyTable.innerHTML = '';
-    
+    historyTableBody.innerHTML = '';
+
     data.forEach(history => {
         const row = document.createElement('tr');
-        
+
         // Formatage de la date pour l'affichage
-        const dateObj = new Date(history.date);
+        const dateObj = new Date(history.timestamp || history.date);
         const formattedDate = dateObj.toLocaleString('fr-FR');
-        
+
         row.innerHTML = `
-            <td>${history.id}</td>
+            <td>${history.id || ''}</td>
             <td>${formattedDate}</td>
-            <td>${history.user}</td>
-            <td>${history.message}</td>
-            <td>${history.response}</td>
+            <td>${history.user || 'user'}</td>
+            <td>${history.message || history.question || ''}</td>
+            <td>${history.response || history.answer || ''}</td>
             <td>
                 <button class="editBtn" data-id="${history.id}">Modifier</button>
                 <button class="deleteBtn btn-danger" data-id="${history.id}">Supprimer</button>
             </td>
         `;
-        
-        historyTable.appendChild(row);
-    });
-    
-    // Ajouter les événements aux boutons
-    document.querySelectorAll('.editBtn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const id = parseInt(e.target.getAttribute('data-id'));
-            editHistory(id);
-        });
-    });
-    
-    document.querySelectorAll('.deleteBtn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const id = parseInt(e.target.getAttribute('data-id'));
-            if (confirm('Êtes-vous sûr de vouloir supprimer cet historique ?')) {
-                deleteHistory(id);
-            }
-        });
+
+        historyTableBody.appendChild(row);
     });
 }
+
+// Délégation d'événements sur le tbody pour gérer modifier/supprimer
+historyTableBody.addEventListener('click', (event) => {
+    const target = event.target;
+    if (target.classList.contains('editBtn')) {
+        const id = parseInt(target.getAttribute('data-id'));
+        console.log('Edit id:', id);
+        editHistory(id);
+    } else if (target.classList.contains('deleteBtn')) {
+        const id = parseInt(target.getAttribute('data-id'));
+        console.log('Delete id:', id);
+        if (confirm('Êtes-vous sûr de vouloir supprimer cet historique ?')) {
+            deleteHistory(id);
+        }
+    }
+});
 
 // Modifier un historique
 function editHistory(id) {
@@ -124,10 +122,13 @@ function editHistory(id) {
         currentHistoryId = id;
         document.getElementById('modalTitle').textContent = 'Modifier l\'Historique';
         document.getElementById('historyId').value = history.id;
-        document.getElementById('historyDate').value = history.date;
-        document.getElementById('historyUser').value = history.user;
-        document.getElementById('historyMessage').value = history.message;
-        document.getElementById('historyResponse').value = history.response;
+        // Format date pour input datetime-local : YYYY-MM-DDTHH:mm
+        const dt = history.timestamp ? new Date(history.timestamp) : new Date(history.date);
+        const localDatetime = dt.toISOString().slice(0,16);
+        document.getElementById('historyDate').value = localDatetime;
+        document.getElementById('historyUser').value = history.user || 'user';
+        document.getElementById('historyMessage').value = history.message || history.question || '';
+        document.getElementById('historyResponse').value = history.response || history.answer || '';
         modal.style.display = 'block';
     }
 }
@@ -135,6 +136,7 @@ function editHistory(id) {
 // Supprimer un historique
 function deleteHistory(id) {
     histories = histories.filter(h => h.id !== id);
+    localStorage.setItem('chatHistory', JSON.stringify(histories));
     renderHistoryTable();
 }
 
@@ -142,10 +144,12 @@ function deleteHistory(id) {
 searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
     if (searchTerm) {
-        const filtered = histories.filter(history => 
-            history.user.toLowerCase().includes(searchTerm) ||
-            history.message.toLowerCase().includes(searchTerm) ||
-            history.response.toLowerCase().includes(searchTerm)
+        const filtered = histories.filter(history =>
+            (history.user && history.user.toLowerCase().includes(searchTerm)) ||
+            (history.message && history.message.toLowerCase().includes(searchTerm)) ||
+            (history.question && history.question.toLowerCase().includes(searchTerm)) ||
+            (history.response && history.response.toLowerCase().includes(searchTerm)) ||
+            (history.answer && history.answer.toLowerCase().includes(searchTerm))
         );
         renderHistoryTable(filtered);
     } else {
@@ -153,5 +157,5 @@ searchInput.addEventListener('input', (e) => {
     }
 });
 
-// Initialiser le tableau
+// Initialiser le tableau avec les données du localStorage
 renderHistoryTable();

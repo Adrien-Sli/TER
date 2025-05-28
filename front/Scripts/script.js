@@ -264,52 +264,43 @@ function generatePreventionMessage(temp, condition, city) {
     // Météo très chaude (30°C+)
     if (temp >= 30) {
         conseils.push(
-            `En temps de haute chaleur, penser à boire un peu d’eau régulièrement.`,
-            "N'hésiter pas a aérrer vos pieces en soirée cela peut rendre l’air plus agréable.",
+            `En temps de forte chaleur, penser à boire un peu d’eau régulièrement.`,
+            "Lorsqu'il fait chaud n'hésiter pas a aérrer vos pieces en soirée cela peut rendre votre air plus agréable.",
             "Penser a fermer vos volets et vos rideaux en journée cela vous permetera de garder la fraîcheur à l’intérieur.",
-            "Éviter d’utiliser trop d’appareils électriques aide à limiter la chaleur dans la maison.",
+            "Quand il fait chaud éviter d’utiliser trop d’appareils électriques permet de limiter la chaleur dans la maison.",
             "Si vous avez trop chaud, vous pouvez placer un petit bol d’eau devant un ventilateur pour humidifier et rafraîchir l’air ambiant.",
-            "Préparer à l’avance un endroit frais pour conserver les médicaments peut être prudent.",
-            "Choisir des vêtements légers en coton peut améliorer le confort par temps chaud.",
-            "Il peut être utile d’humidifier doucement la nuque ou les poignets en cas de forte chaleur.",
+            "Par temps chaud il est préférable de choisir des vêtements légers comme des vétements en coton par exemple.",
             "Pour rester hydraté en temps de haute chaleur il est conseillé d'éviter les boissons alcoolisées ou très caféinées.",
-            "Avoir quelques plantes d’intérieur peut contribuer à rendre l’air plus agréable.",
-            "Fermer les pièces inutilisées permet souvent de mieux conserver la fraîcheur là où on se repose.",
-            "Les repas froids évitent de chauffer la cuisine et restent agréables en période chaude.",
-            "Installer un petit ventilateur dans les pièces utilisées peut améliorer le confort.",
-            "Un gant humide sur le front ou les bras peut apporter un soulagement temporaire.",
-            "Installer des rideaux plus opaques dans les pièces exposées peut être bénéfique.",
-            "Rester dans les pièces les plus fraîches aux heures chaudes de la journée peut éviter un coup de chaleur.",
+            "Si vous aimez les plantes et qu'il fait chaud, sacher qu'avoir quelques plantes d’intérieur peut contribuer à rendre l’air plus agréable.",
+            "Penser a fermer les pièces inutilisées permet souvent de mieux conserver la fraîcheur là où on se repose.",
+            "Salut pourquoi ne pas préparer un repas froids aujourd'hui cela évitera de chauffer la cuisine et sera agréables puisqu'il annoce de forte température aujourd'hui.",
+            "N'hésité pas à installer des petits ventilateurs dans les pièces fréquament utilisées afin d'améliorer votre confort en période de forte chaleur.",
+            "Il peut être interessant d'installer des rideaux plus opaques dans les pièces exposées au soleil pour permettre de réduire la chaleur.",
+            "Rester dans les pièces les plus fraîches aux heures chaudes de la journée permet éviter un coup de chaleur.",
             "Penser à faire une petite pause à l’ombre après chaque activité extérieure peut éviter la fatigue.",
-            "Faire vérifier son système d’aération ou de climatisation avant les fortes chaleurs est souvent utile.",
-            "Garder une serviette humide dans le frigo pour s’en servir en cas de besoin peut être une astuce rafraîchissante.",
-            "Garder un petit brumisateur à portée de main peut rendre la température plus supportable lorsqu'il fait chaud."
+            "Garder un petit brumisateur à portée de main peut rendre la température plus supportable lorsqu'il fait chaud.",
+            "Si vous prévoyer de sortir aujourdhui pensez a couvrire votre tête, Cela vous évitera d'attraper une insolation ."
         );
     }
 
     // Temps ensoleillé et doux (20-29°C)
     else if (temp >= 20 && condition.toLowerCase().includes("soleil")) {
         conseils.push(
-            `Le soleil est agréable à ${city}, mais c’est souvent un bon moment pour s’assurer que tout fonctionne bien à la maison.`,
-            "Un petit nettoyage des ventilateurs ou climatiseurs peut améliorer leur efficacité.",
-            "Un contrôle rapide des stores et parasols permet de bien profiter de la terrasse ou du balcon.",
-            "Ranger les produits sensibles à la chaleur dans un endroit ombragé peut éviter des désagréments.",
-            "S’assurer que les moustiquaires sont en bon état permet de profiter de l’air sans les insectes.",
-            "Préparer un sac avec un chapeau, une bouteille d’eau et un peu de crème solaire près de la porte peut être bien pratique.",
-            "Il est souvent utile de vérifier les câbles ou objets exposés longtemps au soleil.",
-            "Penser à limiter les efforts physiques aux heures les plus fraîches peut éviter la fatigue.",
-            "Profiter de cette météo pour organiser un peu l’espace de vie rend les journées plus agréables.",
-            "Vérifier les systèmes d’arrosage permet d’éviter les flaques et glissades involontaires.",
-            "Jeter un œil aux meubles de jardin assure plus de confort et de stabilité.",
-            "Prévoir une casquette ou un chapeau pour les sorties offre une protection supplémentaire.",
-            "Tester les poignées métalliques exposées au soleil évite les brûlures accidentelles.",
-            "Faire une promenade tôt le matin ou en fin de journée permet de profiter sans trop de chaleur.",
-            "Laisser les portes ouvertes entre pièces peut faciliter la circulation de l’air.",
-            "Ranger les outils après jardinage limite les risques de trébuchement.",
-            "Faire de petits gestes d’aération en fin d’après-midi permet de renouveler l’air en douceur.",
-            "Garder un éventail ou brumisateur à portée de main peut rendre les journées plus agréables.",
-            "Se reposer à l’ombre pendant les heures chaudes permet d’éviter la fatigue excessive.",
-            "Un petit coin tranquille à l’intérieur avec un peu de musique ou de lecture peut faire du bien."
+            `Le soleil est agréable à ${city}, cela peut être un bon moment pour s’assurer que tout fonctionne bien à la maison.`,
+            "Il fait beau aujourd’hui, alors n’hésitez pas à faire une petite promenade matinale ou en fin de journée : c’est agréable et ça permet de bouger sans souffrir de la chaleur.",
+            "Il peut être judicieux de préparer un sac avec l’essentiel pour vos sorties : chapeau, lunettes de soleil, crème solaire et bouteille d’eau.",
+            "Garder un éventail ou un brumisateur à portée de main, c’est un petit plaisir simple pour mieux supporter la chaleur.",
+            "Penser a vérifier l’état des moustiquaires et ouvrer quelques fenêtres en fin de journée, c’est une bonne façon d’aérer sans faire entrer d’insectes.",
+            "Et si vous en profitiez pour nettoyer légèrement vos ventilateurs ou grilles d’aération ? Un appareil bien entretenu est plus efficace et plus silencieux.",
+            "Il peut être intéressant de jeter un œil aux plantes d’intérieur ou du balcon : un petit arrosage ou déplacement à l’ombre peut leur faire du bien.",
+            "Saviez-vous qu’un petit coin lecture à l’ombre, avec un fauteuil confortable, peut devenir l’endroit préféré de votre après-midi ?",
+            "Il fait beau, pourquoi ne pas partager un café ou un jus frais à l’extérieur avec un voisin ou un proche ? Un moment simple qui fait du bien.",
+            "Penser à porter des vêtements légers, amples et de couleur claire peut aider à rester à l’aise toute la journée.",
+            "Il peut être utile de vérifier que les rampes, poignées ou mains courantes exposées au soleil ne sont pas trop chaudes au toucher.",
+            "Un petit tour au marché ou à la boulangerie tôt le matin, c’est l’occasion de profiter de l’air frais et de croiser quelques visages familiers.",
+            "Pensez à ranger les objets ou outils laissés sur la terrasse ou dans le jardin, cela évite les risques de chute et garde l’espace agréable.",
+            "Et si vous organisiez une pause à l’ombre avec un peu de musique douce ou un jeu de mémoire ? Une bonne idée pour se détendre sans s’exposer.",
+            "Il peut être agréable de rafraîchir la maison en ouvrant grand tôt le matin, puis en fermant les rideaux pour garder la fraîcheur."
         );
     }
 
@@ -335,6 +326,7 @@ function generatePreventionMessage(temp, condition, city) {
             "Fermer les rideaux en cas d’orage peut rendre l’atmosphère plus sereine.",
             "Gardez une liste de numéros utiles à proximité en cas de besoin.",
             "Prévoir un petit sac d’urgence avec lampe, batterie et eau peut toujours servir.",
+            "Il fait beau ajourd'hui c'est le temps parfait pour une petite randonné ou une sortie en exterieur.",
             "Prendre quelques minutes pour s’assurer que tout est bien rangé autour de la maison est rassurant."
         );
     }
@@ -342,26 +334,24 @@ function generatePreventionMessage(temp, condition, city) {
     // Temps froid (<10°C)
     if (temp < 10) {
         conseils.push(
-            `Quand il fait froid à ${city}, s’assurer que le chauffage fonctionne bien est souvent rassurant.`,
-            "Prévoir une couverture supplémentaire ou un plaid à portée de main apporte un confort rapide.",
-            "Penser à isoler les courants d’air peut aider à garder la chaleur à l’intérieur.",
-            "Vérifier que les tapis tiennent bien en place évite de glisser sur un sol froid.",
-            "Garder à proximité de quoi se chauffer en cas de panne éventuelle est une bonne précaution.",
-            "Il est souvent utile de préparer un petit stock de nourriture ou de boissons chaudes.",
-            "Des rideaux plus épais ou un tapis épais peuvent rendre l’atmosphère plus chaleureuse.",
-            "Un petit contrôle du détecteur de monoxyde de carbone peut renforcer la sécurité en hiver.",
-            "Contrôler les conduites d’eau exposées évite parfois les problèmes liés au gel.",
-            "Mettre des chaussons chauds peut contribuer à un meilleur confort au quotidien.",
-            "Laisser un peu couler l’eau par grand froid peut parfois empêcher le gel dans les tuyaux.",
-            "Prévoir une source de lumière d’appoint au cas où le froid entraîne une coupure de courant.",
-            "Organiser ses déplacements en limitant les sorties trop longues est souvent plus sûr.",
-            "Éviter les tapis trop fins sur le carrelage froid peut prévenir les glissades.",
-            "Contrôler les systèmes de ventilation empêche l’air froid d’entrer inutilement.",
-            "Prévoir un petit coin douillet bien aménagé peut rendre l’hiver plus doux.",
-            "S’assurer que le chauffe-eau fonctionne bien permet d’avoir de l’eau chaude sans surprise.",
-            "Faire une vérification annuelle de la cheminée ou des poêles est rassurant.",
-            "Tenir à jour une liste de contacts en cas de besoin rapide est toujours utile.",
-            "Ne pas hésiter à demander de l’aide si le froid devient difficile à gérer, cela fait partie des bons réflexes."
+            `Quand il fait froid à ${city}, il est souvent rassurant de vérifier que le chauffage fonctionne correctement.`,
+            "Prévoir une couverture ou un plaid bien à portée de main peut offrir un confort immédiat en cas de coup de froid.",
+            "Il peut être utile de calfeutrer les portes ou les fenêtres pour limiter les courants d’air.",
+            "Saviez-vous qu’un tapis bien fixé évite les glissades sur un sol froid, tout en ajoutant de la chaleur sous les pieds ?",
+            "Garder à disposition une petite source de chaleur d’appoint peut s’avérer pratique en cas de besoin.",
+            "Penser à avoir quelques boissons chaudes et de quoi grignoter en réserve, cela peut faire la différence pendant les jours plus rigoureux.",
+            "Un petit contrôle du détecteur de monoxyde de carbone est recommandé lorsqu'on utilise des appareils de chauffage.",
+            "Pensez a contrôler les tuyaux extérieurs ou exposés, cela permet parfois d’éviter des désagréments liés au gel.",
+            "Des chaussons chauds ou des semelles bien épaisses peuvent améliorer le confort à la maison lorsqu'il fait froid.",
+            "Laisser couler un léger filet d’eau par grand froid peut parfois éviter le gel des canalisations.",
+            "Il peut être pratique de garder une lampe torche ou une source de lumière à portée de main en cas de coupure.",
+            "Limiter les sorties longues ou mal protégées est une bonne façon d’éviter le coup de froid.",
+            "Il peut être utile de vérifier que les systèmes de ventilation ne laissent pas entrer trop d’air froid.",
+            "Prévoir un petit coin douillet avec coussins, plaid et lumière douce rend l’hiver plus agréable.",
+            "S’assurer que le chauffe-eau fonctionne bien permet de ne pas manquer d’eau chaude quand on en a le plus besoin.",
+            "Saviez-vous qu’une vérification annuelle de votre cheminée ou poêle contribue à votre sécurité et à leur bon fonctionnement ?",
+            "Tenir à jour une liste de numéros utiles (voisin, médecin, dépannage) est toujours un bon réflexe en hiver.",
+            "Et si le froid devient difficile à gérer, n’hésitez pas à demander un coup de main : c’est une preuve de bon sens, pas de faiblesse."
         );
     }
 
