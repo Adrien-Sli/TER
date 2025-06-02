@@ -1,13 +1,24 @@
 // Variables globales
 let currentHistoryId = null;
 let histories = JSON.parse(localStorage.getItem('chatHistory')) || [];
+let lastHistoryId = parseInt(localStorage.getItem('historyLastId')) || 0;
 
+// Corriger les historiques existants sans ID
+let idModified = false;
 histories = histories.map((h, index) => {
     if (!h.id) {
-        return { ...h, id: index + 1 };
+        lastHistoryId += 1;
+        idModified = true;
+        return { ...h, id: lastHistoryId };
     }
     return h;
 });
+
+// Si des ID ont été ajoutés, sauvegarder les données mises à jour
+if (idModified) {
+    localStorage.setItem('chatHistory', JSON.stringify(histories));
+    localStorage.setItem('historyLastId', lastHistoryId);
+}
 
 // Éléments du DOM
 const addBtn = document.getElementById('addBtn');
@@ -52,11 +63,17 @@ historyForm.addEventListener('submit', (e) => {
         // Modification
         const index = histories.findIndex(h => h.id === currentHistoryId);
         if (index !== -1) {
-            histories[index] = { ...historyData, id: currentHistoryId, timestamp: new Date(historyData.date).toISOString() };
+            histories[index] = {
+                ...historyData,
+                id: currentHistoryId,
+                timestamp: new Date(historyData.date).toISOString()
+            };
         }
     } else {
         // Ajout
-        const newId = histories.length > 0 ? Math.max(...histories.map(h => h.id)) + 1 : 1;
+        lastHistoryId += 1;
+        localStorage.setItem('historyLastId', lastHistoryId);
+        const newId = lastHistoryId;
         histories.push({
             ...historyData,
             id: newId,
@@ -79,7 +96,6 @@ function renderHistoryTable(filteredHistories = null) {
     data.forEach(history => {
         const row = document.createElement('tr');
 
-        // Formatage de la date pour l'affichage
         const dateObj = new Date(history.timestamp || history.date);
         const formattedDate = dateObj.toLocaleString('fr-FR');
 
@@ -104,11 +120,9 @@ historyTableBody.addEventListener('click', (event) => {
     const target = event.target;
     if (target.classList.contains('editBtn')) {
         const id = parseInt(target.getAttribute('data-id'));
-        console.log('Edit id:', id);
         editHistory(id);
     } else if (target.classList.contains('deleteBtn')) {
         const id = parseInt(target.getAttribute('data-id'));
-        console.log('Delete id:', id);
         if (confirm('Êtes-vous sûr de vouloir supprimer cet historique ?')) {
             deleteHistory(id);
         }
@@ -121,10 +135,8 @@ function editHistory(id) {
     if (history) {
         currentHistoryId = id;
         document.getElementById('modalTitle').textContent = 'Modifier l\'Historique';
-        document.getElementById('historyId').value = history.id;
-        // Format date pour input datetime-local : YYYY-MM-DDTHH:mm
         const dt = history.timestamp ? new Date(history.timestamp) : new Date(history.date);
-        const localDatetime = dt.toISOString().slice(0,16);
+        const localDatetime = dt.toISOString().slice(0, 16);
         document.getElementById('historyDate').value = localDatetime;
         document.getElementById('historyUser').value = history.user || 'user';
         document.getElementById('historyMessage').value = history.message || history.question || '';
