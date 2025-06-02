@@ -21,20 +21,12 @@ if (idModified) {
 }
 
 // Éléments du DOM
-const addBtn = document.getElementById('addBtn');
 const modal = document.getElementById('historyModal');
 const closeBtn = document.querySelector('.close');
 const historyForm = document.getElementById('historyForm');
 const searchInput = document.getElementById('searchInput');
 const historyTableBody = document.getElementById('historyTable').getElementsByTagName('tbody')[0];
 
-// Ouvrir le modal pour ajouter un historique
-addBtn.addEventListener('click', () => {
-    currentHistoryId = null;
-    document.getElementById('modalTitle').textContent = 'Ajouter un Historique';
-    historyForm.reset();
-    modal.style.display = 'block';
-});
 
 // Fermer le modal
 closeBtn.addEventListener('click', () => {
@@ -106,7 +98,6 @@ function renderHistoryTable(filteredHistories = null) {
             <td>${history.message || history.question || ''}</td>
             <td>${history.response || history.answer || ''}</td>
             <td>
-                <button class="editBtn" data-id="${history.id}">Modifier</button>
                 <button class="deleteBtn btn-danger" data-id="${history.id}">Supprimer</button>
             </td>
         `;
