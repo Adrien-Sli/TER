@@ -104,11 +104,9 @@
             let svgContent = '';
             let pathData = '';
 
-            switch(bubbleType) {
+            switch (bubbleType) {
                     case 'dialogue':
                     case 'pensee':
-                    case 'cri':
-                        // Utilisation de la même forme de base pour tous les types
                         pathData = `
                             M20,40 
                             Q40,20 60,20 
@@ -122,6 +120,38 @@
                             Q20,${bubbleHeight + 20} 20,${bubbleHeight}
                             V60
                             Q20,50 20,40 Z`;
+                        break;
+
+                        case 'cri':
+                        const w = bubbleWidth;
+                        const h = bubbleHeight;
+
+                        pathData = `
+                            M${w * 0.1},${h * 0.3}
+                            L${w * 0.05},${h * 0.1}
+                            L${w * 0.2},${h * 0.15}
+                            L${w * 0.25},${h * 0.0}
+                            L${w * 0.4},${h * 0.15}
+                            L${w * 0.5},${h * 0.0}
+                            L${w * 0.6},${h * 0.15}
+                            L${w * 0.75},${h * 0.0}
+                            L${w * 0.8},${h * 0.15}
+                            L${w * 0.95},${h * 0.1}
+                            L${w * 0.9},${h * 0.3}
+                            L${w},${h * 0.5}
+                            L${w * 0.9},${h * 0.7}
+                            L${w * 0.95},${h * 0.9}
+                            L${w * 0.8},${h * 0.85}
+                            L${w * 0.75},${h}
+                            L${w * 0.6},${h * 0.85}
+                            L${w * 0.5},${h}
+                            L${w * 0.4},${h * 0.85}
+                            L${w * 0.25},${h}
+                            L${w * 0.2},${h * 0.85}
+                            L${w * 0.05},${h * 0.9}
+                            L${w * 0.1},${h * 0.7}
+                            L0,${h * 0.5}
+                            Z`;
                         break;
                 }
 
@@ -192,15 +222,34 @@
 
                         <!-- Éléments spécifiques au cri -->
                         ${bubbleType === 'cri' ? `
-                            <g stroke="#ff4444" stroke-width="2" stroke-linecap="round">
-                                <path d="M${svgWidth * 0.1},${svgHeight * 0.1} L${svgWidth * 0.15},${svgHeight * 0.05}"/>
-                                <path d="M${svgWidth * 0.9},${svgHeight * 0.1} L${svgWidth * 0.85},${svgHeight * 0.05}"/>
-                                <path d="M${svgWidth * 0.1},${svgHeight * 0.9} L${svgWidth * 0.05},${svgHeight * 0.85}"/>
-                                <path d="M${svgWidth * 0.9},${svgHeight * 0.9} L${svgWidth * 0.95},${svgHeight * 0.85}"/>
-                                <path d="M${svgWidth * 0.5},10 L${svgWidth * 0.5},30"/>
-                                <path d="M10,${svgHeight * 0.5} L30,${svgHeight * 0.5}"/>
-                            </g>
-                        ` : ''}
+                        <g stroke="#ff4444" stroke-width="3" stroke-linecap="round">
+                            <!-- Haut gauche -->
+                            <path d="M${svgWidth * 0.2},${svgHeight * 0.1} L${svgWidth * 0.15},${svgHeight * 0.0}"/>
+                            <path d="M${svgWidth * 0.25},${svgHeight * 0.15} L${svgWidth * 0.20},${svgHeight * 0.02}"/>
+
+                            <!-- Haut droit -->
+                            <path d="M${svgWidth * 0.8},${svgHeight * 0.1} L${svgWidth * 0.85},${svgHeight * 0.0}"/>
+                            <path d="M${svgWidth * 0.75},${svgHeight * 0.15} L${svgWidth * 0.80},${svgHeight * 0.02}"/>
+
+                            <!-- Bas gauche -->
+                            <path d="M${svgWidth * 0.2},${svgHeight * 0.9} L${svgWidth * 0.15},${svgHeight * 1.0}"/>
+                            <path d="M${svgWidth * 0.25},${svgHeight * 0.85} L${svgWidth * 0.20},${svgHeight * 0.98}"/>
+
+                            <!-- Bas droit -->
+                            <path d="M${svgWidth * 0.8},${svgHeight * 0.9} L${svgWidth * 0.85},${svgHeight * 1.0}"/>
+                            <path d="M${svgWidth * 0.75},${svgHeight * 0.85} L${svgWidth * 0.80},${svgHeight * 0.98}"/>
+
+                            <!-- Côtés -->
+                            <path d="M${svgWidth * 0.05},${svgHeight * 0.5} L0,${svgHeight * 0.5}"/>
+                            <path d="M${svgWidth * 0.95},${svgHeight * 0.5} L${svgWidth},${svgHeight * 0.5}"/>
+
+                            <!-- Haut centre -->
+                            <path d="M${svgWidth * 0.5},${svgHeight * 0.0} L${svgWidth * 0.5},${svgHeight * 0.05}"/>
+
+                            <!-- Bas centre -->
+                            <path d="M${svgWidth * 0.5},${svgHeight * 1.0} L${svgWidth * 0.5},${svgHeight * 0.95}"/>
+                        </g>
+                    ` : ''}
                     </svg>`;
 
                 centerPanel.innerHTML = svgContent;

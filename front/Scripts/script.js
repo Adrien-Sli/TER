@@ -59,15 +59,15 @@ function updateBubble(bubbleType, text = "") {
         console.error("Element .center-panel non trouvé");
         return;
     }
-    
+
     console.log("Chargement de la bulle de type:", bubbleType);
-    
+
     const isCri = bubbleType === 'cri';
     const displayText = isCri ? text.toUpperCase() : text;
-    const maxWidth = 600; // Largeur maximale pour le texte
-    const lineHeight = 40; // Hauteur de ligne
-    const padding = 40; // Padding autour du texte
-    const tailHeight = 60; // Hauteur de la queue de la bulle
+    const maxWidth = 600;
+    const lineHeight = 40;
+    const padding = bubbleType === 'cri' ? 140 : 60;
+    const tailHeight = 60;
 
     const lines = wrapText(displayText, maxWidth);
     const textHeight = lines.length * lineHeight;
@@ -89,114 +89,120 @@ function updateBubble(bubbleType, text = "") {
         if (width > bubbleWidth) bubbleWidth = width;
     });
 
-    bubbleWidth = Math.max(300, bubbleWidth + 2 * padding);
+    bubbleWidth = Math.max(300, bubbleWidth + 2 * padding + 40);
     const svgWidth = bubbleWidth + 100;
     const svgHeight = totalHeight + 100;
 
-    let svgContent = '';
     let pathData = '';
 
-    switch(bubbleType) {
-            case 'dialogue':
-            case 'pensee':
+    switch (bubbleType) {
+        case 'dialogue':
+        case 'pensee':
+            pathData = `
+                M20,40 
+                Q40,20 60,20 
+                H${bubbleWidth}
+                Q${bubbleWidth + 30},20 ${bubbleWidth + 30},40 
+                V${bubbleHeight}
+                Q${bubbleWidth + 30},${bubbleHeight + 20} ${bubbleWidth},${bubbleHeight + 20} 
+                H80
+                Q65,${bubbleHeight + 20} 60,${bubbleHeight + 40}
+                Q55,${bubbleHeight + 20} 40,${bubbleHeight + 20}
+                Q20,${bubbleHeight + 20} 20,${bubbleHeight}
+                V60
+                Q20,50 20,40 Z`;
+            break;
+
             case 'cri':
-                // Utilisation de la même forme de base pour tous les types
+                const w = bubbleWidth;
+                const h = bubbleHeight;
                 pathData = `
-                    M20,40 
-                    Q40,20 60,20 
-                    H${bubbleWidth}
-                    Q${bubbleWidth + 30},20 ${bubbleWidth + 30},40 
-                    V${bubbleHeight}
-                    Q${bubbleWidth + 30},${bubbleHeight + 20} ${bubbleWidth},${bubbleHeight + 20} 
-                    H80
-                    Q65,${bubbleHeight + 20} 60,${bubbleHeight + 40}
-                    Q55,${bubbleHeight + 20} 40,${bubbleHeight + 20}
-                    Q20,${bubbleHeight + 20} 20,${bubbleHeight}
-                    V60
-                    Q20,50 20,40 Z`;
+                    M${w * 0.1},${h * 0.3}
+                    L${w * 0.05},${h * 0.1}
+                    L${w * 0.2},${h * 0.15}
+                    L${w * 0.25},${h * 0.0}
+                    L${w * 0.4},${h * 0.15}
+                    L${w * 0.5},${h * 0.0}
+                    L${w * 0.6},${h * 0.15}
+                    L${w * 0.75},${h * 0.0}
+                    L${w * 0.8},${h * 0.15}
+                    L${w * 0.95},${h * 0.1}
+                    L${w * 0.9},${h * 0.3}
+                    L${w},${h * 0.5}
+                    L${w * 0.9},${h * 0.7}
+                    L${w * 0.95},${h * 0.9}
+                    L${w * 0.8},${h * 0.85}
+                    L${w * 0.75},${h}
+                    L${w * 0.6},${h * 0.85}
+                    L${w * 0.5},${h}
+                    L${w * 0.4},${h * 0.85}
+                    L${w * 0.25},${h}
+                    L${w * 0.2},${h * 0.85}
+                    L${w * 0.05},${h * 0.9}
+                    L${w * 0.1},${h * 0.7}
+                    L0,${h * 0.5}
+                    Z`;
                 break;
-        }
-
-        svgContent = `
-            <svg width="100%" height="100%" viewBox="0 0 ${svgWidth} ${svgHeight}">
-                <defs>
-                    <linearGradient id="bubbleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        ${bubbleType === 'cri' ? `
-                            <stop offset="0%" stop-color="#ffe5e5" />
-                            <stop offset="100%" stop-color="#ffb3b3" />
-                        ` : `
-                            <stop offset="0%" stop-color="#fefefe" />
-                            <stop offset="100%" stop-color="#f0f0f0" />
-                        `}
-                    </linearGradient>
-
-                    <!-- Filtres spéciaux -->
-                    <filter id="penseeEffect">
-                        <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="1"/>
-                        <feDisplacementMap in="SourceGraphic" scale="2"/>
-                    </filter>
-                    
-                    <filter id="criEffect">
-                        <feTurbulence type="turbulence" baseFrequency="0.05 0.08" result="noise" numOctaves="2"/>
-                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/>
-                    </filter>
-                </defs>
-
-                <!-- Contour principal -->
-                <path
-                    d="${pathData}"
-                    fill="url(#bubbleGrad)" 
-                    stroke="${bubbleType === 'cri' ? '#ff4444' : '#bbb'}"
-                    stroke-width="${bubbleType === 'cri' ? '3' : '1.5'}"
-                    style="stroke-linejoin: round;
-                        ${bubbleType === 'pensee' ? 'stroke-dasharray: 8,5; filter: url(#penseeEffect);' : ''}
-                        ${bubbleType === 'cri' ? 'filter: url(#criEffect);' : ''}" />
-
-                <!-- Texte -->
-                ${lines.map((line, i) => `
-                    <text x="${svgWidth / 2}" 
-                        y="${padding + (i * lineHeight) + (lineHeight / 2)}"
-                        text-anchor="middle" 
-                        font-family="Comic Sans MS" 
-                        font-size="28" 
-                        fill="${bubbleType === 'cri' ? '#cc0000' : '#333'}"
-                        ${bubbleType === 'cri' ? `
-                            font-weight="bold"
-                            style="text-shadow: 2px 2px 4px rgba(255,0,0,0.3);"
-                        ` : ''}
-                        dominant-baseline="middle">
-                        ${bubbleType === 'cri' ? line.toUpperCase() : line}
-                    </text>
-                `).join('')}
-
-                <!-- Éléments spécifiques à la pensée -->
-                ${bubbleType === 'pensee' ? `
-                    <g transform="translate(${bubbleWidth * 0.25}, ${svgHeight - 50})">
-                        <circle r="12" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="3,2"/>
-                        <circle r="8" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="2,3" 
-                                transform="translate(15, 18)"/>
-                        <circle r="5" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="1,4" 
-                                transform="translate(25, 25)"/>
-                        <path d="M30,30 Q40,35 50,30" stroke="#bbb" stroke-width="2" fill="none" 
-                            stroke-dasharray="5,3"/>
-                    </g>
-                ` : ''}
-
-                <!-- Éléments spécifiques au cri -->
-                ${bubbleType === 'cri' ? `
-                    <g stroke="#ff4444" stroke-width="2" stroke-linecap="round">
-                        <path d="M${svgWidth * 0.1},${svgHeight * 0.1} L${svgWidth * 0.15},${svgHeight * 0.05}"/>
-                        <path d="M${svgWidth * 0.9},${svgHeight * 0.1} L${svgWidth * 0.85},${svgHeight * 0.05}"/>
-                        <path d="M${svgWidth * 0.1},${svgHeight * 0.9} L${svgWidth * 0.05},${svgHeight * 0.85}"/>
-                        <path d="M${svgWidth * 0.9},${svgHeight * 0.9} L${svgWidth * 0.95},${svgHeight * 0.85}"/>
-                        <path d="M${svgWidth * 0.5},10 L${svgWidth * 0.5},30"/>
-                        <path d="M10,${svgHeight * 0.5} L30,${svgHeight * 0.5}"/>
-                    </g>
-                ` : ''}
-            </svg>`;
-
-        centerPanel.innerHTML = svgContent;
     }
+
+    const svgContent = `
+        <svg width="100%" height="100%" viewBox="0 0 ${svgWidth} ${svgHeight}">
+            <defs>
+                <linearGradient id="bubbleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    ${isCri ? `
+                        <stop offset="0%" stop-color="#fefefe" />
+                        <stop offset="100%" stop-color="#f0f0f0" />
+                    ` : `
+                        <stop offset="0%" stop-color="#fefefe" />
+                        <stop offset="100%" stop-color="#f0f0f0" />
+                    `}
+                </linearGradient>
+                <filter id="penseeEffect">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="1"/>
+                    <feDisplacementMap in="SourceGraphic" scale="2"/>
+                </filter>
+                <filter id="criEffect">
+                    <feTurbulence type="turbulence" baseFrequency="0.05 0.08" result="noise" numOctaves="2"/>
+                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+                </filter>
+            </defs>
+
+            <path
+                d="${pathData}"
+                fill="url(#bubbleGrad)" 
+                stroke="${isCri ? '#000000' : '#bbb'}"
+                stroke-width="${isCri ? '3' : '1.5'}"
+                style="stroke-linejoin: round;
+                    ${bubbleType === 'pensee' ? 'stroke-dasharray: 8,5; filter: url(#penseeEffect);' : ''}
+                    ${isCri ? 'filter: url(#criEffect);' : ''}" />
+
+            ${lines.map((line, i) => `
+                <text x="${svgWidth / 2}" 
+                    y="${padding + (i * lineHeight) + (lineHeight / 2)}"
+                    text-anchor="middle" 
+                    font-family="Comic Sans MS" 
+                    font-size="26" 
+                    fill="${isCri ? '#000000' : '#333'}"
+                    font-weight="bold"
+                    style="${isCri ? 'text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.6);' : ''}"
+                    dominant-baseline="middle">
+                    ${line}
+                </text>
+            `).join('')}
+
+            ${bubbleType === 'pensee' ? `
+                <g transform="translate(${bubbleWidth * 0.25}, ${svgHeight - 50})">
+                    <circle r="12" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="3,2"/>
+                    <circle r="8" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="2,3" transform="translate(15, 18)"/>
+                    <circle r="5" fill="none" stroke="#bbb" stroke-width="2" stroke-dasharray="1,4" transform="translate(25, 25)"/>
+                    <path d="M30,30 Q40,35 50,30" stroke="#bbb" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+                </g>
+            ` : ''}
+        </svg>`;
+
+    centerPanel.innerHTML = svgContent;
+}
+
 
 // Attendre que tout le DOM soit chargé
 document.addEventListener('DOMContentLoaded', initPage);
