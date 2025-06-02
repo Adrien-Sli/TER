@@ -475,6 +475,7 @@ function manageHistory(preventionMessage) {
             conversationItem.appendChild(dateItem);
 
             historyContainer.appendChild(conversationItem);
+            updateBubble(item.bubbleType, item.answer);
         });
         
         // Faire défiler vers le bas pour voir les nouveaux messages
@@ -482,10 +483,11 @@ function manageHistory(preventionMessage) {
     }
 
     // Fonction pour ajouter une entrée à l'historique
-    function addToHistory(question, answer) {
+    function addToHistory(question, answer, bubbleType) {
         const newEntry = { 
             question, 
             answer, 
+            bubbleType, // Stocker le type de bulle
             timestamp: new Date().toISOString() 
         };
         
@@ -502,6 +504,7 @@ function manageHistory(preventionMessage) {
 
     // Gestion du clic sur le bouton Envoyer
     sendButton.addEventListener('click', async function() {
+        
         const question = messageInput.value.trim();
         if (question) {
             // Ajouter la question à l'historique immédiatement avec une réponse vide
@@ -555,7 +558,7 @@ function manageHistory(preventionMessage) {
                     displayHistory();
                 }
                 
-                updateBubble('dialogue', "Désolé, une erreur s'est produite.");
+                updateBubble(localStorage.getItem('selectedBubble') || 'dialogue', "Désolé, une erreur s'est produite.");
             }
         }
     });
