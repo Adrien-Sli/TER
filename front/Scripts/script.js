@@ -63,7 +63,7 @@ function updateBubble(bubbleType, text = "") {
     console.log("Chargement de la bulle de type:", bubbleType);
 
     const isCri = bubbleType === 'cri';
-    const displayText = isCri ? text.toUpperCase() : text;
+    const displayText = text;
     const maxWidth = 600;
     const lineHeight = 40;
     const padding = bubbleType === 'cri' ? 140 : 60;
