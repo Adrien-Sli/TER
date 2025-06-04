@@ -1,50 +1,19 @@
-// Fonction d'initialisation principale, appelée une seule fois
-async function initApp() {
-    // 1. Charger le fond d'écran
-    const fond = localStorage.getItem('selectedBackground');
-    if (fond) {
-        document.body.style.backgroundImage = `url('${fond}')`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-        document.body.style.backgroundAttachment = 'fixed';
-    }
+// Variable globale pour l'historique
+let chatHistory = [];
+const historyContainer = document.getElementById('historyContainer');
+const messageInput = document.getElementById('messageInput');
+const sendButton = document.getElementById('sendButton');
 
-    // 2. Initialiser la gestion de l'historique et récupérer le message de prévention initial
-    const preventionMessage = await displayWeather(); // Assurez-vous que displayWeather renvoie le message
-    manageHistory(preventionMessage);
+// ---
+// Fonctions utilitaires
+// ---
 
-    // 3. Réagir au changement de style de bulle (ex: depuis une autre page)
-    window.addEventListener('storage', function(e) {
-        if (e.key === 'selectedBubble') {
-            const newBubbleType = e.newValue;
-            const textarea = document.querySelector('.under-panel textarea');
-            // Mettre à jour la bulle avec le dernier message de l'historique si disponible
-            let lastMessage = "";
-            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-            if (chatHistory.length > 0) {
-                lastMessage = chatHistory[chatHistory.length - 1].answer;
-            }
-            updateBubble(newBubbleType, lastMessage);
-        }
-    });
-
-    // 4. Configurer les écouteurs d'événements pour le chat
-    const messageInput = document.getElementById('messageInput');
-    const sendButton = document.getElementById('sendButton');
-
-    sendButton.addEventListener('click', handleSendMessage);
-    messageInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            handleSendMessage();
-        }
-    });
-
-    // 5. Afficher l'historique au chargement initial
-    displayHistory(); // Appel initial pour afficher l'historique après chargement
-}
-
-// Fonction utilitaire pour le wrap de texte (pas de changement ici, elle est correcte)
+/**
+ * Enveloppe le texte pour qu'il tienne dans une largeur maximale.
+ * @param {string} text - Le texte à envelopper.
+ * @param {number} maxWidth - La largeur maximale en pixels.
+ * @returns {string[]} Un tableau de lignes de texte.
+ */
 function wrapText(text, maxWidth) {
     if (!text) return [""];
     const words = text.split(' ');
@@ -53,15 +22,16 @@ function wrapText(text, maxWidth) {
 
     for (let i = 1; i < words.length; i++) {
         const word = words[i];
+        // Créer un élément SVG temporaire pour mesurer la largeur du texte
         const tempSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         const tempText = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        tempText.setAttribute("font-family", "Comic Sans MS");
-        tempText.setAttribute("font-size", "28");
+        tempText.setAttribute("font-family", "Comic Sans MS"); // Doit correspondre au style de la bulle
+        tempText.setAttribute("font-size", "28"); // Doit correspondre au style de la bulle
         tempText.textContent = currentLine + ' ' + word;
         tempSvg.appendChild(tempText);
-        document.body.appendChild(tempSvg);
+        document.body.appendChild(tempSvg); // Ajouter au DOM pour getComputedTextLength
         const width = tempText.getComputedTextLength();
-        document.body.removeChild(tempSvg);
+        document.body.removeChild(tempSvg); // Supprimer l'élément temporaire
 
         if (width < maxWidth) {
             currentLine += ' ' + word;
@@ -74,7 +44,11 @@ function wrapText(text, maxWidth) {
     return lines;
 }
 
-// Fonction pour mettre à jour la bulle (pas de changement majeur, mais assurez-vous qu'elle est toujours appelée avec le bon type de bulle et le bon texte)
+/**
+ * Met à jour l'affichage de la bulle de dialogue SVG.
+ * @param {string} bubbleType - Le type de bulle ('dialogue', 'pensee', 'cri').
+ * @param {string} text - Le texte à afficher dans la bulle.
+ */
 function updateBubble(bubbleType, text = "") {
     const centerPanel = document.querySelector('.center-panel');
     if (!centerPanel) {
@@ -86,17 +60,18 @@ function updateBubble(bubbleType, text = "") {
 
     const isCri = bubbleType === 'cri';
     const displayText = text;
-    const maxWidth = 600;
-    const lineHeight = 40;
-    const padding = bubbleType === 'cri' ? 140 : 60;
-    const tailHeight = 60;
+    const maxWidth = 600; // Largeur maximale pour le texte dans la bulle
+    const lineHeight = 40; // Hauteur d'une ligne de texte
+    const padding = bubbleType === 'cri' ? 140 : 60; // Rembourrage intérieur de la bulle
+    const tailHeight = 60; // Hauteur de la "queue" de la bulle (pour dialogue/pensée)
 
     const lines = wrapText(displayText, maxWidth);
     const textHeight = lines.length * lineHeight;
     const bubbleHeight = textHeight + 2 * padding;
-    const totalHeight = bubbleHeight + tailHeight;
+    const totalHeight = bubbleHeight + tailHeight; // Hauteur totale incluant la queue
 
     let bubbleWidth = 0;
+    // Mesurer la largeur maximale des lignes pour déterminer la largeur de la bulle
     const tempSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     const tempText = document.createElementNS("http://www.w3.org/2000/svg", "text");
     tempText.setAttribute("font-family", "Comic Sans MS");
@@ -111,12 +86,13 @@ function updateBubble(bubbleType, text = "") {
         if (width > bubbleWidth) bubbleWidth = width;
     });
 
-    bubbleWidth = Math.max(300, bubbleWidth + 2 * padding + 40);
-    const svgWidth = bubbleWidth + 100;
-    const svgHeight = totalHeight + 100;
+    bubbleWidth = Math.max(300, bubbleWidth + 2 * padding + 40); // Largeur minimale de la bulle + ajustement
+    const svgWidth = bubbleWidth + 100; // Largeur du conteneur SVG
+    const svgHeight = totalHeight + 100; // Hauteur du conteneur SVG
 
     let pathData = '';
 
+    // Définir la forme de la bulle en fonction de son type
     switch (bubbleType) {
         case 'dialogue':
         case 'pensee':
@@ -136,6 +112,7 @@ function updateBubble(bubbleType, text = "") {
             break;
 
         case 'cri':
+            // Forme de bulle de cri (étoile ou forme dentelée)
             const w = bubbleWidth;
             const h = bubbleHeight;
             pathData = `
@@ -167,6 +144,7 @@ function updateBubble(bubbleType, text = "") {
             break;
     }
 
+    // Générer le contenu SVG de la bulle
     const svgContent = `
         <svg width="100%" height="100%" viewBox="0 0 ${svgWidth} ${svgHeight}">
             <defs>
@@ -225,7 +203,10 @@ function updateBubble(bubbleType, text = "") {
     centerPanel.innerHTML = svgContent;
 }
 
-// Fonction pour récupérer et afficher la météo
+/**
+ * Récupère les données météorologiques et génère un message de prévention.
+ * @returns {Promise<string>} Le message de prévention généré.
+ */
 async function displayWeather() {
     try {
         const rawData = localStorage.getItem('formulaireData') || localStorage.getItem('userData');
@@ -237,7 +218,7 @@ async function displayWeather() {
         const dataUser = JSON.parse(rawData);
         const city = dataUser.habitation || 'Grenoble';
 
-        const apiKey = "dab27fb29b8649b087492631251505";
+        const apiKey = "dab27fb29b8649b087492631251505"; // Remplacez par votre vraie clé API
         const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(city)}&lang=fr`;
 
         const response = await fetch(url);
@@ -268,7 +249,14 @@ async function displayWeather() {
     }
 }
 
-// Fonction pour générer le message de prévention (inchangée)
+/**
+ * Génère un message de prévention basé sur la météo.
+ * (Fonction non modifiée, mais incluse pour la complétude)
+ * @param {number} temp - La température actuelle.
+ * @param {string} condition - La description de la condition météo.
+ * @param {string} city - Le nom de la ville.
+ * @returns {string} Le message de prévention.
+ */
 function generatePreventionMessage(temp, condition, city) {
     if (!temp || !condition || !city) {
         return "Je n'ai pas pu récupérer les informations météo actuelles.";
@@ -362,7 +350,7 @@ function generatePreventionMessage(temp, condition, city) {
             "Limiter les sorties longues ou mal protégées est une bonne façon d’éviter le coup de froid.",
             "Il peut être utile de vérifier que les systèmes de ventilation ne laissent pas entrer trop d’air froid.",
             "Prévoir un petit coin douillet avec coussins, plaid et lumière douce rend l’hiver plus agréable.",
-            "S’assurer que le chauffe-eau fonctionne bien permet de ne pas manquer d’eau chaude quand on en le plus besoin.",
+            "S’assurer que le chauffe-eau fonctionne bien permet de ne pas manquer d’eau chaude quand on en a le plus besoin.",
             "Saviez-vous qu’une vérification annuelle de votre cheminée ou poêle contribue à votre sécurité et à leur bon fonctionnement ?",
             "Tenir à jour une liste de numéros utiles (voisin, médecin, dépannage) est toujours un bon réflexe en hiver.",
             "Et si le froid devient difficile à gérer, n’hésitez pas à demander un coup de main : c’est une preuve de bon sens, pas de faiblesse."
@@ -391,7 +379,7 @@ function generatePreventionMessage(temp, condition, city) {
             "Mettre une lampe automatique à l’entrée peut rendre le retour plus sûr.",
             "Garder une paire de chaussons bien antidérapants à portée de main limite les risques de chute.",
             "Revoir son éclairage extérieur peut aider à se sentir plus à l’aise pour rentrer en fin de journée.",
-            "Anticip et les besoins alimentaires ou de médicaments avant un épisode neigeux peut soulager l’esprit."
+            "Anticiper les besoins alimentaires ou de médicaments avant un épisode neigeux peut soulager l’esprit."
         );
     }
 
@@ -423,7 +411,7 @@ function generatePreventionMessage(temp, condition, city) {
 
     // Sélection aléatoire de 6 messages (au lieu de 3 si tu veux équilibrer)
     const selectedMessages = [];
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 1; i++) { // Changé à 1 message pour la bulle initiale
         if (conseils.length > 0) {
             const randomIndex = Math.floor(Math.random() * conseils.length);
             selectedMessages.push(conseils[randomIndex]);
@@ -431,19 +419,19 @@ function generatePreventionMessage(temp, condition, city) {
         }
     }
 
-    return selectedMessages.join("\n• ");
-
+    return selectedMessages.join("\n• "); // Joindre avec des puces si plusieurs messages
 }
 
-// Variable globale pour l'historique
-let chatHistory = [];
-const historyContainer = document.getElementById('historyContainer');
-const messageInput = document.getElementById('messageInput');
-const sendButton = document.getElementById('sendButton');
+// ---
+// Gestion de l'historique et du chat
+// ---
 
-// Fonction pour afficher l'historique
+/**
+ * Affiche l'historique de la conversation dans le conteneur dédié.
+ */
 function displayHistory() {
-    historyContainer.innerHTML = '';
+    historyContainer.innerHTML = ''; // Nettoie le conteneur avant d'afficher
+    // Parcours l'historique en sens inverse pour afficher les messages du plus récent au plus ancien
     chatHistory.slice().reverse().forEach(item => {
         const conversationItem = document.createElement('div');
         conversationItem.className = 'conversation-item';
@@ -468,27 +456,39 @@ function displayHistory() {
         historyContainer.appendChild(conversationItem);
     });
 
+    // Fait défiler le conteneur jusqu'en bas pour montrer les derniers messages
     historyContainer.scrollTop = historyContainer.scrollHeight;
 
-    // Mise à jour de la bulle avec le dernier message de l'historique après l'affichage
+    // Met à jour la bulle avec le dernier message de l'historique et le type de bulle actuel du localStorage
     if (chatHistory.length > 0) {
         const lastEntry = chatHistory[chatHistory.length - 1];
-        updateBubble(lastEntry.bubbleType, lastEntry.answer);
+        const currentBubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
+        updateBubble(currentBubbleType, lastEntry.answer);
+    } else {
+        // Si l'historique est vide, affiche un message d'accueil initial
+        const currentBubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
+        updateBubble(currentBubbleType, "Bienvenue ! Je suis là pour vous aider.");
     }
 }
 
-// Fonction pour ajouter une entrée à l'historique
+/**
+ * Ajoute une nouvelle entrée à l'historique de la conversation et met à jour l'affichage.
+ * @param {string} question - La question de l'utilisateur (peut être vide pour les messages système).
+ * @param {string} answer - La réponse de l'assistant.
+ * @param {string} [bubbleType='dialogue'] - Le type de bulle à utiliser pour cette entrée.
+ */
 function addToHistory(question, answer, bubbleType = 'dialogue') {
     const newEntry = {
         question,
         answer,
+        // Utilise le bubbleType passé en paramètre ou celui du localStorage
         bubbleType: bubbleType || localStorage.getItem('selectedBubble') || 'dialogue',
         timestamp: new Date().toISOString()
     };
 
     chatHistory.push(newEntry);
 
-    // Limiter l'historique
+    // Limite la taille de l'historique pour éviter qu'il ne devienne trop grand
     if (chatHistory.length > 100) {
         chatHistory = chatHistory.slice(chatHistory.length - 100);
     }
@@ -497,60 +497,69 @@ function addToHistory(question, answer, bubbleType = 'dialogue') {
     displayHistory(); // Appelle displayHistory pour actualiser l'affichage ET la bulle
 }
 
-// Nouvelle fonction pour gérer l'envoi de message
+/**
+ * Gère l'envoi d'un message par l'utilisateur.
+ */
 async function handleSendMessage() {
     const question = messageInput.value.trim();
-    if (!question) return;
+    if (!question) return; // Ne fait rien si le champ est vide
 
-    const bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
-    addToHistory(question, "En cours de traitement...", bubbleType);
-    messageInput.value = '';
+    // Récupère le type de bulle actuellement sélectionné pour la nouvelle entrée
+    const currentBubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
+    addToHistory(question, "En cours de traitement...", currentBubbleType); // Ajoute le message avec un état de chargement
+    messageInput.value = ''; // Efface le champ de saisie
 
     try {
         let answer;
+        // Simule une réponse basée sur la question (ici, seule la météo est gérée)
         if (question.toLowerCase().includes('météo') ||
             question.toLowerCase().includes('temps') ||
             question.toLowerCase().includes('température')) {
             answer = await displayWeather();
         } else {
-            answer = "J'ai bien reçu votre message. Comment puis-je vous aider ?";
+            answer = "J'ai bien reçu votre message. Comment puis-je vous aider ?"; // Réponse générique
         }
 
-        // Mettre à jour la dernière réponse
+        // Met à jour la dernière entrée de l'historique avec la réponse finale
         if (chatHistory.length > 0) {
             chatHistory[chatHistory.length - 1].answer = answer;
+            // S'assure que le bubbleType de la dernière entrée correspond à celui qui était actif
+            chatHistory[chatHistory.length - 1].bubbleType = currentBubbleType;
             localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-            displayHistory(); // Actualise l'affichage ET la bulle
+            displayHistory(); // Actualise l'affichage ET la bulle avec la réponse finale
         }
 
     } catch (error) {
         console.error("Erreur:", error);
         const errorMessage = "Désolé, une erreur s'est produite lors du traitement de votre demande.";
+        // En cas d'erreur, met à jour la dernière entrée avec un message d'erreur
         if (chatHistory.length > 0) {
             chatHistory[chatHistory.length - 1].answer = errorMessage;
+            chatHistory[chatHistory.length - 1].bubbleType = currentBubbleType;
             localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-            displayHistory(); // Actualise l'affichage ET la bulle
+            displayHistory();
         }
     }
 }
 
-// Fonction pour gérer l'historique (renommée et refactorisée)
+/**
+ * Gère l'initialisation de l'historique au chargement de la page.
+ * @param {string} preventionMessage - Le message de prévention initial généré par la météo.
+ */
 function manageHistory(preventionMessage) {
     chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
 
-    // Ajout du message de prévention initial si disponible et s'il n'est pas déjà présent
+    // Ajoute le message de prévention initial s'il est disponible et non déjà présent
     if (preventionMessage && typeof preventionMessage === 'string') {
         const isWeatherMessagePresent = chatHistory.some(entry =>
             entry.answer === preventionMessage && (entry.question === '' || entry.question === null)
         );
 
-        // Si le message météo n'est pas déjà dans l'historique et qu'il n'y a pas de question associée
         if (!isWeatherMessagePresent) {
-            // Ajouter le message de prévention comme un message "système" sans question
             const newEntry = {
                 question: '', // Pas de question pour un message système/initial
                 answer: preventionMessage,
-                bubbleType: localStorage.getItem('selectedBubble') || 'dialogue',
+                bubbleType: localStorage.getItem('selectedBubble') || 'dialogue', // Utilise le type de bulle actuel du localStorage
                 timestamp: new Date().toISOString()
             };
             chatHistory.push(newEntry);
@@ -559,11 +568,89 @@ function manageHistory(preventionMessage) {
     }
 }
 
+// ---
+// Initialisation de l'application
+// ---
+
+/**
+ * Fonction principale d'initialisation de l'application.
+ * Appelée une seule fois après le chargement complet du DOM.
+ */
+async function initApp() {
+    // 1. Charger le fond d'écran sauvegardé
+    const fond = localStorage.getItem('selectedBackground');
+    if (fond) {
+        document.body.style.backgroundImage = `url('${fond}')`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+    }
+
+    // 2. Initialiser la gestion de l'historique et récupérer le message de prévention initial (météo)
+    const preventionMessage = await displayWeather();
+    manageHistory(preventionMessage); // Remplit l'historique avec le message initial si nécessaire
+
+    // 3. Réagir aux changements de 'selectedBubble' dans le localStorage (pour les autres onglets)
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'selectedBubble') {
+            const newBubbleType = e.newValue;
+            // Met à jour la bulle avec le dernier message de l'historique si disponible
+            let lastMessage = "";
+            if (chatHistory.length > 0) {
+                lastMessage = chatHistory[chatHistory.length - 1].answer;
+            }
+            updateBubble(newBubbleType, lastMessage || "Bienvenue ! Je suis là pour vous aider.");
+        }
+    });
+
+    // 4. Configurer les écouteurs d'événements pour le champ de saisie et le bouton d'envoi
+    sendButton.addEventListener('click', handleSendMessage);
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) { // Envoie au pressage de "Entrée" (sans "Shift")
+            e.preventDefault();
+            handleSendMessage();
+        }
+    });
+
+    // 5. Afficher l'historique et la bulle initiale dès le chargement de la page
+    displayHistory();
+}
+
+// ---
+// Événements DOM
+// ---
 
 // Attendre que tout le DOM soit chargé avant d'initialiser l'application
 document.addEventListener('DOMContentLoaded', initApp);
 
-// Bouton "Voir plus" (si vous l'implémentez un jour)
+// Bouton "Voir plus" (si vous l'implémentez, cette logique doit être ajoutée)
 document.getElementById('loadMore')?.addEventListener('click', function() {
     console.log("Fonctionnalité 'Voir plus' à implémenter");
+    // Exemple : charger plus d'historique depuis localStorage ou une API
+});
+
+// Gérer le changement du sélecteur de bulle sur la page (si vous avez un élément UI pour cela)
+document.addEventListener('DOMContentLoaded', () => {
+    const bubbleSelector = document.getElementById('bubbleSelector'); // Assurez-vous d'avoir un élément avec cet ID dans votre HTML
+
+    if (bubbleSelector) {
+        // Charger la sélection actuelle du localStorage au démarrage
+        const savedBubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
+        bubbleSelector.value = savedBubbleType;
+
+        // Écouteur pour le changement de sélection dans l'UI
+        bubbleSelector.addEventListener('change', function() {
+            const newBubbleType = this.value;
+            localStorage.setItem('selectedBubble', newBubbleType); // Sauvegarde le nouveau type
+
+            // Met à jour la bulle IMMÉDIATEMENT dans le même onglet
+            let lastMessage = "";
+            if (chatHistory.length > 0) {
+                lastMessage = chatHistory[chatHistory.length - 1].answer;
+            }
+            updateBubble(newBubbleType, lastMessage || "Bienvenue ! Je suis là pour vous aider.");
+            // Si vous voulez aussi que l'historique affiché mette à jour ses bulles (si elles sont interactives)
+            // displayHistory(); // Cela re-générera l'historique avec le nouveau type de bulle si pertinent
+        });
+    }
 });
