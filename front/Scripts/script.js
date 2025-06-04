@@ -1,4 +1,6 @@
-function initPage() {
+// Fonction d'initialisation principale, appelée une seule fois
+async function initApp() {
+    // 1. Charger le fond d'écran
     const fond = localStorage.getItem('selectedBackground');
     if (fond) {
         document.body.style.backgroundImage = `url('${fond}')`;
@@ -7,29 +9,48 @@ function initPage() {
         document.body.style.backgroundAttachment = 'fixed';
     }
 
-    // Charger le style de bulle
-    let bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
+    // 2. Initialiser la gestion de l'historique et récupérer le message de prévention initial
+    const preventionMessage = await displayWeather(); // Assurez-vous que displayWeather renvoie le message
+    manageHistory(preventionMessage);
 
-    // NE PAS appeler updateBubble ici — attendre que le vrai contenu (météo ou textarea) le fasse
-
-    // Réagir au changement de style de bulle (ex: depuis une autre page)
+    // 3. Réagir au changement de style de bulle (ex: depuis une autre page)
     window.addEventListener('storage', function(e) {
         if (e.key === 'selectedBubble') {
-            bubbleType = e.newValue;
+            const newBubbleType = e.newValue;
             const textarea = document.querySelector('.under-panel textarea');
-            updateBubble(bubbleType, textarea?.value || "");
+            // Mettre à jour la bulle avec le dernier message de l'historique si disponible
+            let lastMessage = "";
+            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            if (chatHistory.length > 0) {
+                lastMessage = chatHistory[chatHistory.length - 1].answer;
+            }
+            updateBubble(newBubbleType, lastMessage);
         }
     });
 
+    // 4. Configurer les écouteurs d'événements pour le chat
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+
+    sendButton.addEventListener('click', handleSendMessage);
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    });
+
+    // 5. Afficher l'historique au chargement initial
+    displayHistory(); // Appel initial pour afficher l'historique après chargement
 }
 
-
+// Fonction utilitaire pour le wrap de texte (pas de changement ici, elle est correcte)
 function wrapText(text, maxWidth) {
     if (!text) return [""];
     const words = text.split(' ');
     let lines = [];
     let currentLine = words[0] || "";
-    
+
     for (let i = 1; i < words.length; i++) {
         const word = words[i];
         const tempSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -41,7 +62,7 @@ function wrapText(text, maxWidth) {
         document.body.appendChild(tempSvg);
         const width = tempText.getComputedTextLength();
         document.body.removeChild(tempSvg);
-        
+
         if (width < maxWidth) {
             currentLine += ' ' + word;
         } else {
@@ -53,6 +74,7 @@ function wrapText(text, maxWidth) {
     return lines;
 }
 
+// Fonction pour mettre à jour la bulle (pas de changement majeur, mais assurez-vous qu'elle est toujours appelée avec le bon type de bulle et le bon texte)
 function updateBubble(bubbleType, text = "") {
     const centerPanel = document.querySelector('.center-panel');
     if (!centerPanel) {
@@ -99,12 +121,12 @@ function updateBubble(bubbleType, text = "") {
         case 'dialogue':
         case 'pensee':
             pathData = `
-                M20,40 
-                Q40,20 60,20 
+                M20,40
+                Q40,20 60,20
                 H${bubbleWidth}
-                Q${bubbleWidth + 30},20 ${bubbleWidth + 30},40 
+                Q${bubbleWidth + 30},20 ${bubbleWidth + 30},40
                 V${bubbleHeight}
-                Q${bubbleWidth + 30},${bubbleHeight + 20} ${bubbleWidth},${bubbleHeight + 20} 
+                Q${bubbleWidth + 30},${bubbleHeight + 20} ${bubbleWidth},${bubbleHeight + 20}
                 H80
                 Q65,${bubbleHeight + 20} 60,${bubbleHeight + 40}
                 Q55,${bubbleHeight + 20} 40,${bubbleHeight + 20}
@@ -113,10 +135,10 @@ function updateBubble(bubbleType, text = "") {
                 Q20,50 20,40 Z`;
             break;
 
-            case 'cri':
-                const w = bubbleWidth;
-                const h = bubbleHeight;
-                pathData = `
+        case 'cri':
+            const w = bubbleWidth;
+            const h = bubbleHeight;
+            pathData = `
                     M${w * 0.1},${h * 0.3}
                     L${w * 0.05},${h * 0.1}
                     L${w * 0.2},${h * 0.15}
@@ -142,7 +164,7 @@ function updateBubble(bubbleType, text = "") {
                     L${w * 0.1},${h * 0.7}
                     L0,${h * 0.5}
                     Z`;
-                break;
+            break;
     }
 
     const svgContent = `
@@ -169,7 +191,7 @@ function updateBubble(bubbleType, text = "") {
 
             <path
                 d="${pathData}"
-                fill="url(#bubbleGrad)" 
+                fill="url(#bubbleGrad)"
                 stroke="${isCri ? '#000000' : '#bbb'}"
                 stroke-width="${isCri ? '3' : '1.5'}"
                 style="stroke-linejoin: round;
@@ -177,11 +199,11 @@ function updateBubble(bubbleType, text = "") {
                     ${isCri ? 'filter: url(#criEffect);' : ''}" />
 
             ${lines.map((line, i) => `
-                <text x="${svgWidth / 2}" 
+                <text x="${svgWidth / 2}"
                     y="${padding + (i * lineHeight) + (lineHeight / 2)}"
-                    text-anchor="middle" 
-                    font-family="Comic Sans MS" 
-                    font-size="26" 
+                    text-anchor="middle"
+                    font-family="Comic Sans MS"
+                    font-size="26"
                     fill="${isCri ? '#000000' : '#333'}"
                     font-weight="bold"
                     style="${isCri ? 'text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.6);' : ''}"
@@ -203,36 +225,19 @@ function updateBubble(bubbleType, text = "") {
     centerPanel.innerHTML = svgContent;
 }
 
-
-// Attendre que tout le DOM soit chargé
-document.addEventListener('DOMContentLoaded', initPage);
-
-document.addEventListener('DOMContentLoaded', async function() {
-    // Appliquer le fond d'écran sauvegardé
-    const savedBg = localStorage.getItem('selectedBackground');
-    if (savedBg) {
-        document.body.style.backgroundImage = `url('${savedBg}')`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundPosition = 'center';
-        document.body.style.backgroundAttachment = 'fixed';
-    }
-    const preventionMessage = await displayWeather(); // ◄◄◄ Récupère le message
-    manageHistory(preventionMessage);// Appeler la météo
-});
-
+// Fonction pour récupérer et afficher la météo
 async function displayWeather() {
     try {
-        // Récupérer les données du localStorage
         const rawData = localStorage.getItem('formulaireData') || localStorage.getItem('userData');
         if (!rawData) {
             console.error("Aucune donnée utilisateur trouvée dans le localStorage.");
-            return;
+            return "Désolé, je n'ai pas pu récupérer vos préférences de ville.";
         }
 
         const dataUser = JSON.parse(rawData);
-        const city = dataUser.habitation || 'Grenoble'; // fallback
+        const city = dataUser.habitation || 'Grenoble';
 
-        const apiKey = "dab27fb29b8649b087492631251505"; // Remplace par ta vraie clé
+        const apiKey = "dab27fb29b8649b087492631251505";
         const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(city)}&lang=fr`;
 
         const response = await fetch(url);
@@ -240,19 +245,17 @@ async function displayWeather() {
 
         if (data.error) {
             console.error("Erreur API météo:", data.error.message);
-            return;
+            return "Désolé, une erreur s'est produite lors de la récupération de la météo.";
         }
 
-        // Mettre à jour l'interface météo
         document.getElementById('weatherCity').textContent = data.location.name;
         document.getElementById('weatherTemp').textContent = `${data.current.temp_c}°C`;
         document.getElementById('weatherIcon').src = `https:${data.current.condition.icon}`;
         document.getElementById('weatherIcon').alt = data.current.condition.text;
 
-        // Génération du message météo
         const preventionMessage = generatePreventionMessage(data.current.temp_c, data.current.condition.text, data.location.name);
 
-        // Affichage dans la bulle
+        // Mettre à jour la bulle avec le message de prévention
         const bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
         updateBubble(bubbleType, preventionMessage);
 
@@ -261,10 +264,15 @@ async function displayWeather() {
     } catch (error) {
         console.error("Erreur lors de la récupération de la météo:", error);
         document.getElementById('weatherInfo').innerHTML = '<span>Météo indisponible</span>';
+        return "Désolé, je n'ai pas pu récupérer la météo.";
     }
 }
 
+// Fonction pour générer le message de prévention (inchangée)
 function generatePreventionMessage(temp, condition, city) {
+    if (!temp || !condition || !city) {
+        return "Je n'ai pas pu récupérer les informations météo actuelles.";
+    }
     const conseils = [];
 
     // Météo très chaude (30°C+)
@@ -354,7 +362,7 @@ function generatePreventionMessage(temp, condition, city) {
             "Limiter les sorties longues ou mal protégées est une bonne façon d’éviter le coup de froid.",
             "Il peut être utile de vérifier que les systèmes de ventilation ne laissent pas entrer trop d’air froid.",
             "Prévoir un petit coin douillet avec coussins, plaid et lumière douce rend l’hiver plus agréable.",
-            "S’assurer que le chauffe-eau fonctionne bien permet de ne pas manquer d’eau chaude quand on en a le plus besoin.",
+            "S’assurer que le chauffe-eau fonctionne bien permet de ne pas manquer d’eau chaude quand on en le plus besoin.",
             "Saviez-vous qu’une vérification annuelle de votre cheminée ou poêle contribue à votre sécurité et à leur bon fonctionnement ?",
             "Tenir à jour une liste de numéros utiles (voisin, médecin, dépannage) est toujours un bon réflexe en hiver.",
             "Et si le froid devient difficile à gérer, n’hésitez pas à demander un coup de main : c’est une preuve de bon sens, pas de faiblesse."
@@ -383,7 +391,7 @@ function generatePreventionMessage(temp, condition, city) {
             "Mettre une lampe automatique à l’entrée peut rendre le retour plus sûr.",
             "Garder une paire de chaussons bien antidérapants à portée de main limite les risques de chute.",
             "Revoir son éclairage extérieur peut aider à se sentir plus à l’aise pour rentrer en fin de journée.",
-            "Anticiper les besoins alimentaires ou de médicaments avant un épisode neigeux peut soulager l’esprit."
+            "Anticip et les besoins alimentaires ou de médicaments avant un épisode neigeux peut soulager l’esprit."
         );
     }
 
@@ -424,160 +432,138 @@ function generatePreventionMessage(temp, condition, city) {
     }
 
     return selectedMessages.join("\n• ");
-    
-}
-// Ajoutez cette fonction pour gérer l'historique
-function manageHistory(preventionMessage) { 
-    let history = JSON.parse(localStorage.getItem('chatHistory')) || [];
-    const historyContainer = document.getElementById('historyContainer');
-    const messageInput = document.getElementById('messageInput');
-    const sendButton = document.getElementById('sendButton');
 
-    if (preventionMessage) {
-        // Supprimer les anciens messages système (question vide)
-        history = history.filter(entry => entry.question.trim() !== '');
-        
-        // Ajouter le nouveau message en premier
-        history.unshift({
-            question: '', 
-            answer: preventionMessage,
-            timestamp: new Date().toISOString()
-        });
-        
-        localStorage.setItem('chatHistory', JSON.stringify(history));
-    }
-    // Fonction pour afficher l'historique
-    function displayHistory() {
-        historyContainer.innerHTML = '';
-        history.slice().reverse().forEach(item => {
-            // Conteneur pour chaque paire question-réponse
-            const conversationItem = document.createElement('div');
-            conversationItem.className = 'conversation-item';
-            
-            // Question
-            if (item.question) { 
-                const questionItem = document.createElement('div');
-                questionItem.className = 'history-item history-question';
-                questionItem.innerHTML = `<strong>Vous:</strong> ${item.question}`;
-                conversationItem.appendChild(questionItem);
-            }
-
-            // Réponse
-            const answerItem = document.createElement('div');
-            answerItem.className = 'history-item history-answer';
-            answerItem.innerHTML = `<strong>Assistant:</strong> ${item.answer}`;
-            conversationItem.appendChild(answerItem);
-
-            // Date
-            const dateItem = document.createElement('div');
-            dateItem.className = 'history-date';
-            dateItem.textContent = new Date(item.timestamp).toLocaleString();
-            conversationItem.appendChild(dateItem);
-
-            historyContainer.appendChild(conversationItem);
-            updateBubble(item.bubbleType, item.answer);
-        });
-        
-        // Faire défiler vers le bas pour voir les nouveaux messages
-        historyContainer.scrollTop = historyContainer.scrollHeight;
-    }
-
-    // Fonction pour ajouter une entrée à l'historique
-    function addToHistory(question, answer, bubbleType) {
-        const newEntry = { 
-            question, 
-            answer, 
-            bubbleType, // Stocker le type de bulle
-            timestamp: new Date().toISOString() 
-        };
-        
-        history.push(newEntry);
-        
-        // Limiter l'historique à 100 entrées (peut être ajusté)
-        if (history.length > 100) {
-            history = history.slice(history.length - 100);
-        }
-        
-        localStorage.setItem('chatHistory', JSON.stringify(history));
-        displayHistory();
-    }
-
-    // Gestion du clic sur le bouton Envoyer
-    sendButton.addEventListener('click', async function() {
-        
-        const question = messageInput.value.trim();
-        if (question) {
-            // Ajouter la question à l'historique immédiatement avec une réponse vide
-            addToHistory(question, "En cours de traitement...");
-            
-            // Effacer le champ de saisie
-            messageInput.value = '';
-            
-            try {
-                // Ici vous devriez appeler votre API ou logique de génération de réponse
-                // Pour l'exemple, nous utilisons une réponse simulée
-                let answer;
-                
-                // Si la question concerne la météo
-                if (question.toLowerCase().includes('météo') || 
-                    question.toLowerCase().includes('temps') ||
-                    question.toLowerCase().includes('température')) {
-                    // Générer une réponse météo personnalisée
-                    const rawData = localStorage.getItem('formulaireData') || localStorage.getItem('userData');
-                    if (rawData) {
-                        const dataUser = JSON.parse(rawData);
-                        const city = dataUser.habitation || 'Grenoble';
-                        answer = displayWeather();
-                    } else {
-                        answer = "Je ne peux pas accéder aux informations météo sans connaître votre ville. Veuillez configurer votre profil.";
-                    }
-                } else {
-                    // Réponse par défaut
-                    answer = "J'ai bien reçu votre message. Voici quelques conseils généraux : " + 
-                             generatePreventionMessage().split('\n• ').slice(0, 3).join('\n• ');
-                }
-                
-                // Mettre à jour la dernière entrée dans l'historique avec la vraie réponse
-                if (history.length > 0) {
-                    history[history.length - 1].answer = answer;
-                    localStorage.setItem('chatHistory', JSON.stringify(history));
-                    displayHistory();
-                }
-                
-                // Mettre à jour la bulle avec la réponse
-                const bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
-                updateBubble(bubbleType, answer);
-                
-            } catch (error) {
-                console.error("Erreur lors de la génération de la réponse:", error);
-                
-                // Mettre à jour avec un message d'erreur
-                if (history.length > 0) {
-                    history[history.length - 1].answer = "Désolé, une erreur s'est produite lors du traitement de votre demande.";
-                    localStorage.setItem('chatHistory', JSON.stringify(history));
-                    displayHistory();
-                }
-                
-                updateBubble(localStorage.getItem('selectedBubble') || 'dialogue', "Désolé, une erreur s'est produite.");
-            }
-        }
-    });
-
-    // Gestion de la touche Entrée
-    messageInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendButton.click();
-        }
-    });
-
-    // Bouton "Voir plus" - pourrait charger plus d'historique si pagination implémentée
-    document.getElementById('loadMore').addEventListener('click', function() {
-        // Implémentation potentielle pour charger plus d'historique
-        console.log("Fonctionnalité 'Voir plus' à implémenter");
-    });
-
-    // Afficher l'historique au chargement
-    displayHistory();
 }
 
+// Variable globale pour l'historique
+let chatHistory = [];
+const historyContainer = document.getElementById('historyContainer');
+const messageInput = document.getElementById('messageInput');
+const sendButton = document.getElementById('sendButton');
+
+// Fonction pour afficher l'historique
+function displayHistory() {
+    historyContainer.innerHTML = '';
+    chatHistory.slice().reverse().forEach(item => {
+        const conversationItem = document.createElement('div');
+        conversationItem.className = 'conversation-item';
+
+        if (item.question) {
+            const questionItem = document.createElement('div');
+            questionItem.className = 'history-item history-question';
+            questionItem.innerHTML = `<strong>Vous:</strong> ${item.question}`;
+            conversationItem.appendChild(questionItem);
+        }
+
+        const answerItem = document.createElement('div');
+        answerItem.className = 'history-item history-answer';
+        answerItem.innerHTML = `<strong>Assistant:</strong> ${item.answer}`;
+        conversationItem.appendChild(answerItem);
+
+        const dateItem = document.createElement('div');
+        dateItem.className = 'history-date';
+        dateItem.textContent = new Date(item.timestamp).toLocaleString();
+        conversationItem.appendChild(dateItem);
+
+        historyContainer.appendChild(conversationItem);
+    });
+
+    historyContainer.scrollTop = historyContainer.scrollHeight;
+
+    // Mise à jour de la bulle avec le dernier message de l'historique après l'affichage
+    if (chatHistory.length > 0) {
+        const lastEntry = chatHistory[chatHistory.length - 1];
+        updateBubble(lastEntry.bubbleType, lastEntry.answer);
+    }
+}
+
+// Fonction pour ajouter une entrée à l'historique
+function addToHistory(question, answer, bubbleType = 'dialogue') {
+    const newEntry = {
+        question,
+        answer,
+        bubbleType: bubbleType || localStorage.getItem('selectedBubble') || 'dialogue',
+        timestamp: new Date().toISOString()
+    };
+
+    chatHistory.push(newEntry);
+
+    // Limiter l'historique
+    if (chatHistory.length > 100) {
+        chatHistory = chatHistory.slice(chatHistory.length - 100);
+    }
+
+    localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+    displayHistory(); // Appelle displayHistory pour actualiser l'affichage ET la bulle
+}
+
+// Nouvelle fonction pour gérer l'envoi de message
+async function handleSendMessage() {
+    const question = messageInput.value.trim();
+    if (!question) return;
+
+    const bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
+    addToHistory(question, "En cours de traitement...", bubbleType);
+    messageInput.value = '';
+
+    try {
+        let answer;
+        if (question.toLowerCase().includes('météo') ||
+            question.toLowerCase().includes('temps') ||
+            question.toLowerCase().includes('température')) {
+            answer = await displayWeather();
+        } else {
+            answer = "J'ai bien reçu votre message. Comment puis-je vous aider ?";
+        }
+
+        // Mettre à jour la dernière réponse
+        if (chatHistory.length > 0) {
+            chatHistory[chatHistory.length - 1].answer = answer;
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+            displayHistory(); // Actualise l'affichage ET la bulle
+        }
+
+    } catch (error) {
+        console.error("Erreur:", error);
+        const errorMessage = "Désolé, une erreur s'est produite lors du traitement de votre demande.";
+        if (chatHistory.length > 0) {
+            chatHistory[chatHistory.length - 1].answer = errorMessage;
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+            displayHistory(); // Actualise l'affichage ET la bulle
+        }
+    }
+}
+
+// Fonction pour gérer l'historique (renommée et refactorisée)
+function manageHistory(preventionMessage) {
+    chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+
+    // Ajout du message de prévention initial si disponible et s'il n'est pas déjà présent
+    if (preventionMessage && typeof preventionMessage === 'string') {
+        const isWeatherMessagePresent = chatHistory.some(entry =>
+            entry.answer === preventionMessage && (entry.question === '' || entry.question === null)
+        );
+
+        // Si le message météo n'est pas déjà dans l'historique et qu'il n'y a pas de question associée
+        if (!isWeatherMessagePresent) {
+            // Ajouter le message de prévention comme un message "système" sans question
+            const newEntry = {
+                question: '', // Pas de question pour un message système/initial
+                answer: preventionMessage,
+                bubbleType: localStorage.getItem('selectedBubble') || 'dialogue',
+                timestamp: new Date().toISOString()
+            };
+            chatHistory.push(newEntry);
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+        }
+    }
+}
+
+
+// Attendre que tout le DOM soit chargé avant d'initialiser l'application
+document.addEventListener('DOMContentLoaded', initApp);
+
+// Bouton "Voir plus" (si vous l'implémentez un jour)
+document.getElementById('loadMore')?.addEventListener('click', function() {
+    console.log("Fonctionnalité 'Voir plus' à implémenter");
+});
