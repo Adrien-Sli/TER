@@ -1,11 +1,11 @@
-// Variables globales
+// historique.js
+
 let currentHistoryId = null;
 let histories = JSON.parse(localStorage.getItem('chatHistory')) || [];
 let lastHistoryId = parseInt(localStorage.getItem('historyLastId')) || 0;
 
-// Corriger les historiques existants sans ID
 let idModified = false;
-histories = histories.map((h, index) => {
+histories = histories.map((h) => {
     if (!h.id) {
         lastHistoryId += 1;
         idModified = true;
@@ -14,33 +14,29 @@ histories = histories.map((h, index) => {
     return h;
 });
 
-// Si des ID ont été ajoutés, sauvegarder les données mises à jour
 if (idModified) {
     localStorage.setItem('chatHistory', JSON.stringify(histories));
     localStorage.setItem('historyLastId', lastHistoryId);
 }
 
-// Éléments du DOM
 const modal = document.getElementById('historyModal');
 const closeBtn = document.querySelector('.close');
 const historyForm = document.getElementById('historyForm');
 const searchInput = document.getElementById('searchInput');
 const historyTableBody = document.getElementById('historyTable').getElementsByTagName('tbody')[0];
+const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+const selectAllCheckbox = document.getElementById('selectAll');
 
-
-// Fermer le modal
 closeBtn.addEventListener('click', () => {
     modal.style.display = 'none';
 });
 
-// Fermer le modal quand on clique en dehors
 window.addEventListener('click', (event) => {
     if (event.target === modal) {
         modal.style.display = 'none';
     }
 });
 
-// Gérer la soumission du formulaire (ajout/modification)
 historyForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -52,7 +48,6 @@ historyForm.addEventListener('submit', (e) => {
     };
 
     if (currentHistoryId) {
-        // Modification
         const index = histories.findIndex(h => h.id === currentHistoryId);
         if (index !== -1) {
             histories[index] = {
@@ -62,7 +57,6 @@ historyForm.addEventListener('submit', (e) => {
             };
         }
     } else {
-        // Ajout
         lastHistoryId += 1;
         localStorage.setItem('historyLastId', lastHistoryId);
         const newId = lastHistoryId;
@@ -73,14 +67,11 @@ historyForm.addEventListener('submit', (e) => {
         });
     }
 
-    // Sauvegarder dans le localStorage
     localStorage.setItem('chatHistory', JSON.stringify(histories));
-
     renderHistoryTable();
     modal.style.display = 'none';
 });
 
-// Rendre le tableau des historiques
 function renderHistoryTable(filteredHistories = null) {
     const data = filteredHistories || histories;
     historyTableBody.innerHTML = '';
@@ -92,13 +83,19 @@ function renderHistoryTable(filteredHistories = null) {
         const formattedDate = dateObj.toLocaleString('fr-FR');
 
         row.innerHTML = `
+            <td>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="selectCheckbox" data-id="${history.id}">
+                    <span class="custom-checkbox"></span>
+                </label>
+            </td>
             <td>${history.id || ''}</td>
             <td>${formattedDate}</td>
             <td>${history.user || 'user'}</td>
             <td>${history.message || history.question || ''}</td>
             <td>${history.response || history.answer || ''}</td>
             <td>
-                <button class="deleteBtn btn-danger" data-id="${history.id}">Supprimer</button>
+                <button class="editBtn btn-primary" data-id="${history.id}">Modifier</button>
             </td>
         `;
 
@@ -106,26 +103,19 @@ function renderHistoryTable(filteredHistories = null) {
     });
 }
 
-// Délégation d'événements sur le tbody pour gérer modifier/supprimer
 historyTableBody.addEventListener('click', (event) => {
     const target = event.target;
     if (target.classList.contains('editBtn')) {
         const id = parseInt(target.getAttribute('data-id'));
         editHistory(id);
-    } else if (target.classList.contains('deleteBtn')) {
-        const id = parseInt(target.getAttribute('data-id'));
-        if (confirm('Êtes-vous sûr de vouloir supprimer cet historique ?')) {
-            deleteHistory(id);
-        }
     }
 });
 
-// Modifier un historique
 function editHistory(id) {
     const history = histories.find(h => h.id === id);
     if (history) {
         currentHistoryId = id;
-        document.getElementById('modalTitle').textContent = 'Modifier l\'Historique';
+        document.getElementById('modalTitle').textContent = "Modifier l'Historique";
         const dt = history.timestamp ? new Date(history.timestamp) : new Date(history.date);
         const localDatetime = dt.toISOString().slice(0, 16);
         document.getElementById('historyDate').value = localDatetime;
@@ -136,14 +126,21 @@ function editHistory(id) {
     }
 }
 
-// Supprimer un historique
-function deleteHistory(id) {
-    histories = histories.filter(h => h.id !== id);
-    localStorage.setItem('chatHistory', JSON.stringify(histories));
-    renderHistoryTable();
-}
+deleteSelectedBtn.addEventListener('click', () => {
+    const selectedCheckboxes = document.querySelectorAll('.selectCheckbox:checked');
+    if (selectedCheckboxes.length === 0) {
+        alert("Veuillez sélectionner au moins un message à supprimer.");
+        return;
+    }
 
-// Recherche dans les historiques
+    if (confirm("Êtes-vous sûr de vouloir supprimer les messages sélectionnés ?")) {
+        const selectedIds = Array.from(selectedCheckboxes).map(cb => parseInt(cb.getAttribute('data-id')));
+        histories = histories.filter(h => !selectedIds.includes(h.id));
+        localStorage.setItem('chatHistory', JSON.stringify(histories));
+        renderHistoryTable();
+    }
+});
+
 searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
     if (searchTerm) {
@@ -160,5 +157,10 @@ searchInput.addEventListener('input', (e) => {
     }
 });
 
-// Initialiser le tableau avec les données du localStorage
+selectAllCheckbox.addEventListener('change', () => {
+    const isChecked = selectAllCheckbox.checked;
+    const checkboxes = document.querySelectorAll('.selectCheckbox');
+    checkboxes.forEach(cb => cb.checked = isChecked);
+});
+
 renderHistoryTable();
