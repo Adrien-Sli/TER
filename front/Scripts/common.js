@@ -1,12 +1,20 @@
-// Met à jour l'avatar dans la navbar
 function updateNavbarAvatar(avatarUrl) {
     const profilIcons = document.querySelectorAll('.profil-icon');
-    if (avatarUrl) {
+    const savedNavbarAvatar = localStorage.getItem('navbarAvatar');
+    
+    // Utilisez l'URL fournie si elle existe, sinon utilisez celle du localStorage
+    const urlToUse = avatarUrl || savedNavbarAvatar;
+    
+    if (urlToUse) {
         profilIcons.forEach(icon => {
-            icon.src = avatarUrl;
+            icon.src = urlToUse;
         });
+        // Sauvegardez dans le localStorage seulement si c'est une nouvelle image
+        if (avatarUrl && !savedNavbarAvatar) {
+            localStorage.setItem('navbarAvatar', avatarUrl);
+        }
     } else {
-        // Revenir à l'image par défaut si aucune image n'est sauvegardée
+        // Fallback à l'image par défaut
         profilIcons.forEach(icon => {
             icon.src = '../Image/profil.png';
         });
@@ -21,9 +29,6 @@ function applySavedBackground() {
         document.body.style.backgroundPosition = 'center';
         document.body.style.backgroundAttachment = 'fixed';
     }
-    // Appliquer aussi l'avatar s'il existe
-    const savedAvatar = localStorage.getItem('avatarImage');
-    updateNavbarAvatar(savedAvatar);
 }
 
 
@@ -91,3 +96,4 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 });
+updateNavbarAvatar();

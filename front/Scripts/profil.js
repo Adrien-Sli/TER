@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window.location.href = 'formulaire.html';
     });
     // Chargement de la photo depuis le localStorage
-    const savedAvatar = localStorage.getItem('avatarImage');
+    const savedAvatar = localStorage.getItem('navbarAvatar'); // Changé ici
     const avatarDisplay = document.getElementById('avatar-display');
     if (savedAvatar) {
         avatarDisplay.style.backgroundImage = `url(${savedAvatar})`;
@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('avatar-btn').addEventListener('click', () => {
         document.getElementById('avatar-input').click();
     });
-
     document.getElementById('avatar-input').addEventListener('change', function(event) {
         const file = event.target.files[0];
         if (file && file.type.startsWith('image/')) {
@@ -33,13 +32,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const imageData = e.target.result;
                 avatarDisplay.style.backgroundImage = `url(${imageData})`;
                 avatarDisplay.textContent = '';
-                localStorage.setItem('avatarImage', imageData);
+                localStorage.setItem('navbarAvatar', imageData);
                 updateNavbarAvatar(imageData);
             };
             reader.readAsDataURL(file);
         }
     });
-});
+}); 
 
 function updateContactSection(data) {
     const contactElem = document.getElementById('contact-info');
@@ -360,18 +359,5 @@ function getActivityText(value) {
         case 'marche': return 'Marche';
         case 'garde_enfant': return 'Garde d\'enfant';
         default: return value;
-    }
-}
-function updateNavbarAvatar(avatarUrl) {
-    const profilIcons = document.querySelectorAll('.profil-icon');
-    if (avatarUrl) {
-        profilIcons.forEach(icon => {
-            icon.src = avatarUrl;
-        });
-    } else {
-        // Revenir à l'image par défaut si aucune image n'est sauvegardée
-        profilIcons.forEach(icon => {
-            icon.src = '../Image/profil.png';
-        });
     }
 }

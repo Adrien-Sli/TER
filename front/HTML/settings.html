@@ -163,6 +163,23 @@
                     
                 </div>
             </div>
+            <!-- Section Avatar -->
+            <div class="section">
+                <h2>Avatar</h2>
+
+                <div class="option-group">
+                    <span class="option-title">Choisissez votre avatar :</span>
+                    <div class="avatar-options">
+                        <div class="avatar-option" data-avatar="https://avataaars.io/" onclick="selectAvatar(this)">
+                            <img src="https://avataaars.io/" alt="Avatar 1" class="avatar-img">
+                        </div>
+
+                        <div class="avatar-option" data-avatar="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Black&eyeType=Default&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale" onclick="selectAvatar(this)">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Black&eyeType=Default&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale" alt="Avatar 2" class="avatar-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="btn-container">
                 <button class="btn" onclick="applySettings()">Appliquer les paramètres</button>
@@ -354,6 +371,13 @@
                     localStorage.setItem('selectedFont', fontFamily);
                 }
                 
+                // Sauvegarder l'avatar
+                const selectedAvatar = document.querySelector('.avatar-option.selected');
+                if (selectedAvatar) {
+                    const avatarUrl = selectedAvatar.getAttribute('data-avatar');
+                    localStorage.setItem('avatarImage', avatarUrl);
+                    console.log('Avatar enregistré:', avatarUrl);
+                }
                 // Sauvegarder la taille de police
                 const fontSize = document.getElementById('fontSizeSlider').value;
                 localStorage.setItem('selectedFontSize', fontSize);
@@ -400,6 +424,32 @@
                 console.error("Erreur lors de la réinitialisation:", e);
             }
         }
+        function selectAvatar(element) {
+            document.querySelectorAll('.avatar-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+
+            element.classList.add('selected');
+            const avatarUrl = element.getAttribute('data-avatar');
+
+            if (isLocalStorageAvailable()) {
+                localStorage.setItem('mainAvatar', avatarUrl); // Stocke dans mainAvatar
+            }
+        }
+
+        // Charger l'avatar au démarrage
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedAvatar = localStorage.getItem('mainAvatar');
+            if (savedAvatar) {
+                const avatarOptions = document.querySelectorAll('.avatar-option');
+                avatarOptions.forEach(option => {
+                    if (option.getAttribute('data-avatar') === savedAvatar) {
+                        option.classList.add('selected');
+                    }
+                });
+            }
+        });
+
     </script>
 </body>
 </html>

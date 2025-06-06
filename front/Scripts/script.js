@@ -17,6 +17,7 @@ const sendButton = document.getElementById('sendButton');
  * @param {number} maxWidth - La largeur maximale en pixels.
  * @returns {string[]} Un tableau de lignes de texte.
  */
+
 function wrapText(text, maxWidth) {
     if (!text) return [""];
     const words = text.split(' ');
@@ -46,7 +47,21 @@ function wrapText(text, maxWidth) {
     lines.push(currentLine);
     return lines;
 }
-
+function updateMainAvatar(avatarUrl) {
+    const mainAvatar = document.querySelector('.left-panel img');
+    if (mainAvatar) {
+        const savedMainAvatar = localStorage.getItem('mainAvatar'); // Nouveau
+        if (savedMainAvatar) {
+            mainAvatar.src = savedMainAvatar;
+        } else if (avatarUrl) {
+            mainAvatar.src = avatarUrl;
+            localStorage.setItem('mainAvatar', avatarUrl); // Sauvegarde si nouveau
+        } else {
+            // Image par défaut si pas d'avatar sauvegardé
+            mainAvatar.src = "https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Black&eyeType=Default&eyebrowType=RaisedExcited&mouthType=Smile&skinColor=Pale";
+        }
+    }
+}
 /**
  * Met à jour l'affichage de la bulle de dialogue SVG.
  * @param {string} bubbleType - Le type de bulle ('dialogue', 'pensee', 'cri').
@@ -550,9 +565,9 @@ async function handleSendMessage() {
 // ---
 document.addEventListener("DOMContentLoaded", function () {
   if (!sendButton) {
-    console.warn("❗ Bouton #sendButton introuvable");
+    console.warn(" Bouton #sendButton introuvable");
   } else {
-    console.log("✅ Bouton trouvé, écouteur ajouté");
+    console.log("Bouton trouvé, écouteur ajouté");
     sendButton.addEventListener("click", envoyer);
   }
 });
@@ -642,7 +657,7 @@ function manageHistory(preventionMessage) {
  * Appelée une seule fois après le chargement complet du DOM.
  */
 async function initApp() {
-    // 1. Charger le fond d'écran sauvegardé
+    //Charger le fond d'écran sauvegardé
     const fond = localStorage.getItem('selectedBackground');
     if (fond) {
         document.body.style.backgroundImage = `url('${fond}')`;
@@ -650,12 +665,14 @@ async function initApp() {
         document.body.style.backgroundPosition = 'center';
         document.body.style.backgroundAttachment = 'fixed';
     }
-
-    // 2. Initialiser la gestion de l'historique et récupérer le message de prévention initial (météo)
+    //Mettre à jour l'avatar principal
+    const savedAvatar = localStorage.getItem('avatarImage');
+    updateMainAvatar(savedAvatar);
+    //Initialiser la gestion de l'historique et récupérer le message de prévention initial (météo)
     const preventionMessage = await displayWeather();
     manageHistory(preventionMessage); // Remplit l'historique avec le message initial si nécessaire
 
-    // 3. Réagir aux changements de 'selectedBubble' dans le localStorage (pour les autres onglets)
+    //Réagir aux changements de 'selectedBubble' dans le localStorage (pour les autres onglets)
     window.addEventListener('storage', function(e) {
         if (e.key === 'selectedBubble') {
             const newBubbleType = e.newValue;
@@ -668,7 +685,7 @@ async function initApp() {
         }
     });
 
-    // 4. Configurer les écouteurs d'événements pour le champ de saisie et le bouton d'envoi
+    //Configurer les écouteurs d'événements pour le champ de saisie et le bouton d'envoi
     sendButton.addEventListener('click', handleSendMessage);
     messageInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) { // Envoie au pressage de "Entrée" (sans "Shift")
@@ -676,8 +693,12 @@ async function initApp() {
             handleSendMessage();
         }
     });
-
-    // 5. Afficher l'historique et la bulle initiale dès le chargement de la page
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'mainAvatar') {
+            updateMainAvatar(e.newValue);
+        }
+    });
+    // Afficher l'historique et la bulle initiale dès le chargement de la page
     displayHistory();
 }
 
