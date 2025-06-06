@@ -1,3 +1,6 @@
+// debug
+console.log("script.js chargé !");
+
 // Variable globale pour l'historique
 let chatHistory = [];
 const historyContainer = document.getElementById('historyContainer');
@@ -541,6 +544,68 @@ async function handleSendMessage() {
         }
     }
 }
+
+// ---
+// Gestion de l'envoi et de la réponse
+// ---
+document.addEventListener("DOMContentLoaded", function () {
+  if (!sendButton) {
+    console.warn("❗ Bouton #sendButton introuvable");
+  } else {
+    console.log("✅ Bouton trouvé, écouteur ajouté");
+    sendButton.addEventListener("click", envoyer);
+  }
+});
+
+function envoyer() {
+    console.log("🚀 Fonction envoyer() déclenchée");
+
+    const input = document.getElementById("messageInput");
+    const message = input.value.trim();
+
+    if (!message) {
+        console.warn("⛔ Aucun message à envoyer.");
+        return;
+    }
+
+    // Affiche la question dans l'historique (optionnel)
+    const historyContainer = document.getElementById("historyContainer");
+    const questionItem = document.createElement("div");
+    questionItem.className = "history-item";
+    questionItem.textContent = message;
+    historyContainer.appendChild(questionItem);
+
+    // Appel à Ollama
+    fetch('http://localhost:11434/api/generate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            model: "mistral",
+            prompt: message,
+            stream: false
+        })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+    })
+    .then(data => {
+        console.log("✅ Réponse Ollama :", data);
+        const responseText = data.response || "[aucune réponse]";
+        updateBubble("dialogue", responseText);
+    })
+    .catch(error => {
+        console.error("❌ Erreur lors de la requête vers Ollama :", error);
+        updateBubble("dialogue", "⚠️ Erreur : impossible de contacter le modèle.");
+    });
+
+    // Réinitialise le champ
+    input.value = "";
+}
+
+
 
 /**
  * Gère l'initialisation de l'historique au chargement de la page.

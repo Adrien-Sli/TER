@@ -1,3 +1,7 @@
+//
+// Le script suivant gère l'intégralité des actions liés à l'affichage, la conservation et la modification des conversations via l'historique
+//
+
 // Variables globales
 let currentHistoryId = null;
 let histories = JSON.parse(localStorage.getItem('chatHistory')) || [];

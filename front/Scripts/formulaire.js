@@ -1,3 +1,7 @@
+//
+// Le script suivant gère l'intégralité des actions liés au formulaire destiné à remplir la page de profil
+//
+
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
 
