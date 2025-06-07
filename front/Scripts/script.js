@@ -572,52 +572,65 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-function envoyer() {
-    console.log("🚀 Fonction envoyer() déclenchée");
-
+async function envoyer() {
     const input = document.getElementById("messageInput");
     const message = input.value.trim();
+    input.value = "";
 
-    if (!message) {
-        console.warn("⛔ Aucun message à envoyer.");
-        return;
-    }
+    if (!message) return;
 
-    // Affiche la question dans l'historique (optionnel)
+    // Affiche la question dans l'historique
     const historyContainer = document.getElementById("historyContainer");
     const questionItem = document.createElement("div");
     questionItem.className = "history-item";
     questionItem.textContent = message;
     historyContainer.appendChild(questionItem);
 
-    // Appel à Ollama
-    fetch('http://localhost:11434/api/generate', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            model: "mistral",
-            prompt: message,
-            stream: false
-        })
-    })
-    .then(response => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return response.json();
-    })
-    .then(data => {
-        console.log("✅ Réponse Ollama :", data);
-        const responseText = data.response || "[aucune réponse]";
-        updateBubble("dialogue", responseText);
-    })
-    .catch(error => {
-        console.error("❌ Erreur lors de la requête vers Ollama :", error);
-        updateBubble("dialogue", "⚠️ Erreur : impossible de contacter le modèle.");
-    });
+    const bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
+    let responseText = "";
 
-    // Réinitialise le champ
-    input.value = "";
+    // Pré-affiche une bulle vide
+    updateBubble(bubbleType, ""); 
+
+    try {
+        const response = await fetch("http://localhost:11434/api/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model: "mistral",
+                prompt: message,
+                stream: true
+            })
+        });
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value, { stream: true }).trim();
+            const lines = chunk.split('\n');
+
+            for (let line of lines) {
+                if (!line) continue;
+                try {
+                    const json = JSON.parse(line);
+                    if (json.response) {
+                        responseText += json.response;
+                        updateBubble(bubbleType, responseText);
+                    }
+                } catch (err) {
+                    console.warn("Erreur de parsing JSON stream :", err);
+                }
+            }
+        }
+
+    } catch (err) {
+        console.error("Erreur lors de la génération :", err);
+        updateBubble(bubbleType, "⚠️ Erreur de génération.");
+    }
 }
 
 
