@@ -642,6 +642,7 @@ async function envoyer() {
         console.error("Erreur lors de la génération :", err);
         updateBubble(bubbleType, "⚠️ Erreur de génération.");
     }
+    addToHistory(message, responseText);
 }
 
 
