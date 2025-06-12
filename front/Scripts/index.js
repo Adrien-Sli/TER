@@ -1,3 +1,9 @@
+
+// Rediriger vers formulaire.html si c'est la première visite
+if (!localStorage.getItem("visited")) {
+    localStorage.setItem("visited", "true");
+    window.location.href = "formulaire.html";
+}
 // Déplacer le script en premier pour s'assurer qu'il s'exécute avant les autres
 function initPage() {
     const fond = localStorage.getItem('selectedBackground');
