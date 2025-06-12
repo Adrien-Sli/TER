@@ -72,7 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const formData = {
             genre: document.querySelector('input[name="genre"]:checked')?.value,
-            age: document.querySelector('select[name="age"]').value,
             habitation: document.querySelector('input[name="habitation"]').value,
             seul: document.querySelector('input[name="seul"]:checked')?.value,
             type_logement: document.querySelector('select[name="type_logement"]').value,
