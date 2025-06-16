@@ -56,7 +56,6 @@ function updateContactSection(data) {
 
 function updateProfile(data) {
     // Mise à jour des informations de base
-    document.getElementById('age').textContent = data.age ? data.age.split('-')[0] : 'XX';
     document.getElementById('genre').textContent = getGenreText(data.genre);
     document.getElementById('lieu').textContent = data.habitation || 'Ville, Code postal';
     
