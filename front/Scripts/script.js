@@ -2,7 +2,7 @@
 console.log("script.js chargé !");
 
 // Variable globale pour l'historique
-let chatHistory = [];
+let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
 const historyContainer = document.getElementById('historyContainer');
 const messageInput = document.getElementById('messageInput');
 const sendButton = document.getElementById('sendButton');
@@ -507,6 +507,8 @@ function displayHistory() {
  * @param {string} [bubbleType='dialogue'] - Le type de bulle à utiliser pour cette entrée.
  */
 function addToHistory(question, answer, bubbleType = 'dialogue') {
+    console.log("----------------- addToHistory appellé --------------")
+
     const newEntry = {
         question,
         answer,
@@ -530,6 +532,8 @@ function addToHistory(question, answer, bubbleType = 'dialogue') {
  * Gère l'envoi d'un message par l'utilisateur.
  */
 async function handleSendMessage() {
+
+    console.log("================handlesendmsg appelé===================")
     const question = messageInput.value.trim();
     if (!question) return; // Ne fait rien si le champ est vide
 
@@ -575,42 +579,98 @@ async function handleSendMessage() {
 // Gestion de l'envoi et de la réponse
 // ---
 document.addEventListener("DOMContentLoaded", function () {
-  if (!sendButton) {
-    console.warn(" Bouton #sendButton introuvable");
-  } else {
     console.log("Bouton trouvé, écouteur ajouté");
     sendButton.addEventListener("click", envoyer);
-  }
 });
 
+function buildPrompt(messageActuel, maxMessages = 3) {
+    console.log("Prompt build");
+
+    const profil = JSON.parse(localStorage.getItem('formulaireData')) || {};
+    let profilDescription = `Je parle avec ${profil.genre || 'une personne'} âgée de ${profil.age || '? ans'}, `;
+    profilDescription += `vivant en ${profil.type_logement || 'logement non précisé'} à ${profil.habitation || 'ville inconnue'}. `;
+    
+    if (profil.activites && profil.activites.length > 0) {
+        profilDescription += `Ses activités favorites: ${profil.activites.join(', ')}. `;
+    }
+    
+    if (profil.antecedent && profil.antecedent.length > 0) {
+        profilDescription += `Antécédents médicaux: ${profil.antecedent.join(', ')}. `;
+    }
+    
+    if (profil.allergies === "oui" && profil.allergies_liste) {
+        profilDescription += `Allergies: ${profil.allergies_liste}. `;
+    }
+    
+    if (profil.aide_technique && profil.aide_technique.length > 0) {
+        profilDescription += `Utilise: ${profil.aide_technique.join(', ')}. `;
+    }
+
+    const systemPrompt = `[CONTEXTE UTILISATEUR] ${profilDescription}
+                          [DIRECTIVES] 
+                        - Bienveillant et joyeux
+                        - Réponses courtes en 1-2 phrase
+                        - Ne fais jamais de liste ou d'énumération
+                        - Tiens compte de l'environnement (${profil.type_logement || 'logement'})
+                        - Tiens compte de ses centres d'intérêt
+                        - Sois particulièrement vigilant sur les aspects médicaux mentionnés. N'hésite pas à indiquer de se tourner vers son médecin`;
+
+    const historique = (JSON.parse(localStorage.getItem("chatHistory")) || [])
+        .slice(-maxMessages)
+        .map(h => `- ${h.answer}`)
+        .join('\n');
+    // console.log("========= HISTORIQUE DEBUG =========")
+    // console.log(historique)
+    // console.log("===========================")
+    const promptFinal = `${systemPrompt}
+Historique de conversation :
+${historique}
+
+Nouveau message :
+Utilisateur : ${messageActuel}
+Assistant :`;
+
+    return promptFinal;
+}
+
 async function envoyer() {
+    console.log("============= Appel envoyer ================")
+    // console.log("============================envoyer DEBUG====================================================")
+
     const input = document.getElementById("messageInput");
     const message = input.value.trim();
-    input.value = "";
-
-    if (!message) return;
-
-    // Affiche la question dans l'historique
     const historyContainer = document.getElementById("historyContainer");
     const questionItem = document.createElement("div");
+    const bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
+    const prompt = buildPrompt(message);
+    let responseText = "";
+    
+    input.value = "";
     questionItem.className = "history-item";
     questionItem.textContent = message;
     historyContainer.appendChild(questionItem);
 
-    const bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
-    let responseText = "";
+    if (!message) return;
 
-    // Pré-affiche une bulle vide
-    updateBubble(bubbleType, ""); 
+    // console.log("========= PROMPT DEBUG =========");
+    // console.log("Prompt envoyé à Ollama :\n", prompt);
+    // console.log("===========================");
 
+    updateBubble(bubbleType, "");
+
+    //console.log("=========requête debug=========")
     try {
         const response = await fetch("http://localhost:11434/api/generate", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 model: "mistral",
-                prompt: message,
-                stream: true
+                prompt: prompt,
+                stream: true,
+                options : {
+                    max_token: 50 //nb token max de la réponse
+                }
+
             })
         });
 
@@ -642,7 +702,11 @@ async function envoyer() {
         console.error("Erreur lors de la génération :", err);
         updateBubble(bubbleType, "⚠️ Erreur de génération.");
     }
+    //console.log("====================================")
     addToHistory(message, responseText);
+    console.log(promptFinal);
+
+    console.log("================================================================================")
 }
 
 
