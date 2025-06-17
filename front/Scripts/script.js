@@ -13,8 +13,8 @@ const sendButton = document.getElementById('sendButton');
 
 /**
  * Enveloppe le texte pour qu'il tienne dans une largeur maximale.
- * @param {string} text - Le texte à envelopper.
- * @param {number} maxWidth - La largeur maximale en pixels.
+ * @param {string} text texte à envelopper.
+ * @param {number} maxWidth largeur maximale en pixels.
  * @returns {string[]} Un tableau de lignes de texte.
  */
 
@@ -50,7 +50,7 @@ function wrapText(text, maxWidth) {
 function updateMainAvatar(avatarUrl) {
     const mainAvatar = document.querySelector('.left-panel img');
     if (mainAvatar) {
-        const savedMainAvatar = localStorage.getItem('mainAvatar'); // Nouveau
+        const savedMainAvatar = localStorage.getItem('mainAvatar');
         if (savedMainAvatar) {
             mainAvatar.src = savedMainAvatar;
         } else if (avatarUrl) {
@@ -64,8 +64,8 @@ function updateMainAvatar(avatarUrl) {
 }
 /**
  * Met à jour l'affichage de la bulle de dialogue SVG.
- * @param {string} bubbleType - Le type de bulle ('dialogue', 'pensee', 'cri').
- * @param {string} text - Le texte à afficher dans la bulle.
+ * @param {string} bubbleType type de bulle ('dialogue', 'pensee', 'cri').
+ * @param {string} text texte à afficher dans la bulle.
  */
 function updateBubble(bubbleType, text = "") {
     const centerPanel = document.querySelector('.center-panel');
@@ -81,7 +81,7 @@ function updateBubble(bubbleType, text = "") {
     const maxWidth = 600; // Largeur maximale pour le texte dans la bulle
     const lineHeight = 40; // Hauteur d'une ligne de texte
     const padding = bubbleType === 'cri' ? 140 : 60; // Rembourrage intérieur de la bulle
-    const tailHeight = 60; // Hauteur de la "queue" de la bulle (pour dialogue/pensée)
+    const tailHeight = 60; // Hauteur de la "queue" de la bulle
 
     const lines = wrapText(displayText, maxWidth);
     const textHeight = lines.length * lineHeight;
@@ -130,7 +130,7 @@ function updateBubble(bubbleType, text = "") {
             break;
 
         case 'cri':
-            // Forme de bulle de cri (étoile ou forme dentelée)
+            // Forme de bulle de cri (forme dentelée)
             const w = bubbleWidth;
             const h = bubbleHeight;
             pathData = `
@@ -223,7 +223,7 @@ function updateBubble(bubbleType, text = "") {
 
 /**
  * Récupère les données météorologiques et génère un message de prévention.
- * @returns {Promise<string>} Le message de prévention généré.
+ * @returns {Promise<string>} message de prévention généré.
  */
 async function displayWeather() {
     try {
@@ -236,7 +236,7 @@ async function displayWeather() {
         const dataUser = JSON.parse(rawData);
         const city = dataUser.habitation || 'Grenoble';
 
-        const apiKey = "dab27fb29b8649b087492631251505"; // Remplacez par votre vraie clé API
+        const apiKey = "dab27fb29b8649b087492631251505";
         const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(city)}&lang=fr`;
 
         const response = await fetch(url);
@@ -269,11 +269,10 @@ async function displayWeather() {
 
 /**
  * Génère un message de prévention basé sur la météo.
- * (Fonction non modifiée, mais incluse pour la complétude)
- * @param {number} temp - La température actuelle.
- * @param {string} condition - La description de la condition météo.
- * @param {string} city - Le nom de la ville.
- * @returns {string} Le message de prévention.
+ * @param {number} temp  température actuelle.
+ * @param {string} condition description de la condition météo.
+ * @param {string} city nom de la ville.
+ * @returns {string} message de prévention.
  */
 function generatePreventionMessage(temp, condition, city) {
     if (!temp || !condition || !city) {
@@ -502,9 +501,9 @@ function displayHistory() {
 
 /**
  * Ajoute une nouvelle entrée à l'historique de la conversation et met à jour l'affichage.
- * @param {string} question - La question de l'utilisateur (peut être vide pour les messages système).
- * @param {string} answer - La réponse de l'assistant.
- * @param {string} [bubbleType='dialogue'] - Le type de bulle à utiliser pour cette entrée.
+ * @param {string} question question de l'utilisateur (peut être vide pour les messages système).
+ * @param {string} answer réponse de l'assistant.
+ * @param {string} [bubbleType='dialogue'] type de bulle à utiliser pour cette entrée.
  */
 function addToHistory(question, answer, bubbleType = 'dialogue') {
     console.log("----------------- addToHistory appellé --------------")
@@ -525,13 +524,13 @@ function addToHistory(question, answer, bubbleType = 'dialogue') {
     }
 
     localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-    displayHistory(); // Appelle displayHistory pour actualiser l'affichage ET la bulle
+    displayHistory(); // Appelle displayHistory pour actualiser l'affichage et la bulle
 }
 
 /**
  * Gère l'envoi d'un message par l'utilisateur.
  */
-async function handleSendMessage() {
+async function handleSendMessage() { // TO CORRECT
 
     console.log("================handlesendmsg appelé===================")
     const question = messageInput.value.trim();
@@ -559,7 +558,7 @@ async function handleSendMessage() {
             // S'assure que le bubbleType de la dernière entrée correspond à celui qui était actif
             chatHistory[chatHistory.length - 1].bubbleType = currentBubbleType;
             localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-            displayHistory(); // Actualise l'affichage ET la bulle avec la réponse finale
+            displayHistory(); // Actualise l'affichage et la bulle avec la réponse finale
         }
 
     } catch (error) {
@@ -609,11 +608,11 @@ function buildPrompt(messageActuel, maxMessages = 3) {
     const systemPrompt = `[CONTEXTE UTILISATEUR] ${profilDescription}
                           [DIRECTIVES] 
                         - Bienveillant et joyeux
-                        - Réponses courtes en 1-2 phrase
+                        - Réponses courtes en 1-2 phrases
                         - Ne fais jamais de liste ou d'énumération
                         - Tiens compte de l'environnement (${profil.type_logement || 'logement'})
                         - Tiens compte de ses centres d'intérêt
-                        - Sois particulièrement vigilant sur les aspects médicaux mentionnés. N'hésite pas à indiquer de se tourner vers son médecin`;
+                        - Si des aspects médicaux sont mentionnés, n'hésite pas à dire de se tourner vers le médecin`;
 
     const historique = (JSON.parse(localStorage.getItem("chatHistory")) || [])
         .slice(-maxMessages)
@@ -664,7 +663,7 @@ async function envoyer() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                model: "mistral",
+                model: "mistral:7b",
                 prompt: prompt,
                 stream: true,
                 options : {
@@ -700,7 +699,7 @@ async function envoyer() {
 
     } catch (err) {
         console.error("Erreur lors de la génération :", err);
-        updateBubble(bubbleType, "⚠️ Erreur de génération.");
+        updateBubble(bubbleType, "Erreur de génération. Veillez reposer votre question");
     }
     //console.log("====================================")
     addToHistory(message, responseText);
@@ -713,7 +712,7 @@ async function envoyer() {
 
 /**
  * Gère l'initialisation de l'historique au chargement de la page.
- * @param {string} preventionMessage - Le message de prévention initial généré par la météo.
+ * @param {string} preventionMessage message de prévention initial généré par la météo.
  */
 function manageHistory(preventionMessage) {
     chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
@@ -726,7 +725,7 @@ function manageHistory(preventionMessage) {
 
         if (!isWeatherMessagePresent) {
             const newEntry = {
-                question: '', // Pas de question pour un message système/initial
+                question: '', // Pas de question pour un message système initial
                 answer: preventionMessage,
                 bubbleType: localStorage.getItem('selectedBubble') || 'dialogue', // Utilise le type de bulle actuel du localStorage
                 timestamp: new Date().toISOString()
@@ -777,7 +776,8 @@ async function initApp() {
     //Configurer les écouteurs d'événements pour le champ de saisie et le bouton d'envoi
     sendButton.addEventListener('click', handleSendMessage);
     messageInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && !e.shiftKey) { // Envoie au pressage de "Entrée" (sans "Shift")
+        // TO DO
+        if (e.key === 'Enter' && !e.shiftKey) { // envoie le message à l'aide de la touche entrée
             e.preventDefault();
             handleSendMessage();
         }
@@ -798,15 +798,9 @@ async function initApp() {
 // Attendre que tout le DOM soit chargé avant d'initialiser l'application
 document.addEventListener('DOMContentLoaded', initApp);
 
-// Bouton "Voir plus" (si vous l'implémentez, cette logique doit être ajoutée)
-document.getElementById('loadMore')?.addEventListener('click', function() {
-    console.log("Fonctionnalité 'Voir plus' à implémenter");
-    // Exemple : charger plus d'historique depuis localStorage ou une API
-});
-
 // Gérer le changement du sélecteur de bulle sur la page (si vous avez un élément UI pour cela)
 document.addEventListener('DOMContentLoaded', () => {
-    const bubbleSelector = document.getElementById('bubbleSelector'); // Assurez-vous d'avoir un élément avec cet ID dans votre HTML
+    const bubbleSelector = document.getElementById('bubbleSelector');
 
     if (bubbleSelector) {
         // Charger la sélection actuelle du localStorage au démarrage
@@ -818,14 +812,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const newBubbleType = this.value;
             localStorage.setItem('selectedBubble', newBubbleType); // Sauvegarde le nouveau type
 
-            // Met à jour la bulle IMMÉDIATEMENT dans le même onglet
+            // Met à jour la bulle instantanement dans le même onglet
             let lastMessage = "";
             if (chatHistory.length > 0) {
                 lastMessage = chatHistory[chatHistory.length - 1].answer;
             }
             updateBubble(newBubbleType, lastMessage || "Bienvenue ! Je suis là pour vous aider.");
-            // Si vous voulez aussi que l'historique affiché mette à jour ses bulles (si elles sont interactives)
-            // displayHistory(); // Cela re-générera l'historique avec le nouveau type de bulle si pertinent
         });
     }
 });
