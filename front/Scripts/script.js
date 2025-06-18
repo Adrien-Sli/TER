@@ -619,7 +619,7 @@ function buildPrompt(messageActuel, maxMessages = 3) {
         .map(h => `- ${h.answer}`)
         .join('\n');
     // console.log("========= HISTORIQUE DEBUG =========")
-    // console.log(historique)
+    console.log(historique)
     // console.log("===========================")
     const promptFinal = `${systemPrompt}
 Historique de conversation :
@@ -633,81 +633,58 @@ Assistant :`;
 }
 
 async function envoyer() {
-    console.log("============= Appel envoyer ================")
-    // console.log("============================envoyer DEBUG====================================================")
-
+    console.log("============= Appel envoyer ================");
     const input = document.getElementById("messageInput");
     const message = input.value.trim();
-    const historyContainer = document.getElementById("historyContainer");
-    const questionItem = document.createElement("div");
-    const bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
-    const prompt = buildPrompt(message);
-    let responseText = "";
+    
+    if (!message) return;
     
     input.value = "";
-    questionItem.className = "history-item";
-    questionItem.textContent = message;
-    historyContainer.appendChild(questionItem);
-
-    if (!message) return;
-
-    // console.log("========= PROMPT DEBUG =========");
-    // console.log("Prompt envoyé à Ollama :\n", prompt);
-    // console.log("===========================");
-
-    updateBubble(bubbleType, "");
-
-    //console.log("=========requête debug=========")
+    const bubbleType = localStorage.getItem('selectedBubble') || 'dialogue';
+    
+    updateBubble(bubbleType, "Je réfléchis...");
+    
     try {
-        const response = await fetch("http://localhost:11434/api/generate", {
+        const prompt = buildPrompt(message);
+        addToHistory(message, "Je réfléchis...", bubbleType);
+        
+        // envoi à Flask pr Ollama
+        const response = await fetch("http://localhost:8000/api/chat", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({
-                model: "mistral:7b",
-                prompt: prompt,
-                stream: true,
-                options : {
-                    max_token: 50 //nb token max de la réponse
-                }
-
+                message: prompt  // envoi
             })
         });
-
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder("utf-8");
-
-        while (true) {
-            const { value, done } = await reader.read();
-            if (done) break;
-
-            const chunk = decoder.decode(value, { stream: true }).trim();
-            const lines = chunk.split('\n');
-
-            for (let line of lines) {
-                if (!line) continue;
-                try {
-                    const json = JSON.parse(line);
-                    if (json.response) {
-                        responseText += json.response;
-                        updateBubble(bubbleType, responseText);
-                    }
-                } catch (err) {
-                    console.warn("Erreur de parsing JSON stream :", err);
-                }
-            }
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-    } catch (err) {
-        console.error("Erreur lors de la génération :", err);
-        updateBubble(bubbleType, "Erreur de génération. Veillez reposer votre question");
+        
+        const data = await response.json();
+        const assistantResponse = data.response || "Je n'ai pas pu générer de réponse.";
+        
+        updateBubble(bubbleType, assistantResponse);
+        
+        if (chatHistory.length > 0) {
+            chatHistory[chatHistory.length - 1].answer = assistantResponse;
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+            displayHistory();
+        }
+        
+    } catch (error) {
+        console.error("Erreur lors de l'envoi du message:", error);
+        updateBubble(bubbleType, "Désolé, une erreur s'est produite. Veuillez réessayer.");
+        
+        if (chatHistory.length > 0) {
+            chatHistory[chatHistory.length - 1].answer = "Erreur de communication avec l'assistant";
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+            displayHistory();
+        }
     }
-    //console.log("====================================")
-    addToHistory(message, responseText);
-    console.log(promptFinal);
-
-    console.log("================================================================================")
 }
-
 
 
 /**

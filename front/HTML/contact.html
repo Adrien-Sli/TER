@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
-    <link rel="stylesheet" href="../CSS/contact.css">
-    <link rel="stylesheet" href="../CSS/navbar.css">
+    <link rel="stylesheet" href="/static/CSS/contact.css">
+    <link rel="stylesheet" href="/static/CSS/navbar.css">
 </head>
 <body>
     <header class="navbar">
         <div class="left-buttons">
             <a href="profil.html" class="profil-button" style="border-radius: 50%; overflow: hidden;">
-                <img src="../Image/profil.png" alt="Profil" class="profil-icon" style="border-radius: 50%; object-fit: cover;">
+                <img src="/static/Image/profil.png" alt="Profil" class="profil-icon" style="border-radius: 50%; object-fit: cover;">
             </a>
             <button class="home-button">
-                <img src="../Image/home.png" alt="Page d'accueil" class="home-icon">
+                <img src="/static/Image/home.png" alt="Page d'accueil" class="home-icon">
             </button>
         </div>
         <div class="right-buttons">
@@ -98,7 +98,7 @@
         <div class="note">
             <p><strong>Conseil :</strong> Imprimez cette page et placez-la près de votre téléphone ou sur votre réfrigérateur pour l'avoir toujours à portée de main en cas de besoin.</p>
         </div>
-    <script src="../Scripts/common.js"></script>
+    <script src="/static/Scripts/common.js"></script>
     <script>
     const fond = localStorage.getItem('selectedBackground');
         if (fond) {
@@ -108,6 +108,6 @@
             document.body.style.backgroundAttachment = 'fixed';
         }
     </script>
-    <script src="../Scripts/contact.js"></script>
+    <script src="/static/Scripts/contact.js"></script>
 </body>
 </html>
